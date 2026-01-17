@@ -1,0 +1,8 @@
+# Security.txt
+# L'Horizon Crypto - ebook-horizoncrypto.com
+# https://securitytxt.org/
+
+Contact: mailto:security@ebook-horizoncrypto.com
+Preferred-Languages: fr, en
+Canonical: https://ebook-horizoncrypto.com/.well-known/security.txt
+Expires: 2027-01-17T00:00:00.000Z

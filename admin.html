@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard - L'Horizon Crypto</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-horizon-crypto.png">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent-gold: #f7931a;
+            --accent-green: #00ff88;
+            --accent-blue: #00d4ff;
+            --accent-red: #ff4757;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 48px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card h1 {
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+        }
+
+        .login-card p {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .login-card input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent-gold), #e68a00);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .sidebar-logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .sidebar-logo span {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(135deg, rgba(247, 147, 26, 0.2), rgba(247, 147, 26, 0.1));
+            color: var(--accent-gold);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            padding: 32px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+        }
+
+        .header-date {
+            color: var(--text-secondary);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .stat-card h3 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-card .change {
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .stat-card .change.positive {
+            color: var(--accent-green);
+        }
+
+        .stat-card .change.negative {
+            color: var(--accent-red);
+        }
+
+        .stat-card.revenue {
+            border-top: 3px solid var(--accent-gold);
+        }
+
+        .stat-card.sales {
+            border-top: 3px solid var(--accent-blue);
+        }
+
+        .stat-card.claims {
+            border-top: 3px solid var(--accent-green);
+        }
+
+        .stat-card.rate {
+            border-top: 3px solid #9b59b6;
+        }
+
+        /* Tables */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            font-size: 0.95rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge-solo {
+            background: rgba(247, 147, 26, 0.2);
+            color: var(--accent-gold);
+        }
+
+        .badge-pro {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .badge-vip {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+        }
+
+        .badge-claimed {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="login-screen">
+        <div class="login-card">
+            <h1>🔐 Admin Dashboard</h1>
+            <p>L'Horizon Crypto</p>
+            <input type="password" id="api-key-input" placeholder="Clé API Admin">
+            <button onclick="login()">Se connecter</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="assets/logo-horizon-crypto.png" alt="Logo">
+                <span>L'Horizon</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="active">📊 Vue d'ensemble</a>
+                <a href="#">👥 Clients</a>
+                <a href="#">🎁 Claims</a>
+                <a href="#">📧 Emails</a>
+                <a href="#">⚙️ Paramètres</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1>📊 Vue d'ensemble</h1>
+                <span class="header-date" id="current-date"></span>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card revenue">
+                    <h3>💰 Revenu Total</h3>
+                    <div class="value" id="total-revenue">0€</div>
+                    <div class="change positive">+12% vs mois dernier</div>
+                </div>
+                <div class="stat-card sales">
+                    <h3>📦 Ventes Totales</h3>
+                    <div class="value" id="total-sales">0</div>
+                    <div class="change positive">+8 aujourd'hui</div>
+                </div>
+                <div class="stat-card claims">
+                    <h3>🎁 Claims Effectués</h3>
+                    <div class="value" id="total-claims">0</div>
+                    <div class="change">20$ USDC chacun</div>
+                </div>
+                <div class="stat-card rate">
+                    <h3>📈 Taux de Claim</h3>
+                    <div class="value" id="claim-rate">0%</div>
+                    <div class="change">des acheteurs</div>
+                </div>
+            </div>
+
+            <!-- Recent Customers -->
+            <div class="card">
+                <h2>👥 Derniers Clients</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Pack</th>
+                            <th>Montant</th>
+                            <th>Date</th>
+                            <th>Claim</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-table">
+                        <tr>
+                            <td colspan="5" class="loading">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recent Claims -->
+            <div class="card">
+                <h2>🎁 Derniers Claims</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Wallet</th>
+                            <th>Date</th>
+                            <th>Transaction</th>
+                        </tr>
+                    </thead>
+                    <tbody id="claims-table">
+                        <tr>
+                            <td colspan="4" class="loading">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let apiKey = '';
+        const API_BASE = 'http://localhost:3002';
+
+        // Set current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        function login() {
+            apiKey = document.getElementById('api-key-input').value;
+            if (!apiKey) {
+                alert('Veuillez entrer une clé API');
+                return;
+            }
+
+            // Try to fetch stats
+            fetchStats().then(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                fetchCustomers();
+            }).catch(() => {
+                alert('Clé API invalide');
+            });
+        }
+
+        async function fetchStats() {
+            const response = await fetch(`${API_BASE}/api/admin/stats`, {
+                headers: { 'Authorization': `Bearer ${apiKey}` }
+            });
+
+            if (!response.ok) throw new Error('Unauthorized');
+
+            const stats = await response.json();
+
+            document.getElementById('total-revenue').textContent = `${stats.totalRevenue}€`;
+            document.getElementById('total-sales').textContent = stats.totalSales;
+            document.getElementById('total-claims').textContent = stats.totalClaims;
+            document.getElementById('claim-rate').textContent = stats.claimRate;
+        }
+
+        async function fetchCustomers() {
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/customers`, {
+                    headers: { 'Authorization': `Bearer ${apiKey}` }
+                });
+
+                const customers = await response.json();
+
+                const tbody = document.getElementById('customers-table');
+
+                if (customers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">Aucun client pour le moment</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = customers.slice(0, 10).map(c => `
+                    <tr>
+                        <td>${maskEmail(c.email)}</td>
+                        <td><span class="badge badge-${c.pack}">${c.pack.toUpperCase()}</span></td>
+                        <td>${c.amount}€</td>
+                        <td>${new Date(c.purchasedAt).toLocaleDateString('fr-FR')}</td>
+                        <td>${c.claimed
+                        ? '<span class="badge badge-claimed">✓ Réclamé</span>'
+                        : '<span class="badge badge-pending">En attente</span>'}</td>
+                    </tr>
+                `).join('');
+
+                // Claims table
+                const claimedCustomers = customers.filter(c => c.claimed);
+                const claimsTable = document.getElementById('claims-table');
+
+                if (claimedCustomers.length === 0) {
+                    claimsTable.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-secondary);">Aucun claim pour le moment</td></tr>';
+                } else {
+                    claimsTable.innerHTML = claimedCustomers.slice(0, 10).map(c => `
+                        <tr>
+                            <td>${maskEmail(c.email)}</td>
+                            <td>${shortenAddress(c.claimWallet || '0x...')}</td>
+                            <td>${new Date(c.claimedAt).toLocaleDateString('fr-FR')}</td>
+                            <td><a href="https://basescan.org/tx/${c.claimTxHash}" target="_blank" style="color: var(--accent-gold);">Voir TX</a></td>
+                        </tr>
+                    `).join('');
+                }
+
+            } catch (error) {
+                console.error('Error fetching customers:', error);
+            }
+        }
+
+        function maskEmail(email) {
+            if (!email) return '---';
+            const [name, domain] = email.split('@');
+            return `${name.charAt(0)}***@${domain}`;
+        }
+
+        function shortenAddress(address) {
+            if (!address) return '---';
+            return `${address.slice(0, 6)}...${address.slice(-4)}`;
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            if (document.getElementById('dashboard').classList.contains('active')) {
+                fetchStats();
+                fetchCustomers();
+            }
+        }, 30000);
+
+        // Enter key to login
+        document.getElementById('api-key-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+    </script>
+</body>
+
+</html>

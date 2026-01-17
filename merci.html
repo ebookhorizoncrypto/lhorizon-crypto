@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Merci pour votre achat de L'Horizon Crypto - Votre guide est en route !">
+    <meta name="robots" content="noindex, nofollow">
+    <title>🌅 Merci ! - L'Horizon Crypto</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-horizon-crypto.png">
+    <link rel="apple-touch-icon" href="assets/logo-horizon-crypto.png">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Thank You Page Specific Styles */
+        .thankyou-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: calc(80px + var(--space-3xl)) var(--space-lg) var(--space-3xl);
+        }
+
+        .thankyou-container {
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .thankyou-icon {
+            font-size: 6rem;
+            margin-bottom: var(--space-xl);
+            animation: celebrate 1s ease-in-out infinite;
+        }
+
+        @keyframes celebrate {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+
+            25% {
+                transform: scale(1.1) rotate(-5deg);
+            }
+
+            75% {
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
+
+        .thankyou-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: var(--space-lg);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .thankyou-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2xl);
+            line-height: 1.8;
+        }
+
+        .order-summary {
+            background: var(--bg-card);
+            border: 1px solid rgba(247, 147, 26, 0.3);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            margin-bottom: var(--space-2xl);
+            text-align: left;
+        }
+
+        .order-summary h3 {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-card);
+            border-radius: var(--radius-md);
+        }
+
+        .order-item-info {
+            flex: 1;
+        }
+
+        .order-item-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .order-item-desc {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .order-item-status {
+            color: var(--accent-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .next-steps {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            margin-bottom: var(--space-2xl);
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-lg);
+            color: var(--accent-gold);
+        }
+
+        .step-list {
+            list-style: none;
+        }
+
+        .step-list li {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            color: var(--text-secondary);
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .download-section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .download-section p {
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-lg);
+        }
+
+        .btn-download {
+            padding: var(--space-lg) var(--space-3xl);
+            font-size: 1.2rem;
+        }
+
+        .support-note {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .support-note h4 {
+            color: var(--accent-cyan);
+            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .support-note p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .support-note a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        .support-note a:hover {
+            text-decoration: underline;
+        }
+
+        .social-share {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .social-share h4 {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+            font-weight: 500;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all var(--transition-base);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-gold);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .back-home {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: color var(--transition-fast);
+        }
+
+        .back-home:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Confetti animation on load */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            z-index: 1000;
+            animation: confetti-fall 4s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+    <div class="floating-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img">
+                <span class="logo-text">L'Horizon Crypto</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Thank You Content -->
+    <main class="thankyou-page">
+        <div class="thankyou-container">
+            <div class="thankyou-icon">🎉</div>
+
+            <h1 class="thankyou-title">Merci pour votre confiance !</h1>
+
+            <p class="thankyou-subtitle">
+                Votre commande a été confirmée avec succès. Vous venez de faire le premier pas
+                vers votre souveraineté financière dans l'écosystème crypto de 2026.
+            </p>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3>📦 Votre commande</h3>
+                <div class="order-item">
+                    <div class="order-item-icon">📖</div>
+                    <div class="order-item-info">
+                        <div class="order-item-title">L'Horizon Crypto - Guide Complet</div>
+                        <div class="order-item-desc">PDF • 100+ pages</div>
+                    </div>
+                    <div class="order-item-status">✓ Inclus</div>
+                </div>
+                <div class="order-item">
+                    <div class="order-item-icon">🎁</div>
+                    <div class="order-item-info">
+                        <div class="order-item-title">Bonus: Stratégies Airdrops</div>
+                        <div class="order-item-desc">Guide pratique des airdrops</div>
+                    </div>
+                    <div class="order-item-status">✓ Inclus</div>
+                </div>
+                <div class="order-item">
+                    <div class="order-item-icon">🛡️</div>
+                    <div class="order-item-info">
+                        <div class="order-item-title">Bonus: Checklist Sécurité</div>
+                        <div class="order-item-desc">Cold Wallet & BIP-39</div>
+                    </div>
+                    <div class="order-item-status">✓ Inclus</div>
+                </div>
+                <div class="order-item">
+                    <div class="order-item-icon">🔄</div>
+                    <div class="order-item-info">
+                        <div class="order-item-title">Mises à jour 2026</div>
+                        <div class="order-item-desc">Accès à vie aux futures versions</div>
+                    </div>
+                    <div class="order-item-status">✓ Inclus</div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h3>📌 Prochaines étapes</h3>
+                <ol class="step-list">
+                    <li>
+                        <span class="step-number">1</span>
+                        <span>Vérifiez votre boîte email (et les spams) pour le lien de téléchargement.</span>
+                    </li>
+                    <li>
+                        <span class="step-number">2</span>
+                        <span>Téléchargez le PDF sur votre appareil préféré (ordinateur, tablette, téléphone).</span>
+                    </li>
+                    <li>
+                        <span class="step-number">3</span>
+                        <span>Commencez par le Module 1 sur Bitcoin pour poser les fondations.</span>
+                    </li>
+                    <li>
+                        <span class="step-number">4</span>
+                        <span>Appliquez les stratégies Airdrops du bonus pour commencer à être récompensé !</span>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Download Section -->
+            <div class="download-section">
+                <p>Vous pouvez également télécharger directement votre guide ici :</p>
+                <a href="#" class="btn btn-primary btn-download" id="download-btn">
+                    <span class="btn-icon">📥</span>
+                    Télécharger mon guide
+                </a>
+            </div>
+
+            <!-- Support Note -->
+            <div class="support-note">
+                <h4>💬 Besoin d'aide ?</h4>
+                <p>
+                    Si vous avez des questions ou si vous n'avez pas reçu votre guide,
+                    n'hésitez pas à me contacter à <a
+                        href="mailto:support@lhorizoncrypto.com">support@lhorizoncrypto.com</a>.
+                    Je réponds généralement sous 24h.
+                </p>
+            </div>
+
+            <!-- Social Share -->
+            <div class="social-share">
+                <h4>Partagez votre achat avec vos amis crypto 🚀</h4>
+                <div class="social-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=Je%20viens%20d%27investir%20dans%20mon%20%C3%A9ducation%20crypto%20avec%20L%27Horizon%20Crypto%20%F0%9F%8C%85%20Un%20guide%20complet%20pour%20naviguer%20l%27%C3%A9cosyst%C3%A8me%202026%20!&url="
+                        class="social-btn" target="_blank" rel="noopener">
+                        🐦
+                    </a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=" class="social-btn" target="_blank"
+                        rel="noopener">
+                        💼
+                    </a>
+                    <a href="https://t.me/share/url?url=&text=Je%20viens%20d%27acheter%20L%27Horizon%20Crypto%20!"
+                        class="social-btn" target="_blank" rel="noopener">
+                        ✈️
+                    </a>
+                </div>
+            </div>
+
+            <!-- Back to Home -->
+            <a href="index.html" class="back-home">
+                ← Retour à l'accueil
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" style="padding: var(--space-xl) 0;">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Create confetti on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            createConfetti();
+        });
+
+        function createConfetti() {
+            const colors = ['#f7931a', '#9945ff', '#00d4ff', '#00ff88', '#ffbe0b', '#ff6b6b'];
+            const confettiCount = 80;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti-piece';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    confetti.style.width = (Math.random() * 8 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 8 + 5) + 'px';
+                    confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                    document.body.appendChild(confetti);
+
+                    // Remove after animation
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 50);
+            }
+        }
+
+        // Download button click
+        document.getElementById('download-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Le téléchargement va commencer... (En production, ceci déclencherait le téléchargement du PDF)');
+        });
+    </script>
+</body>
+
+</html>

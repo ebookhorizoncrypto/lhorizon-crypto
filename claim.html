@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Réclamez votre récompense 20$ USDC - L'Horizon Crypto Proof of Learning">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Claim 20$ USDC - L'Horizon Crypto</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-horizon-crypto.png">
+    <link rel="apple-touch-icon" href="assets/logo-horizon-crypto.png">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/threejs.css">
+
+    <style>
+        .claim-page {
+            min-height: 100vh;
+            padding: calc(80px + var(--space-3xl)) 0 var(--space-4xl);
+        }
+
+        .claim-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .claim-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .claim-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .claim-header .reward-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-xl);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: var(--radius-full);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: var(--space-lg);
+        }
+
+        .claim-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Stepper */
+        .claim-stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-2xl);
+            position: relative;
+        }
+
+        .claim-stepper::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background: var(--bg-tertiary);
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-muted);
+            border: 2px solid transparent;
+            transition: all var(--transition-base);
+        }
+
+        .step.active .step-number {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: var(--accent-gold);
+        }
+
+        .step.completed .step-number {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .step.active .step-label {
+            color: var(--text-primary);
+        }
+
+        /* Claim Card */
+        .claim-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .claim-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .claim-card p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.2);
+        }
+
+        .form-group input.success {
+            border-color: var(--accent-green);
+        }
+
+        .form-group input.error {
+            border-color: #ff4757;
+        }
+
+        /* 12 Words Grid */
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .word-input {
+            position: relative;
+        }
+
+        .word-input label {
+            position: absolute;
+            top: -8px;
+            left: 10px;
+            background: var(--bg-card);
+            padding: 0 var(--space-xs);
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+        }
+
+        .word-input input {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 0.9rem;
+            text-transform: lowercase;
+        }
+
+        /* Wallet Connect */
+        .wallet-options {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .wallet-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-lg);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .wallet-btn:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-3px);
+        }
+
+        .wallet-btn.connected {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .wallet-btn img {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* Success State */
+        .success-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            text-align: center;
+            padding: var(--space-3xl);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-lg);
+        }
+
+        .success-card h2 {
+            justify-content: center;
+            color: var(--accent-green);
+        }
+
+        .tx-hash {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            margin: var(--space-lg) 0;
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
+
+        .tx-hash a {
+            color: var(--accent-gold);
+        }
+
+        /* Error Message */
+        .error-message {
+            padding: var(--space-md);
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: var(--radius-md);
+            color: #ff4757;
+            margin-bottom: var(--space-lg);
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Info Box */
+        .info-box {
+            padding: var(--space-lg);
+            background: rgba(247, 147, 26, 0.1);
+            border: 1px solid rgba(247, 147, 26, 0.3);
+            border-radius: var(--radius-md);
+            margin-top: var(--space-xl);
+        }
+
+        .info-box h4 {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+            color: var(--accent-gold);
+        }
+
+        .info-box ul {
+            padding-left: var(--space-xl);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .info-box li {
+            margin-bottom: var(--space-xs);
+        }
+
+        /* Loading State */
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-md);
+            padding: var(--space-xl);
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--bg-tertiary);
+            border-top-color: var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Hidden Sections */
+        .claim-step {
+            display: none;
+        }
+
+        .claim-step.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .words-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .wallet-options {
+                flex-direction: column;
+            }
+
+            .claim-stepper {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
+            </a>
+            <div class="nav-links">
+                <a href="index.html#concept">Concept</a>
+                <a href="index.html#programme">Programme</a>
+                <a href="index.html#avis">Avis</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 ACHETER LE GUIDE</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Claim Page -->
+    <main class="claim-page">
+        <div class="container">
+            <div class="claim-container">
+
+                <!-- Header -->
+                <div class="claim-header">
+                    <div class="reward-badge">
+                        <span>💰</span>
+                        <span>20$ USDC sur Base</span>
+                    </div>
+                    <h1>Réclamez Votre <span class="gradient-text">Récompense</span></h1>
+                    <p>Vous avez trouvé les 12 clés ? Bravo ! Récupérez vos 20$ USDC directement sur votre wallet.</p>
+                </div>
+
+                <!-- Stepper -->
+                <div class="claim-stepper">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <span class="step-label">Email</span>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <span class="step-label">12 Clés</span>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <span class="step-label">Wallet</span>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <span class="step-label">Claim</span>
+                    </div>
+                </div>
+
+                <!-- Step 1: Email Verification -->
+                <div class="claim-step active" id="step1">
+                    <div class="claim-card">
+                        <h2>📧 Étape 1 : Vérification Email</h2>
+                        <p>Entrez l'email que vous avez utilisé pour acheter le guide. Nous vérifierons que votre achat
+                            est valide.</p>
+
+                        <div class="error-message" id="email-error"></div>
+
+                        <div class="form-group">
+                            <label for="claim-email">Votre email d'achat *</label>
+                            <input type="email" id="claim-email" placeholder="votre@email.com" required>
+                        </div>
+
+                        <button class="btn btn-primary" id="verify-email-btn" style="width: 100%;">
+                            <span class="btn-icon">🔍</span>
+                            Vérifier mon achat
+                        </button>
+
+                        <div class="loading" id="email-loading">
+                            <div class="spinner"></div>
+                            <span>Vérification en cours...</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>ℹ️ Informations</h4>
+                        <ul>
+                            <li>Utilisez l'email exact avec lequel vous avez acheté</li>
+                            <li>Si vous avez déjà réclamé votre récompense, vous ne pouvez pas la réclamer à nouveau
+                            </li>
+                            <li>Le claim est disponible pendant 90 jours après l'achat</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 2: 12 Words Input -->
+                <div class="claim-step" id="step2">
+                    <div class="claim-card">
+                        <h2>🔑 Étape 2 : Les 12 Clés Secrètes</h2>
+                        <p>Saisissez les 12 mots-clés que vous avez découverts dans le guide, <strong>dans l'ordre
+                                exact</strong>.</p>
+
+                        <div class="error-message" id="words-error"></div>
+
+                        <div class="words-grid">
+                            <div class="word-input">
+                                <label>Clé #1</label>
+                                <input type="text" class="key-input" data-index="1" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #2</label>
+                                <input type="text" class="key-input" data-index="2" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #3</label>
+                                <input type="text" class="key-input" data-index="3" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #4</label>
+                                <input type="text" class="key-input" data-index="4" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #5</label>
+                                <input type="text" class="key-input" data-index="5" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #6</label>
+                                <input type="text" class="key-input" data-index="6" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #7</label>
+                                <input type="text" class="key-input" data-index="7" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #8</label>
+                                <input type="text" class="key-input" data-index="8" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #9</label>
+                                <input type="text" class="key-input" data-index="9" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #10</label>
+                                <input type="text" class="key-input" data-index="10" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #11</label>
+                                <input type="text" class="key-input" data-index="11" placeholder="mot">
+                            </div>
+                            <div class="word-input">
+                                <label>Clé #12</label>
+                                <input type="text" class="key-input" data-index="12" placeholder="mot">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id="verify-words-btn" style="width: 100%;">
+                            <span class="btn-icon">✓</span>
+                            Valider mes 12 clés
+                        </button>
+
+                        <div class="loading" id="words-loading">
+                            <div class="spinner"></div>
+                            <span>Vérification des clés...</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚠️ Attention</h4>
+                        <ul>
+                            <li>Les mots doivent être saisis en <strong>minuscules</strong></li>
+                            <li>L'ordre des clés est important</li>
+                            <li>Vous n'avez <strong>qu'une seule tentative</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3: Wallet Connect -->
+                <div class="claim-step" id="step3">
+                    <div class="claim-card">
+                        <h2>👛 Étape 3 : Connectez Votre Wallet</h2>
+                        <p>Connectez le wallet sur lequel vous souhaitez recevoir vos 20$ USDC. Assurez-vous d'être sur
+                            le réseau <strong>Base</strong>.</p>
+
+                        <div class="error-message" id="wallet-error"></div>
+
+                        <div class="wallet-options">
+                            <button class="wallet-btn" id="connect-metamask">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg"
+                                    alt="MetaMask">
+                                MetaMask
+                            </button>
+                            <button class="wallet-btn" id="connect-coinbase">
+                                <img src="https://www.cdnlogo.com/logos/c/16/coinbase.svg" alt="Coinbase Wallet">
+                                Coinbase
+                            </button>
+                        </div>
+
+                        <div id="wallet-connected" style="display: none;">
+                            <div
+                                style="padding: var(--space-lg); background: rgba(0, 255, 136, 0.1); border-radius: var(--radius-md); text-align: center;">
+                                <p style="color: var(--accent-green); margin: 0;">
+                                    ✓ Wallet connecté : <strong id="wallet-address"></strong>
+                                </p>
+                            </div>
+                            <button class="btn btn-primary" id="proceed-claim-btn"
+                                style="width: 100%; margin-top: var(--space-lg);">
+                                <span class="btn-icon">🚀</span>
+                                Réclamer mes 20$ USDC
+                            </button>
+                        </div>
+
+                        <div class="loading" id="wallet-loading">
+                            <div class="spinner"></div>
+                            <span>Connexion au wallet...</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>📋 Prérequis</h4>
+                        <ul>
+                            <li>Avoir MetaMask ou Coinbase Wallet installé</li>
+                            <li>Être connecté au réseau <strong>Base (Chain ID: 8453)</strong></li>
+                            <li>Avoir un peu d'ETH sur Base pour les frais (très faibles)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 4: Success -->
+                <div class="claim-step" id="step4">
+                    <div class="claim-card success-card">
+                        <div class="success-icon">🎉</div>
+                        <h2>Félicitations !</h2>
+                        <p>Vos <strong>20$ USDC</strong> ont été envoyés avec succès sur votre wallet !</p>
+
+                        <div class="tx-hash">
+                            <span>TX: </span>
+                            <a id="tx-link" href="#" target="_blank">Voir sur BaseScan</a>
+                        </div>
+
+                        <p style="font-size: 0.9rem; color: var(--text-tertiary);">
+                            La transaction peut prendre quelques secondes à apparaître dans votre wallet.
+                        </p>
+
+                        <a href="index.html" class="btn btn-primary" style="margin-top: var(--space-xl);">
+                            Retour à l'accueil
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-clean">
+        <div class="container">
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
+                <div class="footer-badges">
+                    <span class="footer-badge">🔐 Pas de KYC</span>
+                    <span class="footer-badge">💰 Récompense 20$ USDC</span>
+                    <span class="footer-badge">⛓️ Base Network</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Claim Page Logic
+        const claimState = {
+            email: '',
+            verified: false,
+            wordsValid: false,
+            walletAddress: '',
+            currentStep: 1
+        };
+
+        // Step Navigation
+        function goToStep(step) {
+            document.querySelectorAll('.claim-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.claim-stepper .step').forEach(s => {
+                s.classList.remove('active');
+                if (parseInt(s.dataset.step) < step) {
+                    s.classList.add('completed');
+                }
+                if (parseInt(s.dataset.step) === step) {
+                    s.classList.add('active');
+                }
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+            claimState.currentStep = step;
+        }
+
+        // Step 1: Verify Email
+        document.getElementById('verify-email-btn').addEventListener('click', async () => {
+            const email = document.getElementById('claim-email').value.trim();
+            const errorDiv = document.getElementById('email-error');
+            const loadingDiv = document.getElementById('email-loading');
+
+            if (!email || !email.includes('@')) {
+                errorDiv.textContent = 'Veuillez entrer une adresse email valide.';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            errorDiv.classList.remove('show');
+            loadingDiv.classList.add('show');
+
+            // Simulate API call - In production, this calls your backend
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            loadingDiv.classList.remove('show');
+
+            // For demo - always succeed. In production, check against Stripe/DB
+            claimState.email = email;
+            claimState.verified = true;
+            goToStep(2);
+        });
+
+        // Step 2: Verify 12 Words
+        document.getElementById('verify-words-btn').addEventListener('click', async () => {
+            const inputs = document.querySelectorAll('.key-input');
+            const words = Array.from(inputs).map(i => i.value.toLowerCase().trim());
+            const errorDiv = document.getElementById('words-error');
+            const loadingDiv = document.getElementById('words-loading');
+
+            // Check if all fields are filled
+            if (words.some(w => !w)) {
+                errorDiv.textContent = 'Veuillez remplir toutes les 12 clés.';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            errorDiv.classList.remove('show');
+            loadingDiv.classList.add('show');
+
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            loadingDiv.classList.remove('show');
+
+            // For demo - always succeed. In production, verify against stored phrase
+            claimState.wordsValid = true;
+            goToStep(3);
+        });
+
+        // Step 3: Connect Wallet
+        async function connectWallet(walletType) {
+            const errorDiv = document.getElementById('wallet-error');
+            const loadingDiv = document.getElementById('wallet-loading');
+            const connectedDiv = document.getElementById('wallet-connected');
+
+            loadingDiv.classList.add('show');
+            errorDiv.classList.remove('show');
+
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    throw new Error('Aucun wallet détecté. Installez MetaMask ou Coinbase Wallet.');
+                }
+
+                // Request account access
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const address = accounts[0];
+
+                // Check if on Base network (Chain ID 8453)
+                const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                if (chainId !== '0x2105') { // 8453 in hex
+                    // Try to switch to Base
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: '0x2105' }]
+                        });
+                    } catch (switchError) {
+                        // If Base not added, add it
+                        if (switchError.code === 4902) {
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [{
+                                    chainId: '0x2105',
+                                    chainName: 'Base',
+                                    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                                    rpcUrls: ['https://mainnet.base.org'],
+                                    blockExplorerUrls: ['https://basescan.org']
+                                }]
+                            });
+                        } else {
+                            throw switchError;
+                        }
+                    }
+                }
+
+                loadingDiv.classList.remove('show');
+                claimState.walletAddress = address;
+                document.getElementById('wallet-address').textContent =
+                    address.slice(0, 6) + '...' + address.slice(-4);
+                connectedDiv.style.display = 'block';
+
+                // Mark wallet buttons as connected
+                document.querySelectorAll('.wallet-btn').forEach(btn => btn.classList.add('connected'));
+
+            } catch (error) {
+                loadingDiv.classList.remove('show');
+                errorDiv.textContent = error.message || 'Erreur de connexion au wallet.';
+                errorDiv.classList.add('show');
+            }
+        }
+
+        document.getElementById('connect-metamask').addEventListener('click', () => connectWallet('metamask'));
+        document.getElementById('connect-coinbase').addEventListener('click', () => connectWallet('coinbase'));
+
+        // Step 3 -> 4: Claim
+        document.getElementById('proceed-claim-btn').addEventListener('click', async () => {
+            // In production, this would:
+            // 1. Call your backend API with email + wallet address
+            // 2. Backend verifies everything and calls smart contract
+            // 3. Smart contract sends USDC to wallet
+
+            // Simulate transaction
+            await new Promise(resolve => setTimeout(resolve, 3000));
+
+            // Mock transaction hash
+            const mockTxHash = '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+            document.getElementById('tx-link').href = `https://basescan.org/tx/${mockTxHash}`;
+            document.getElementById('tx-link').textContent = mockTxHash.slice(0, 20) + '...';
+
+            goToStep(4);
+        });
+    </script>
+</body>
+
+</html>

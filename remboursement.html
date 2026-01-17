@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Politique de Remboursement - L'Horizon Crypto">
+    <meta name="robots" content="noindex, follow">
+    <title>Politique de Remboursement - L'Horizon Crypto</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-horizon-crypto.png">
+    <link rel="apple-touch-icon" href="assets/logo-horizon-crypto.png">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/threejs.css">
+
+    <style>
+        .legal-page {
+            min-height: 100vh;
+            padding: calc(80px + var(--space-3xl)) 0 var(--space-4xl);
+        }
+
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .legal-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-xl);
+            padding: var(--space-3xl);
+        }
+
+        .legal-content h1 {
+            font-size: 2rem;
+            margin-bottom: var(--space-lg);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .legal-content h2 {
+            font-size: 1.25rem;
+            margin: var(--space-2xl) 0 var(--space-md);
+            color: var(--accent-gold);
+        }
+
+        .legal-content h3 {
+            font-size: 1.1rem;
+            margin: var(--space-lg) 0 var(--space-sm);
+            color: var(--text-primary);
+        }
+
+        .legal-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+        }
+
+        .legal-content ul {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-md);
+            padding-left: var(--space-xl);
+        }
+
+        .legal-content li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .legal-content strong {
+            color: var(--text-primary);
+        }
+
+        .legal-content .warning-box {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .legal-content .warning-box strong {
+            color: #ff4757;
+        }
+
+        .legal-content .info-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .legal-content .success-box {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .last-update {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .legal-nav {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-2xl);
+            flex-wrap: wrap;
+        }
+
+        .legal-nav a {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all var(--transition-fast);
+        }
+
+        .legal-nav a:hover,
+        .legal-nav a.active {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+
+        .no-refund-list {
+            background: rgba(255, 71, 87, 0.05);
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            margin: var(--space-lg) 0;
+        }
+
+        .no-refund-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        .no-refund-list li::before {
+            content: "✗";
+            color: #ff4757;
+            font-weight: bold;
+        }
+
+        .exception-list li::before {
+            content: "✓";
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
+            </a>
+            <div class="nav-links">
+                <a href="index.html#concept">Concept</a>
+                <a href="index.html#programme">Programme</a>
+                <a href="index.html#avis">Avis</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER 20$ USDC</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Legal Page -->
+    <main class="legal-page">
+        <div class="container">
+            <div class="legal-container">
+
+                <!-- Legal Navigation -->
+                <div class="legal-nav">
+                    <a href="cgv.html">CGV</a>
+                    <a href="mentions-legales.html">Mentions Légales</a>
+                    <a href="confidentialite.html">Confidentialité</a>
+                    <a href="remboursement.html" class="active">Politique de Remboursement</a>
+                </div>
+
+                <div class="legal-content">
+                    <h1>Politique de Remboursement</h1>
+                    <p class="last-update">Dernière mise à jour : 17 janvier 2026</p>
+
+                    <div class="warning-box">
+                        <p>
+                            <strong>⚠️ INFORMATION IMPORTANTE</strong><br><br>
+                            L'Horizon Crypto vend des <strong>contenus numériques</strong> (fichiers PDF, guides, accès
+                            aux ressources).
+                            Conformément à la législation française et européenne, les règles de remboursement pour les
+                            contenus
+                            numériques diffèrent de celles applicables aux produits physiques.
+                        </p>
+                    </div>
+
+                    <h2>1. Cadre Légal - Article L221-28 du Code de la Consommation</h2>
+                    <p>
+                        L'article <strong>L221-28, 13°</strong> du Code de la consommation dispose que le droit de
+                        rétractation
+                        <strong>ne peut être exercé</strong> pour les contrats de fourniture de contenu numérique non
+                        fourni sur
+                        un support matériel dont l'exécution a commencé après accord préalable exprès du consommateur et
+                        renoncement exprès à son droit de rétractation.
+                    </p>
+
+                    <h2>2. Consentement Exprès au Moment de l'Achat</h2>
+                    <p>
+                        En validant votre commande et en accédant au contenu numérique, vous reconnaissez expressément :
+                    </p>
+                    <ul>
+                        <li>Avoir demandé que l'exécution du service commence <strong>immédiatement</strong> après le
+                            paiement</li>
+                        <li>Avoir <strong>renoncé expressément</strong> à votre droit de rétractation de 14 jours</li>
+                        <li>Avoir été <strong>clairement informé</strong> de cette renonciation avant la validation de
+                            l'achat</li>
+                        <li>Comprendre qu'une fois le contenu accessible, <strong>aucun remboursement n'est
+                                possible</strong></li>
+                    </ul>
+
+                    <h2>3. Situations Où le Remboursement est IMPOSSIBLE</h2>
+                    <div class="no-refund-list">
+                        <p><strong>Aucun remboursement ne sera accordé dans les cas suivants :</strong></p>
+                        <ul>
+                            <li>Téléchargement total ou partiel du fichier PDF</li>
+                            <li>Ouverture ou consultation du guide (même 1 page)</li>
+                            <li>Accès au lien de téléchargement (même sans téléchargement)</li>
+                            <li>Réclamation de la récompense 20$ USDC (totale ou partielle)</li>
+                            <li>Début d'une session de coaching (Packs Pro/VIP)</li>
+                            <li>Accès au serveur Discord ou groupe Telegram</li>
+                            <li>Simple changement d'avis après l'achat</li>
+                            <li>Insatisfaction subjective du contenu</li>
+                            <li>Difficulté à comprendre le contenu</li>
+                            <li>Problème technique lié à votre équipement personnel</li>
+                            <li>Format du fichier non compatible avec vos outils</li>
+                            <li>Erreur de votre part lors de l'achat</li>
+                            <li>Achat effectué par un tiers avec votre moyen de paiement</li>
+                        </ul>
+                    </div>
+
+                    <h2>4. Cas Exceptionnels de Remboursement</h2>
+                    <div class="success-box">
+                        <p>
+                            <strong>✓ Situations exceptionnelles pouvant donner lieu à un remboursement :</strong>
+                        </p>
+                        <ul class="exception-list">
+                            <li>Erreur technique de notre côté rendant le fichier <strong>totalement
+                                    inaccessible</strong> pendant plus de 72h</li>
+                            <li><strong>Double facturation</strong> avérée sur votre relevé bancaire</li>
+                            <li>Contenu <strong>substantiellement différent</strong> de la description (preuve requise)
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        <strong>Délai :</strong> Toute demande doit être effectuée dans les <strong>7 jours</strong>
+                        suivant l'achat.<br>
+                        <strong>Preuves requises :</strong> Captures d'écran, relevé bancaire, description détaillée du
+                        problème.
+                    </p>
+
+                    <h2>5. Procédure de Demande</h2>
+                    <p>Pour soumettre une demande de remboursement :</p>
+                    <ol>
+                        <li>Envoyez un email à <strong>support@lhorizoncrypto.com</strong></li>
+                        <li>Objet : "Demande de remboursement - [Votre email d'achat]"</li>
+                        <li>Joignez votre <strong>preuve d'achat</strong> (confirmation Stripe)</li>
+                        <li>Décrivez <strong>précisément</strong> le problème rencontré</li>
+                        <li>Fournissez les <strong>preuves</strong> justifiant votre demande</li>
+                    </ol>
+                    <p>
+                        <strong>Délai de traitement :</strong> Nous répondons sous 5 jours ouvrés. Si votre demande est
+                        acceptée,
+                        le remboursement sera effectué sur le moyen de paiement original sous 14 jours.
+                    </p>
+
+                    <h2>6. Incompatibilité avec la Récompense 20$ USDC</h2>
+                    <div class="warning-box">
+                        <p>
+                            <strong>⚠️ CLAUSE IMPORTANTE</strong><br><br>
+                            La récompense de 20$ USDC (Proof of Learning) et le remboursement sont <strong>mutuellement
+                                exclusifs</strong>.
+                        </p>
+                        <ul>
+                            <li>Si vous avez <strong>réclamé</strong> la récompense 20$ USDC → Aucun remboursement
+                                possible</li>
+                            <li>Si vous avez obtenu un <strong>remboursement</strong> → Vous n'êtes plus éligible à la
+                                récompense</li>
+                            <li>Toute tentative de cumuler remboursement ET récompense sera considérée comme
+                                <strong>fraude</strong></li>
+                        </ul>
+                    </div>
+
+                    <h2>7. Protection Contre les Abus</h2>
+                    <p>
+                        Pour protéger notre communauté et notre activité, nous nous réservons le droit de :
+                    </p>
+                    <ul>
+                        <li><strong>Refuser</strong> toute demande de remboursement abusive ou non fondée</li>
+                        <li><strong>Blacklister</strong> les clients ayant fait des demandes frauduleuses</li>
+                        <li><strong>Signaler</strong> les tentatives de fraude aux autorités compétentes</li>
+                        <li><strong>Collecter</strong> des preuves d'accès au contenu (logs de téléchargement)</li>
+                    </ul>
+                    <div class="warning-box">
+                        <p>
+                            <strong>⚠️ AVERTISSEMENT</strong><br>
+                            Les demandes de remboursement répétées, frauduleuses ou les tentatives de chargeback abusifs
+                            pourront faire l'objet de <strong>poursuites judiciaires</strong> pour tentative
+                            d'escroquerie
+                            (Article 313-1 du Code pénal).
+                        </p>
+                    </div>
+
+                    <h2>8. Chargebacks et Disputations</h2>
+                    <p>
+                        En cas de chargeback initié auprès de votre banque :
+                    </p>
+                    <ul>
+                        <li>Nous fournirons à Stripe <strong>toutes les preuves</strong> d'accès au contenu numérique
+                        </li>
+                        <li>Votre accès au guide et à la récompense sera <strong>immédiatement révoqué</strong></li>
+                        <li>Votre email sera <strong>définitivement banni</strong> de nos services</li>
+                        <li>Des frais administratifs de <strong>50€</strong> pourront être réclamés</li>
+                    </ul>
+
+                    <h2>9. Contact</h2>
+                    <div class="info-box">
+                        <p>
+                            <strong>📧 Service Client</strong><br>
+                            Email : support@lhorizoncrypto.com<br>
+                            Délai de réponse : 24-48h (jours ouvrés)<br><br>
+                            <em>Nous nous engageons à traiter chaque demande avec équité et dans le respect de la
+                                loi.</em>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-clean">
+        <div class="container">
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
+                <div class="footer-badges">
+                    <a href="cgv.html" class="footer-badge">CGV</a>
+                    <a href="mentions-legales.html" class="footer-badge">Mentions Légales</a>
+                    <a href="confidentialite.html" class="footer-badge">Confidentialité</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

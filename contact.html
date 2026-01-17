@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Contactez L'Horizon Crypto - Support client, questions sur le guide, coaching crypto.">
+    <meta name="robots" content="index, follow">
+    <title>Contact - L'Horizon Crypto</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-horizon-crypto.png">
+    <link rel="apple-touch-icon" href="assets/logo-horizon-crypto.png">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/threejs.css">
+
+    <style>
+        /* Contact Page Specific Styles */
+        .contact-page {
+            min-height: 100vh;
+            padding: calc(80px + var(--space-3xl)) 0 var(--space-4xl);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: var(--space-3xl);
+            align-items: start;
+        }
+
+        .contact-info {
+            padding: var(--space-2xl);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-xl);
+        }
+
+        .contact-info h2 {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-lg);
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: var(--space-xl);
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            padding: var(--space-lg);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all var(--transition-base);
+        }
+
+        .contact-method:hover {
+            transform: translateX(10px);
+            border-color: var(--accent-gold);
+            background: rgba(247, 147, 26, 0.1);
+        }
+
+        .method-icon {
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-card);
+            border-radius: var(--radius-md);
+        }
+
+        .method-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .method-info p {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            margin: 0;
+        }
+
+        /* Contact Form */
+        .contact-form-container {
+            padding: var(--space-2xl);
+            background: var(--bg-card);
+            border: 1px solid rgba(247, 147, 26, 0.3);
+            border-radius: var(--radius-xl);
+        }
+
+        .contact-form-container h2 {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-xl);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: var(--space-lg);
+            font-size: 1.1rem;
+        }
+
+        .form-note {
+            margin-top: var(--space-lg);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Response Time */
+        .response-time {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: var(--radius-md);
+            margin-top: var(--space-xl);
+        }
+
+        .response-time-icon {
+            font-size: 1.5rem;
+        }
+
+        .response-time p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--accent-green);
+        }
+
+        /* FAQ Preview */
+        .faq-preview {
+            margin-top: var(--space-3xl);
+        }
+
+        .faq-preview h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-lg);
+            text-align: center;
+        }
+
+        .faq-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .faq-mini-item {
+            padding: var(--space-lg);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+        }
+
+        .faq-mini-item h4 {
+            font-size: 1rem;
+            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .faq-mini-item p {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-mini-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+    <div class="floating-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Navigation - Ultra Clean -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
+            </a>
+            <div class="nav-links">
+                <a href="index.html#concept">Concept</a>
+                <a href="index.html#programme">Programme</a>
+                <a href="index.html#avis">Avis</a>
+                <a href="contact.html" class="active">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="index.html#pricing" class="btn btn-nav">Commencer → 79€ net</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Page -->
+    <main class="contact-page">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Support</span>
+                <h1>Nous <span class="gradient-text">Contacter</span></h1>
+                <p class="section-subtitle">Une question ? Besoin d'aide ? Notre équipe est là pour vous.</p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <h2>📬 Informations de Contact</h2>
+                    <p>
+                        Que vous ayez une question sur le guide, besoin d'aide pour réclamer votre récompense
+                        de 20$, ou simplement envie de discuter crypto, n'hésitez pas à nous contacter.
+                    </p>
+
+                    <div class="contact-methods">
+                        <a href="mailto:support@lhorizoncrypto.com" class="contact-method">
+                            <div class="method-icon">📧</div>
+                            <div class="method-info">
+                                <h4>Email Support</h4>
+                                <p>support@lhorizoncrypto.com</p>
+                            </div>
+                        </a>
+                        <a href="#" class="contact-method">
+                            <div class="method-icon">💬</div>
+                            <div class="method-info">
+                                <h4>Discord Communauté</h4>
+                                <p>Rejoignez notre serveur</p>
+                            </div>
+                        </a>
+                        <a href="#" class="contact-method">
+                            <div class="method-icon">✈️</div>
+                            <div class="method-info">
+                                <h4>Telegram VIP</h4>
+                                <p>Réservé aux membres Pro & VIP</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="response-time">
+                        <span class="response-time-icon">⚡</span>
+                        <p><strong>Temps de réponse moyen : 24h</strong> (jours ouvrés)</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <h2>📝 Envoyez-nous un message</h2>
+
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Votre nom *</label>
+                            <input type="text" id="name" name="name" required placeholder="Jean Dupont">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Votre email *</label>
+                            <input type="email" id="email" name="email" required placeholder="jean@exemple.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Sujet *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Sélectionnez un sujet...</option>
+                                <option value="question">Question sur le guide</option>
+                                <option value="reward">Problème avec la récompense 20$</option>
+                                <option value="coaching">Demande de coaching</option>
+                                <option value="discord">Question sur Discord</option>
+                                <option value="refund">Demande de remboursement</option>
+                                <option value="partnership">Partenariat / Affiliation</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pack">Quel pack avez-vous acheté ?</label>
+                            <select id="pack" name="pack">
+                                <option value="">Je n'ai pas encore acheté</option>
+                                <option value="solo">🥉 Pack Solo (99€)</option>
+                                <option value="pro">🥈 Pack Pro (199€)</option>
+                                <option value="vip">🥇 Pack VIP (250€)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Votre message *</label>
+                            <textarea id="message" name="message" required
+                                placeholder="Décrivez votre demande en détail..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <span class="btn-icon">📤</span>
+                            Envoyer le message
+                        </button>
+
+                        <p class="form-note">
+                            🔒 Vos données sont sécurisées et ne seront jamais partagées.
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- FAQ Preview -->
+            <div class="faq-preview">
+                <h3>❓ Questions Fréquentes</h3>
+                <div class="faq-mini-grid">
+                    <div class="faq-mini-item">
+                        <h4>💰 Comment récupérer mes 20$ ?</h4>
+                        <p>Une fois les 12 clés trouvées, rendez-vous sur notre page de réclamation et entrez votre
+                            phrase secrète.</p>
+                    </div>
+                    <div class="faq-mini-item">
+                        <h4>🔐 Faut-il s'inscrire quelque part ?</h4>
+                        <p>Non ! Aucune inscription sur des plateformes, aucun KYC. Juste un wallet pour recevoir votre
+                            récompense.</p>
+                    </div>
+                    <div class="faq-mini-item">
+                        <h4>📅 Comment réserver mon coaching ?</h4>
+                        <p>Après l'achat du Pack Pro ou VIP, vous recevrez un lien Calendly pour choisir votre créneau.
+                        </p>
+                    </div>
+                    <div class="faq-mini-item">
+                        <h4>🛡️ Puis-je me faire rembourser ?</h4>
+                        <p>Oui, garantie 30 jours satisfait ou remboursé. Contactez-nous simplement par email.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer - Ultra Clean -->
+    <footer class="footer footer-clean">
+        <div class="container">
+            <div class="footer-main">
+                <!-- Logo -->
+                <div class="footer-brand">
+                    <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="footer-logo-img">
+                    <p class="footer-tagline">Le Guide de l'Apprentissage Crypto</p>
+                </div>
+
+                <!-- Navigation -->
+                <div class="footer-nav">
+                    <div class="footer-nav-col">
+                        <h4>Navigation</h4>
+                        <a href="index.html#concept">Concept</a>
+                        <a href="index.html#programme">Programme</a>
+                        <a href="index.html#avis">Témoignages</a>
+                        <a href="index.html#pricing">Tarifs</a>
+                    </div>
+                    <div class="footer-nav-col">
+                        <h4>Support</h4>
+                        <a href="contact.html">Contact</a>
+                        <a href="mailto:support@lhorizoncrypto.com">Email</a>
+                        <a href="index.html#faq">FAQ</a>
+                    </div>
+                    <div class="footer-nav-col">
+                        <h4>Légal</h4>
+                        <a href="#">Mentions Légales</a>
+                        <a href="#">CGV</a>
+                        <a href="#">Politique de Confidentialité</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
+                <div class="footer-badges">
+                    <span class="footer-badge">🔐 Pas de KYC</span>
+                    <span class="footer-badge">💰 Récompense 20$ USDC</span>
+                    <span class="footer-badge">🛡️ Conformité AMF</span>
+                </div>
+                <p class="footer-disclaimer">
+                    Support éducatif uniquement. Pas de conseil en investissement.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Contact Form Submission
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Here you would typically send to your backend
+            console.log('Form submitted:', data);
+
+            // Show success message
+            alert('Merci ! Votre message a été envoyé. Nous vous répondrons sous 24h.');
+            this.reset();
+        });
+
+        // Active nav link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            if (link.getAttribute('href') === 'contact.html') {
+                link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
