@@ -81,8 +81,8 @@ function initStripeCheckout() {
 function showStripeSetupModal(pack, price) {
     const packNames = {
         solo: 'Pack Solo (99€)',
-        pro: 'Pack Pro (199€)',
-        vip: 'Pack VIP (250€)'
+        pro: 'Pack Pro (249€)',
+        vip: 'Pack VIP (497€)'
     };
 
     const modal = document.createElement('div');

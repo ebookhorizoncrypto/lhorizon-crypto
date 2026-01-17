@@ -132,8 +132,8 @@ async function sendPurchaseEmail(email, pack, amount) {
                     <li>✅ 12 clés secrètes à découvrir</li>
                     <li>✅ Guide Airdrops 2026 bonus</li>
                     ${pack !== 'solo' ? '<li>✅ Accès Discord Communauté</li>' : ''}
-                    ${pack === 'pro' ? '<li>✅ 30 min de coaching</li>' : ''}
-                    ${pack === 'vip' ? '<li>✅ 1h de coaching privé</li>' : ''}
+                    ${pack === 'pro' ? '<li>✅ Masterclass Mensuelle Discord</li><li>✅ Support Prioritaire (90j)</li>' : ''}
+                    ${pack === 'vip' ? '<li>✅ 1h de coaching privé</li><li>✅ 6 mois accès Groupe VIP</li>' : ''}
                 </ul>
             </div>
             

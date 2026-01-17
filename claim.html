@@ -559,7 +559,8 @@
                         <ul>
                             <li>Les mots doivent être saisis en <strong>minuscules</strong></li>
                             <li>L'ordre des clés est important</li>
-                            <li>Vous n'avez <strong>qu'une seule tentative</strong></li>
+                            <li>J'espère que ces clés n'ont pas été envoyées par email et sont bien cachées au chaud 🔒
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -700,7 +701,7 @@
                 // In a real app, you might verify this against a database
                 // For now, we trust the user until the 12 keys verification
                 // Or you could add a specialized API endpoint /api/claim/check-email
-                
+
                 await new Promise(resolve => setTimeout(resolve, 800)); // Small UX delay
 
                 claimState.email = email;
@@ -755,7 +756,12 @@
 
             } catch (error) {
                 loadingDiv.classList.remove('show');
-                errorDiv.textContent = error.message;
+                console.error(error);
+                if (error.message.includes('Unexpected token') || error.message.includes('JSON')) {
+                    errorDiv.textContent = "Erreur: L'API n'est pas accessible (Testez sur le site en ligne, pas en local).";
+                } else {
+                    errorDiv.textContent = error.message;
+                }
                 errorDiv.classList.add('show');
             }
         });
@@ -780,9 +786,9 @@
 
                 // Check if on Base network (Chain ID 8453)
                 const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-                
+
                 // Base Mainnet Chain ID: 8453 (0x2105)
-                if (chainId !== '0x2105') { 
+                if (chainId !== '0x2105') {
                     try {
                         await window.ethereum.request({
                             method: 'wallet_switchEthereumChain',
@@ -828,19 +834,19 @@
 
         // Step 3 -> 4: Process Claim
         document.getElementById('proceed-claim-btn').addEventListener('click', async () => {
-             // In a fully automated version, you would call a backend endpoint here
-             // that interacts with the smart contract using the owner's private key
-             // For this version (Proof of Learning Manual/Semi-Auto or Direct):
-             
-             alert("Félicitations ! Votre demande a été enregistrée. Le transfert de 20$ USDC sera effectué sous 24h après validation finale.");
-             
-             // Redirect to success step
-             goToStep(4);
-             
-             // Show pending status instead of fake tx
-             document.querySelector('.success-card h2').textContent = 'Demande Validée !';
-             document.querySelector('.success-card p').innerHTML = 'Votre récompense de <strong>20$ USDC</strong> est en route.<br>Transfert sous 24h ouvrées.';
-             document.querySelector('.tx-hash').style.display = 'none';
+            // In a fully automated version, you would call a backend endpoint here
+            // that interacts with the smart contract using the owner's private key
+            // For this version (Proof of Learning Manual/Semi-Auto or Direct):
+
+            alert("Félicitations ! Votre demande a été enregistrée. Le transfert de 20$ USDC sera effectué sous 24h après validation finale.");
+
+            // Redirect to success step
+            goToStep(4);
+
+            // Show pending status instead of fake tx
+            document.querySelector('.success-card h2').textContent = 'Demande Validée !';
+            document.querySelector('.success-card p').innerHTML = 'Votre récompense de <strong>20$ USDC</strong> est en route.<br>Transfert sous 24h ouvrées.';
+            document.querySelector('.tx-hash').style.display = 'none';
         });
     </script>
 </body>
