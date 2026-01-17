@@ -9,7 +9,7 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const fromEmail = process.env.FROM_EMAIL || "L'Horizon Crypto <noreply@ebook-horizoncrypto.com>";
+const fromEmail = process.env.FROM_EMAIL || "L'Horizon Crypto <contact@ebook-horizoncrypto.com>";
 const domain = process.env.DOMAIN || 'https://ebook-horizoncrypto.com';
 
 // Simple in-memory rate limiting (resets on cold start)

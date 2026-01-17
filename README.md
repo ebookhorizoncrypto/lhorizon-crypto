@@ -2,7 +2,7 @@
 
 > Le premier guide crypto où votre apprentissage est récompensé sur la blockchain.
 
-**Domain:** [ebook-horizoncrypto.com](https://ebook-horizoncrypto.com)
+Pour toute question : [contact@ebook-horizoncrypto.com](mailto:contact@ebook-horizoncrypto.com)
 
 ---
 

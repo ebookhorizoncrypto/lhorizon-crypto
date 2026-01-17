@@ -11,7 +11,7 @@ import { Resend } from 'resend';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const fromEmail = process.env.FROM_EMAIL || "L'Horizon Crypto <noreply@ebook-horizoncrypto.com>";
+const fromEmail = process.env.FROM_EMAIL || "L'Horizon Crypto <contact@ebook-horizoncrypto.com>";
 const domain = process.env.DOMAIN || 'https://ebook-horizoncrypto.com';
 
 // Required for Stripe webhooks - don't parse body
