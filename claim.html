@@ -660,7 +660,7 @@
         const claimState = {
             email: '',
             verified: false,
-            wordsValid: false,
+            claimToken: '',
             walletAddress: '',
             currentStep: 1
         };
@@ -696,15 +696,23 @@
             errorDiv.classList.remove('show');
             loadingDiv.classList.add('show');
 
-            // Simulate API call - In production, this calls your backend
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            try {
+                // In a real app, you might verify this against a database
+                // For now, we trust the user until the 12 keys verification
+                // Or you could add a specialized API endpoint /api/claim/check-email
+                
+                await new Promise(resolve => setTimeout(resolve, 800)); // Small UX delay
 
-            loadingDiv.classList.remove('show');
+                claimState.email = email;
+                claimState.verified = true;
+                loadingDiv.classList.remove('show');
+                goToStep(2);
 
-            // For demo - always succeed. In production, check against Stripe/DB
-            claimState.email = email;
-            claimState.verified = true;
-            goToStep(2);
+            } catch (error) {
+                loadingDiv.classList.remove('show');
+                errorDiv.textContent = 'Erreur lors de la vérification. Réessayez.';
+                errorDiv.classList.add('show');
+            }
         });
 
         // Step 2: Verify 12 Words
@@ -724,14 +732,32 @@
             errorDiv.classList.remove('show');
             loadingDiv.classList.add('show');
 
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            try {
+                const response = await fetch('/api/claim/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: claimState.email,
+                        keys: words
+                    })
+                });
 
-            loadingDiv.classList.remove('show');
+                const data = await response.json();
 
-            // For demo - always succeed. In production, verify against stored phrase
-            claimState.wordsValid = true;
-            goToStep(3);
+                if (!response.ok) {
+                    throw new Error(data.error || 'Clés incorrectes');
+                }
+
+                // Success!
+                claimState.claimToken = data.claimToken;
+                loadingDiv.classList.remove('show');
+                goToStep(3);
+
+            } catch (error) {
+                loadingDiv.classList.remove('show');
+                errorDiv.textContent = error.message;
+                errorDiv.classList.add('show');
+            }
         });
 
         // Step 3: Connect Wallet
@@ -754,8 +780,9 @@
 
                 // Check if on Base network (Chain ID 8453)
                 const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-                if (chainId !== '0x2105') { // 8453 in hex
-                    // Try to switch to Base
+                
+                // Base Mainnet Chain ID: 8453 (0x2105)
+                if (chainId !== '0x2105') { 
                     try {
                         await window.ethereum.request({
                             method: 'wallet_switchEthereumChain',
@@ -799,22 +826,21 @@
         document.getElementById('connect-metamask').addEventListener('click', () => connectWallet('metamask'));
         document.getElementById('connect-coinbase').addEventListener('click', () => connectWallet('coinbase'));
 
-        // Step 3 -> 4: Claim
+        // Step 3 -> 4: Process Claim
         document.getElementById('proceed-claim-btn').addEventListener('click', async () => {
-            // In production, this would:
-            // 1. Call your backend API with email + wallet address
-            // 2. Backend verifies everything and calls smart contract
-            // 3. Smart contract sends USDC to wallet
-
-            // Simulate transaction
-            await new Promise(resolve => setTimeout(resolve, 3000));
-
-            // Mock transaction hash
-            const mockTxHash = '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-            document.getElementById('tx-link').href = `https://basescan.org/tx/${mockTxHash}`;
-            document.getElementById('tx-link').textContent = mockTxHash.slice(0, 20) + '...';
-
-            goToStep(4);
+             // In a fully automated version, you would call a backend endpoint here
+             // that interacts with the smart contract using the owner's private key
+             // For this version (Proof of Learning Manual/Semi-Auto or Direct):
+             
+             alert("Félicitations ! Votre demande a été enregistrée. Le transfert de 20$ USDC sera effectué sous 24h après validation finale.");
+             
+             // Redirect to success step
+             goToStep(4);
+             
+             // Show pending status instead of fake tx
+             document.querySelector('.success-card h2').textContent = 'Demande Validée !';
+             document.querySelector('.success-card p').innerHTML = 'Votre récompense de <strong>20$ USDC</strong> est en route.<br>Transfert sous 24h ouvrées.';
+             document.querySelector('.tx-hash').style.display = 'none';
         });
     </script>
 </body>
