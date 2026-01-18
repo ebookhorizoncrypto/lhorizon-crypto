@@ -10,7 +10,7 @@ const STRIPE_PAYMENT_LINKS = {
     pro: 'https://buy.stripe.com/test_28E7sN3vf2Jx9TrdVG2wU01',
     vip: 'https://buy.stripe.com/test_7sY00l4zjfwj7Lj6te2wU02',
     // Discord Only Subscription (29€/mois)
-    discord: 'https://buy.stripe.com/test_DISCORD_SUBSCRIPTION_LINK'
+    discord: 'https://buy.stripe.com/eVqaEW0xG9IP67eemI6wE03'
 };
 
 // Configuration générale
