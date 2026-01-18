@@ -137,6 +137,14 @@ async function sendPurchaseEmail(email, pack, amount) {
                 </ul>
             </div>
             
+            ${pack !== 'solo' ? `
+            <div class="info-box" style="background: rgba(88, 101, 242, 0.1); border-color: rgba(88, 101, 242, 0.3);">
+                <h3 style="color: #5865F2;">💬 Rejoignez le Discord</h3>
+                <p>Votre accès à la communauté est inclus ! Cliquez ci-dessous pour rejoindre :</p>
+                <a href="${process.env.DISCORD_INVITE_URL || 'https://discord.gg/VOTRE_INVITE'}" class="button" style="background: linear-gradient(135deg, #5865F2, #4752c4);">🎮 Rejoindre le Discord</a>
+            </div>
+            ` : ''}
+            
             <div class="reward-badge">
                 <h3>💰 20$ USDC vous attendent !</h3>
                 <p>Trouvez les 12 clés cachées et réclamez votre récompense.</p>
