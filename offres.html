@@ -25,49 +25,38 @@
     <link rel="stylesheet" href="css/threejs.css">
 
     <style>
-        .offers-hero {
-            padding-top: calc(80px + var(--space-4xl));
-            padding-bottom: var(--space-2xl);
+        /* Compact Header for Offers Page */
+        .offers-compact-header {
+            padding-top: calc(80px + var(--space-lg));
+            padding-bottom: var(--space-md);
             text-align: center;
         }
 
-        .offers-hero h1 {
-            font-size: 3rem;
-            line-height: 1.1;
-            margin-bottom: var(--space-lg);
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+        .offers-compact-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: var(--space-xs);
         }
 
-        .offers-problem {
-            max-width: 800px;
-            margin: 0 auto;
+        .offers-compact-header .subtitle {
             color: var(--text-secondary);
-            font-size: 1.25rem;
-            line-height: 1.6;
-            margin-bottom: var(--space-3xl);
-            background: rgba(255, 71, 87, 0.05);
-            /* Slight red tint for 'problem' feel */
-            border: 1px solid rgba(255, 71, 87, 0.2);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
+            font-size: 1rem;
         }
 
-        .problem-highlight {
-            color: var(--accent-red);
-            font-weight: 700;
-        }
-
-        .solution-badge {
+        .offers-compact-header .solution-badge {
             display: inline-block;
             background: rgba(0, 255, 136, 0.1);
             color: var(--accent-green);
             padding: var(--space-xs) var(--space-md);
             border-radius: var(--radius-full);
             font-weight: 600;
-            margin-bottom: var(--space-md);
+            margin-bottom: var(--space-sm);
             border: 1px solid rgba(0, 255, 136, 0.3);
+            font-size: 0.85rem;
+        }
+
+        /* Pricing section with no top padding */
+        .pricing-section-compact {
+            padding-top: var(--space-md);
         }
     </style>
 </head>
@@ -95,91 +84,16 @@
     </nav>
 
     <main>
-        <!-- Targeted Hero Section -->
-        <section class="offers-hero container">
-            <div class="solution-badge">✨ Inclus : Vos premiers 20$ de Crypto</div>
-            <h1>La barrière d'entrée crypto est <span class="gradient-text">trop haute</span> ?</h1>
-
-            <div class="offers-problem">
-                <p>
-                    Ouvrir un compte sur un exchange, passer le KYC, scanner son passeport, attendre la validation,
-                    faire un virement bancaire, comprendre les frais de réseau... <span class="problem-highlight">C'est
-                        un enfer pour débuter.</span>
-                </p>
-                <p style="margin-top: 1rem; color: var(--text-primary);">
-                    <strong>La solution :</strong> Achetez le guide. Apprenez. Trouvez les 12 clés.
-                    <br>Et recevez <strong>automatiquement 20$ USDC</strong> sur votre wallet. Sans KYC. Sans friction.
-                </p>
-            </div>
+        <!-- Compact Header -->
+        <section class="offers-compact-header container">
+            <div class="solution-badge">✨ Inclus : 20$ USDC offerts</div>
+            <h1>Choisissez votre <span class="gradient-text">niveau de protection</span></h1>
+            <p class="subtitle">Paiement sécurisé • Sans KYC • Accès immédiat</p>
         </section>
 
-        <!-- Pricing Section (Copied Structure) -->
-        <section id="pricing" class="pricing-section" style="padding-top: 0;">
+        <!-- Pricing Section - IMMEDIATE -->
+        <section id="pricing" class="pricing-section pricing-section-compact">
             <div class="container">
-                <!-- No KYC Banner -->
-                <div class="no-kyc-banner">
-                    <div class="banner-content">
-                        <span class="banner-icon">🔐</span>
-                        <div class="banner-text">
-                            <strong>Aucune vérification d'identité requise</strong>
-                            <p>Pas d'inscription sur des plateformes douteuses. Pas de KYC. Pas de documents à fournir.
-                                Achetez, lisez, réclamez vos 20$ USDC directement on-chain sur Base.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Reassurance Section -->
-                <div class="reassurance-section">
-                    <div class="reassurance-header">
-                        <span class="reassurance-icon">🏛️</span>
-                        <h2>L'IGNORANCE EST LA TAXE LA PLUS CHÈRE DU WEB3</h2>
-                    </div>
-                    <p class="reassurance-intro">
-                        En 2026, une seule erreur peut vider votre portefeuille. <strong>Choisissez votre niveau de
-                            protection :</strong>
-                    </p>
-
-                    <div class="reassurance-grid">
-                        <div class="reassurance-card solo">
-                            <div class="reassurance-card-icon">🛡️</div>
-                            <h4>Pack Solo (99 €)</h4>
-                            <p class="reassurance-subtitle">L'assurance technique</p>
-                            <p>Moins cher qu'une seule transaction perdue par erreur de réseau. Apprenez à déjouer les
-                                <strong>Honeypots</strong> et les <strong>Scams de base</strong> avant de miser votre
-                                premier euro.</p>
-                        </div>
-
-                        <div class="reassurance-card pro">
-                            <div class="reassurance-card-icon">🚀</div>
-                            <h4>Pack Pro (249 €)</h4>
-                            <p class="reassurance-subtitle">L'assurance stratégique</p>
-                            <p>Moins cher que l'amende de <strong>750 €</strong> pour un compte non déclaré. Ne soyez
-                                plus seul face au marché : profitez de nos <strong>Masterclass</strong> et de notre
-                                <strong>IA</strong> pour valider vos décisions 24h/24.</p>
-                        </div>
-
-                        <div class="reassurance-card vip">
-                            <div class="reassurance-card-icon">👑</div>
-                            <h4>Pack VIP (497 €)</h4>
-                            <p class="reassurance-subtitle">L'assurance d'élite</p>
-                            <p>Un investissement dérisoire face aux <strong>8 milliards perdus</strong> lors du crash de
-                                FTX. Obtenez une heure de coaching privé et une analyse de portefeuille sur-mesure pour
-                                ne plus jamais être l' <em>"Exit Liquidity"</em> des initiés.</p>
-                        </div>
-                    </div>
-
-                    <div class="reassurance-cta">
-                        <p class="reassurance-ultimatum">
-                            Soit vous financez votre éducation maintenant, soit vous financerez les profits des hackers
-                            plus tard. <strong>Choisissez votre camp.</strong>
-                        </p>
-                        <a href="#pricing" class="btn btn-primary btn-lg">
-                            <span class="btn-icon">🔐</span>
-                            SÉCURISER MON AVENIR MAINTENANT
-                        </a>
-                    </div>
-                </div>
-
                 <!-- Pricing Grid - 3 Packs -->
                 <div class="pricing-grid-3">
                     <!-- Pack Solo -->
@@ -312,9 +226,82 @@
             </div>
         </section>
 
-        <!-- ========================================
-         SOCIAL PROOF - Témoignages Carousel
-    ======================================== -->
+        <!-- Reassurance Section (Below the fold) -->
+        <section class="reassurance-section-wrapper">
+            <div class="container">
+                <div class="reassurance-section">
+                    <div class="reassurance-header">
+                        <span class="reassurance-icon">🏛️</span>
+                        <h2>L'IGNORANCE EST LA TAXE LA PLUS CHÈRE DU WEB3</h2>
+                    </div>
+                    <p class="reassurance-intro">
+                        En 2026, une seule erreur peut vider votre portefeuille. <strong>Choisissez votre niveau de
+                            protection :</strong>
+                    </p>
+
+                    <div class="reassurance-grid">
+                        <div class="reassurance-card solo">
+                            <div class="reassurance-card-icon">🛡️</div>
+                            <h4>Pack Solo (99 €)</h4>
+                            <p class="reassurance-subtitle">L'assurance technique</p>
+                            <p>Moins cher qu'une seule transaction perdue par erreur de réseau. Apprenez à déjouer les
+                                <strong>Honeypots</strong> et les <strong>Scams de base</strong> avant de miser votre
+                                premier euro.
+                            </p>
+                        </div>
+
+                        <div class="reassurance-card pro">
+                            <div class="reassurance-card-icon">🚀</div>
+                            <h4>Pack Pro (249 €)</h4>
+                            <p class="reassurance-subtitle">L'assurance stratégique</p>
+                            <p>Moins cher que l'amende de <strong>750 €</strong> pour un compte non déclaré. Ne soyez
+                                plus seul face au marché : profitez de nos <strong>Masterclass</strong> et de notre
+                                <strong>IA</strong> pour valider vos décisions 24h/24.
+                            </p>
+                        </div>
+
+                        <div class="reassurance-card vip">
+                            <div class="reassurance-card-icon">👑</div>
+                            <h4>Pack VIP (497 €)</h4>
+                            <p class="reassurance-subtitle">L'assurance d'élite</p>
+                            <p>Un investissement dérisoire face aux <strong>8 milliards perdus</strong> lors du crash de
+                                FTX. Obtenez une heure de coaching privé et une analyse de portefeuille sur-mesure pour
+                                ne plus jamais être l' <em>"Exit Liquidity"</em> des initiés.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="reassurance-cta">
+                        <p class="reassurance-ultimatum">
+                            Soit vous financez votre éducation maintenant, soit vous financerez les profits des hackers
+                            plus tard. <strong>Choisissez votre camp.</strong>
+                        </p>
+                        <a href="#pricing" class="btn btn-primary btn-lg">
+                            <span class="btn-icon">🔐</span>
+                            SÉCURISER MON AVENIR MAINTENANT
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- No KYC Banner -->
+        <section class="no-kyc-section">
+            <div class="container">
+                <div class="no-kyc-banner">
+                    <div class="banner-content">
+                        <span class="banner-icon">🔐</span>
+                        <div class="banner-text">
+                            <strong>Aucune vérification d'identité requise</strong>
+                            <p>Pas d'inscription sur des plateformes douteuses. Pas de KYC. Pas de documents à fournir.
+                                Achetez, lisez, réclamez vos 20$ USDC directement on-chain sur Base.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Carousel -->
         <section class="testimonials-section">
             <div class="container">
                 <div class="section-header">
@@ -419,24 +406,6 @@
                         </div>
 
                         <!-- Testimonial 6 -->
-                        <div class="testimonial-card">
-                            <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                            <p class="testimonial-text">
-                                "Je recommande à tous les débutants. Le guide est clair, les erreurs à éviter sont
-                                bien expliquées, et <strong>on récupère 20$ à la fin</strong>. Que demander de plus ?"
-                            </p>
-                            <div class="testimonial-author">
-                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Christine L."
-                                    class="author-avatar-img">
-                                <div class="author-info">
-                                    <div class="author-name">Christine L.</div>
-                                    <div class="author-title">Retraitée • 12/12 clés</div>
-                                </div>
-                                <div class="verified-badge">✓ 20$ reçus</div>
-                            </div>
-                        </div>
-
-                        <!-- Testimonial 7 -->
                         <div class="testimonial-card featured">
                             <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
                             <p class="testimonial-text">
@@ -449,24 +418,6 @@
                                 <div class="author-info">
                                     <div class="author-name">Antoine G.</div>
                                     <div class="author-title">Trader • 12/12 clés</div>
-                                </div>
-                                <div class="verified-badge">✓ 20$ reçus</div>
-                            </div>
-                        </div>
-
-                        <!-- Testimonial 8 -->
-                        <div class="testimonial-card">
-                            <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
-                            <p class="testimonial-text">
-                                "J'ai acheté le Pack Pro pour le coaching. Les 30 minutes avec l'auteur valaient
-                                <strong>largement les 199€</strong>. Et j'ai quand même mes 20$ USDC !"
-                            </p>
-                            <div class="testimonial-author">
-                                <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="Pierre H."
-                                    class="author-avatar-img">
-                                <div class="author-info">
-                                    <div class="author-name">Pierre H.</div>
-                                    <div class="author-title">Entrepreneur • Pack Pro</div>
                                 </div>
                                 <div class="verified-badge">✓ 20$ reçus</div>
                             </div>
