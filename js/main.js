@@ -183,7 +183,13 @@ function initLeadMagnetForm() {
 // Add to DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     initLeadMagnetForm();
+
+    // Load Crypto Ticker
+    const script = document.createElement('script');
+    script.src = 'js/crypto-ticker.js';
+    document.body.appendChild(script);
 });
+
 
 /* ========================================
    NAVBAR SCROLL EFFECT
