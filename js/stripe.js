@@ -5,10 +5,10 @@
 
 // Configuration des Stripe Payment Links pour chaque pack
 const STRIPE_PAYMENT_LINKS = {
-    // Remplacez ces URLs par vos vrais Payment Links Stripe
-    solo: 'https://buy.stripe.com/VOTRE_LIEN_SOLO',
-    pro: 'https://buy.stripe.com/VOTRE_LIEN_PRO',
-    vip: 'https://buy.stripe.com/VOTRE_LIEN_VIP'
+    // Stripe Payment Links - Mode Test
+    solo: 'https://buy.stripe.com/test_eVq7sNe9T6ZN3v318U2wU00',
+    pro: 'https://buy.stripe.com/test_28E7sN3vf2Jx9TrdVG2wU01',
+    vip: 'https://buy.stripe.com/test_7sY00l4zjfwj7Lj6te2wU02'
 };
 
 // Configuration générale
