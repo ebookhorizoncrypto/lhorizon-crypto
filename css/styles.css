@@ -2309,3 +2309,27 @@ h3 {
         text-align: center;
     }
 }
+
+/* Footer Legal Disclaimer */
+.footer-legal-disclaimer {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-legal-disclaimer p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-legal-disclaimer a {
+    color: var(--accent-gold);
+    text-decoration: underline;
+}
+
+.footer-legal-disclaimer a:hover {
+    color: var(--text-primary);
+}
