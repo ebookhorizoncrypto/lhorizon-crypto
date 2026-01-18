@@ -2231,3 +2231,81 @@ h3 {
     padding: var(--space-lg) var(--space-2xl);
     font-size: 1.1rem;
 }
+
+/* Discord Subscription Card */
+.discord-subscription-card {
+    max-width: 700px;
+    margin: var(--space-2xl) auto 0;
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.1), rgba(88, 101, 242, 0.05));
+    border: 1px solid rgba(88, 101, 242, 0.3);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+}
+
+.discord-card-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.discord-icon {
+    font-size: 2.5rem;
+}
+
+.discord-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.discord-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-xs);
+    color: #5865F2;
+}
+
+.discord-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.discord-price {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.discord-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5865F2;
+}
+
+.discord-period {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.btn-discord {
+    background: #5865F2;
+    border: none;
+    color: white;
+}
+
+.btn-discord:hover {
+    background: #4752C4;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .discord-card-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .discord-info {
+        text-align: center;
+    }
+}
