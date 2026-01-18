@@ -37,3 +37,4 @@ contracts/deployments/
 *.key
 *.pem
 private_key*
+.env.production
