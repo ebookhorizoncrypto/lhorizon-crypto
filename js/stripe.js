@@ -27,9 +27,9 @@ function initStripeCheckout() {
         button.addEventListener('click', async (e) => {
             e.preventDefault();
 
-            // Get pack type from parent card
+            // Get pack type from button data-pack OR parent card
             const card = button.closest('.pricing-card');
-            const pack = card?.dataset.pack || 'solo';
+            const pack = button.dataset.pack || card?.dataset.pack || 'solo';
             const price = button.dataset.price || '99';
 
             // Show loading state

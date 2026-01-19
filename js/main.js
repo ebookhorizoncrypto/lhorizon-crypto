@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initSocialProofTicker();
     initEmailForm();
     initTestimonialsCarousel();
+
+    // Check if Stripe script is loaded and init
+    if (typeof initStripeCheckout === 'function') {
+        initStripeCheckout();
+    }
 });
 
 /* ========================================
