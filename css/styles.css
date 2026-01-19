@@ -2649,16 +2649,22 @@ h3 {
         width: 80%;
         max-width: 320px;
         height: 100vh;
-        background: var(--bg-secondary);
+        background: #000000 !important;
+        /* Solid black background */
         flex-direction: column;
         align-items: stretch;
         justify-content: flex-start;
         padding: 100px 30px 40px;
         gap: 0;
-        z-index: 1001;
+        z-index: 99999 !important;
+        /* Force highest z-index */
         transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         overflow-y: auto;
-        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+        display: flex !important;
+        /* Ensure flex is active */
+        visibility: visible !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .nav-links.active {
@@ -2669,10 +2675,12 @@ h3 {
         display: block;
         padding: 16px 20px;
         font-size: 1.1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 0;
-        color: #ffffff;
-        /* Ensure visibility */
+        color: #ffffff !important;
+        /* Force pure white */
+        opacity: 1 !important;
+        text-shadow: none;
     }
 
     .nav-links .logo {
@@ -2690,6 +2698,8 @@ h3 {
 
     .mobile-menu-overlay {
         display: block;
+        z-index: 99998 !important;
+        /* Below nav-links but above everything else */
     }
 
     /* Hide desktop CTA on mobile */
