@@ -13,7 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initSocialProofTicker();
     initEmailForm();
     initTestimonialsCarousel();
+    initGDPRPopup(); // Add GDPR Popup
+
+    // Check if Stripe script is loaded and init
+    if (typeof initStripeCheckout === 'function') {
+        initStripeCheckout();
+    }
 });
+
 
 /* ========================================
    MOBILE HAMBURGER MENU
@@ -604,3 +611,38 @@ extraStyles.textContent = `
 document.head.appendChild(extraStyles);
 
 console.log('🌅 L\'Horizon Crypto - Landing Page Loaded');
+/* ========================================
+   GDPR POPUP
+======================================== */
+function initGDPRPopup() {
+    // Check if consent has already been given in this session
+    if (sessionStorage.getItem('gdpr_consent')) {
+        return;
+    }
+
+    // Create popup element
+    const popup = document.createElement('div');
+    popup.className = 'gdpr-popup';
+    popup.innerHTML = `
+        <div class="gdpr-content">
+            <p>🍪 Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre <a href="confidentialite.html">politique de confidentialité</a>.</p>
+            <button id="accept-gdpr" class="btn-gdpr">Accepter</button>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    // Trigger animation
+    setTimeout(() => {
+        popup.classList.add('active');
+    }, 1000);
+
+    // Handle acceptance
+    document.getElementById('accept-gdpr').addEventListener('click', () => {
+        popup.classList.remove('active');
+        sessionStorage.setItem('gdpr_consent', 'true');
+        setTimeout(() => {
+            popup.remove();
+        }, 300);
+    });
+}

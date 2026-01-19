@@ -2649,16 +2649,22 @@ h3 {
         width: 80%;
         max-width: 320px;
         height: 100vh;
-        background: var(--bg-secondary);
+        background: #000000 !important;
+        /* Solid black background */
         flex-direction: column;
         align-items: stretch;
         justify-content: flex-start;
         padding: 100px 30px 40px;
         gap: 0;
-        z-index: 1001;
+        z-index: 99999 !important;
+        /* Force highest z-index */
         transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         overflow-y: auto;
-        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+        display: flex !important;
+        /* Ensure flex is active */
+        visibility: visible !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .nav-links.active {
@@ -2669,8 +2675,16 @@ h3 {
         display: block;
         padding: 16px 20px;
         font-size: 1.1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 0;
+        color: #ffffff !important;
+        /* Force pure white */
+        opacity: 1 !important;
+        text-shadow: none;
+    }
+
+    .nav-links .logo {
+        display: none !important;
     }
 
     .nav-links a:last-child {
@@ -2684,17 +2698,23 @@ h3 {
 
     .mobile-menu-overlay {
         display: block;
+        z-index: 99998 !important;
+        /* Below nav-links but above everything else */
     }
 
+    /* Hide desktop CTA on mobile */
     .nav-cta {
-        display: none;
+        display: none !important;
     }
 
+    /* Show mobile CTA inside menu */
     .nav-cta-mobile {
-        display: block;
+        display: block !important;
         margin-top: auto;
         padding-top: 30px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        text-align: center;
     }
 
     .nav-cta-mobile .btn {
@@ -2791,6 +2811,84 @@ h3 {
 
     .pricing-card {
         padding: var(--space-lg);
+    }
+
+    /* ========================================
+   GDPR POPUP
+======================================== */
+    .gdpr-popup {
+        position: fixed;
+        bottom: -100px;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 15, 0.95);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        z-index: 9999;
+        padding: 20px;
+        transition: bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+    }
+
+    .gdpr-popup.active {
+        bottom: 0;
+    }
+
+    .gdpr-content {
+        max-width: var(--container-max);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .gdpr-content p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .gdpr-content a {
+        color: var(--accent-gold);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(247, 147, 26, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .gdpr-content a:hover {
+        border-bottom-color: var(--accent-gold);
+    }
+
+    .btn-gdpr {
+        background: var(--accent-gold);
+        color: #000;
+        border: none;
+        padding: 10px 24px;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-gdpr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(247, 147, 26, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .gdpr-content {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .btn-gdpr {
+            width: 100%;
+        }
     }
 
     .section-header h2 {
