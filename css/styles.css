@@ -1498,6 +1498,13 @@ h3 {
         padding: 0 var(--space-md);
     }
 
+    /* Ensure pricing section allows full-width scroll */
+    .pricing-section .container {
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+        overflow: visible;
+    }
+
     section {
         padding: var(--space-xl) 0 !important;
         /* Tighter sections */
@@ -1524,20 +1531,46 @@ h3 {
         padding: 4px 10px;
     }
 
-    /* --- PRICING GRID ULTRA COMPACT --- */
+    /* --- PRICING GRID ULTRA COMPACT (Horizontal Scroll) --- */
     .pricing-grid {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        /* Force horizontal row */
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
         gap: var(--space-md);
         width: 100%;
         max-width: 100%;
+        padding-bottom: 20px;
+        /* Space for scrollbar */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .pricing-grid::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .pricing-grid::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+
+    .pricing-grid::-webkit-scrollbar-thumb {
+        background: var(--accent-gold);
+        border-radius: 10px;
     }
 
     .pricing-card {
+        flex: 0 0 85vw;
+        /* Each card takes 85% of screen width */
+        width: 85vw;
+        max-width: 320px;
+        scroll-snap-align: center;
         padding: var(--space-md) !important;
-        /* Minimal padding */
         margin: 0 !important;
         border-radius: var(--radius-lg);
+        background: var(--bg-card);
+        /* Ensure background handles opacity correctly */
     }
 
     .pricing-header {
