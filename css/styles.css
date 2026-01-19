@@ -2858,6 +2858,17 @@ h3 {
 ======================================== */
 @media (max-width: 1024px) {
 
+    /* Optimizing Mobile Header Layout */
+    .nav-cta .btn {
+        display: none !important;
+        /* Hide "Débloquer" button in header on mobile */
+    }
+
+    #header-wallet-btn {
+        padding: 6px 12px !important;
+        font-size: 0.8rem !important;
+    }
+
     /* Ensure Hamburger is ALWAYS on top */
     .mobile-menu-toggle {
         display: flex !important;
@@ -2879,10 +2890,10 @@ h3 {
         width: 100%;
         /* Full screen width for mobile */
         height: 100vh;
-        background: rgba(10, 10, 15, 0.95);
-        /* Deep dark background */
-        backdrop-filter: blur(20px);
-        /* Glassmorphism */
+        background: rgba(5, 5, 8, 0.99);
+        /* Almost solid for better readability */
+        backdrop-filter: none;
+        /* Remove blur to fix "flou" issue */
         z-index: 20000 !important;
         padding: 0;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);

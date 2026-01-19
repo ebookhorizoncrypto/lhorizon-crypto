@@ -1,16 +1,4 @@
-# L'Horizon Crypto - Robots.txt
-# Domain: ebook-horizoncrypto.com
-
 User-agent: *
 Allow: /
 
-# Disallow admin and private pages
-Disallow: /admin.html
-Disallow: /api/
-Disallow: /.env*
-
-# Sitemap location
 Sitemap: https://ebook-horizoncrypto.com/sitemap.xml
-
-# Crawl-delay for polite bots
-Crawl-delay: 1
