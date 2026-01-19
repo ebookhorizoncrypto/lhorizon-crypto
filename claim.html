@@ -775,15 +775,23 @@
                 const emailHash = ethers.utils.id(claimState.email);
 
                 // 1. Get Signature from Local API
-                const apiResponse = await fetch('http://localhost:3001/api/sign-claim', {
+                console.log("Calling API...");
+                const apiResponse = await fetch('http://127.0.0.1:3001/api/sign-claim', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
                         userAddress: claimState.walletAddress,
                         emailHash: emailHash,
                         contractAddress: CONTRACT_ADDRESS
                     })
                 });
+
+                if (!apiResponse.ok) {
+                    const errText = await apiResponse.text();
+                    throw new Error(`API Error ${apiResponse.status}: ${errText}`);
+                }
 
                 const apiData = await apiResponse.json();
                 if (!apiData.signature) throw new Error(apiData.error || "Erreur API");
