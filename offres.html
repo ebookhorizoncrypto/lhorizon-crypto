@@ -585,41 +585,41 @@
     <script>
         const extractForm = document.getElementById('extract-form');
         const extractSuccess = document.getElementById('extract-success');
-        
+
         if (extractForm) {
             extractForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
+
                 const emailInput = document.getElementById('extract-email');
                 const email = emailInput.value.trim();
                 const btnText = extractForm.querySelector('.btn-text');
                 const btnLoading = extractForm.querySelector('.btn-loading');
                 const btn = extractForm.querySelector('button');
-                
+
                 if (!email || !email.includes('@')) {
                     alert('Veuillez entrer un email valide.');
                     return;
                 }
-                
+
                 // Show loading
                 btn.disabled = true;
                 btnText.style.display = 'none';
                 btnLoading.style.display = 'inline';
-                
+
                 try {
-                    const response = await fetch('/api/send-extract', {
+                    const response = await fetch('/api/lead-magnet', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email })
                     });
-                    
+
                     const data = await response.json();
-                    
+
                     if (response.ok) {
                         // Success - hide form, show success message
                         extractForm.style.display = 'none';
                         extractSuccess.style.display = 'block';
-                        
+
                         // Store email
                         localStorage.setItem('lhorizon_extract_email', email);
                     } else {

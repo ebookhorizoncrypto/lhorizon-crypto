@@ -92,6 +92,10 @@
     {
       "source": "/api/admin/stats",
       "destination": "/api/admin/stats"
+    },
+    {
+      "source": "/api/send-extract",
+      "destination": "/api/send-extract"
     }
   ]
 }

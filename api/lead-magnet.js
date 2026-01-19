@@ -144,13 +144,13 @@ function generateEmailHTML(domain) {
             <p>Merci pour votre intérêt pour L'Horizon Crypto. Voici le premier chapitre complet — <strong>20 pages de contenu exclusif</strong>.</p>
             
             <div style="text-align: center;">
-                <a href="${domain}/extraits/chapitre-1.pdf" class="button">📥 Télécharger le Chapitre 1</a>
+                <a href="${domain}/assets/extrait-horizon-crypto.pdf" class="button">📥 Télécharger l'Extrait Gratuit</a>
             </div>
             
             <div class="key-box">
-                <h3>🔑 Défi : Trouvez la 1ère clé !</h3>
-                <p>Un mot secret est caché dans ce chapitre. Saurez-vous le trouver ?</p>
-                <span class="key-badge">INDICE : C'est le tout début...</span>
+                <h3>🔑 Défi : Trouvez les 2 clés cachées !</h3>
+                <p>Deux mots secrets sont cachés dans cet extrait. Saurez-vous les trouver ?</p>
+                <span class="key-badge">Le guide complet en contient 12 → 20$ USDC</span>
             </div>
             
             <div class="benefits">
