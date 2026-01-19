@@ -9,26 +9,30 @@ Ce guide explique comment déployer et configurer votre Smart Contract `ProofOfL
 - **Relayer (OpenZeppelin Defender)** : Reçoit la transaction, paie les frais en ETH (Base), et l'envoie à la blockchain.
 - **Smart Contract** : Vérifie la signature du Backend + l'identité de l'utilisateur via `ERC2771`.
 
-## 2. Déploiement du Contrat
+## 2. Déploiement du Contrat (TESTNET - Base Sepolia)
 
-Lors du déploiement, vous devrez fournir 3 adresses :
+Pour tester gratuitement sur **Base Sepolia**, utilisez ces adresses lors du déploiement :
 
-1.  `_usdcAddress` : `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` (USDC sur Base)
-2.  `_trustedForwarder` : **Adresse du Forwarder OpenZeppelin sur Base**.
-    *   *Note : Vous pouvez trouver l'adresse officielle des Forwarders OpenZeppelin [ici](https://docs.openzeppelin.com/defender/v2/tutorial/relayers).*
-    *   Si vous utilisez Biconomy, utilisez leur adresse de Forwarder.
+1.  `_usdcAddress` : `0x036CbD53842c5426634e7929541eC2318f3dCF7e` (USDC Mock sur Base Sepolia)
+    *   *Note : Si vous n'avez pas de tokens, vous pouvez déployer votre propre token ERC20 de test "FakeUSDC".*
+2.  `_trustedForwarder` : **0x5001A14CA6163143316a7C614e30e6041033Ac20** 
+    *   *Ceci est l'adresse du Forwarder officiel Biconomy sur Base Sepolia.*
+    *   *Si vous utilisez OpenZeppelin Defender, vérifiez l'adresse spécifique dans leur dashboard.*
 3.  `_trustedSigner` : L'adresse publique de votre **Wallet Backend** (celui qui signera les autorisations).
 
-## 3. Configuration OpenZeppelin Defender (Recommandé)
+### Faucet (Pour avoir de l'ETH de test)
+Pour payer le gaz du déploiement et financer le Relayer, réclamez de l'ETH Base Sepolia ici :
+- [Coinbase Faucet](https://www.coinbase.com/faucets/base-sepolia-eth)
+- [Alchemy Faucet](https://www.alchemy.com/faucets/base-sepolia)
 
-C'est la solution la plus simple pour le "Sponsoring de Gaz".
+## 3. Configuration OpenZeppelin Defender (Mode Testnet)
 
 ### Étape A : Créer un Relayer
 1.  Créez un compte sur [defender.openzeppelin.com](https://defender.openzeppelin.com/).
 2.  Allez dans **Relayers** > **Create Relayer**.
-3.  Nom : `HorizonCryptoRelayer`.
-4.  Network : **Base Mainnet**.
-5.  Une fois créé, **envoyez de l'ETH (Base)** à l'adresse du Relayer (c'est lui qui paiera le gaz). 0.05 ETH suffit largement pour commencer.
+3.  Nom : `HorizonTestnetRelayer`.
+4.  Network : **Base Sepolia** (Assurez-vous de bien choisir le Testnet).
+5.  Une fois créé, envoyez de l'ETH test (récupéré au faucet) à l'adresse du Relayer.
 
 ### Étape B : Setup Autotask (API de Relai)
 1.  Allez dans **Autotasks** > **Create Autotask**.
