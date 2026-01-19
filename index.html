@@ -189,12 +189,17 @@
             <div class="nav-links">
                 <a href="#concept">Concept</a>
                 <a href="offres.html">Nos Offres</a>
-                <a href="ressources.html">Ressources</a>
+                <a href="liens-utiles.html">Liens Utiles</a>
                 <a href="#avis">Avis</a>
                 <a href="contact.html">Contact</a>
             </div>
-            <div class="nav-cta">
-                <a href="#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER 20$ USDC</a>
+            <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
+                <button id="header-wallet-btn" class="wallet-btn"
+                    style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: linear-gradient(135deg, #627EEA, #4a5fc7); border: none; border-radius: 8px; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                    <span>🦊</span>
+                    <span id="wallet-btn-text">Connecter Wallet</span>
+                </button>
+                <a href="#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER 20$</a>
             </div>
         </div>
     </nav>
@@ -1291,6 +1296,62 @@
     <script src="js/threejs-effects.js"></script>
     <script src="js/main.js"></script>
     <script src="js/stripe.js"></script>
+
+    <!-- Wallet Connection -->
+    <script>
+        const walletBtn = document.getElementById('header-wallet-btn');
+        const walletBtnText = document.getElementById('wallet-btn-text');
+        let connectedAddress = null;
+
+        async function checkConnection() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                    if (accounts.length > 0) handleConnected(accounts[0]);
+                } catch (err) { }
+            }
+        }
+
+        async function connectWallet() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Veuillez installer MetaMask ou un wallet compatible.');
+                window.open('https://metamask.io/download/', '_blank');
+                return;
+            }
+            try {
+                walletBtn.disabled = true;
+                walletBtnText.textContent = 'Connexion...';
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                if (accounts.length > 0) handleConnected(accounts[0]);
+            } catch (err) {
+                alert('Connexion annulée.');
+            } finally {
+                walletBtn.disabled = false;
+                if (!connectedAddress) walletBtnText.textContent = 'Connecter Wallet';
+            }
+        }
+
+        function handleConnected(address) {
+            connectedAddress = address;
+            walletBtn.style.background = 'linear-gradient(135deg, #00ff88, #00cc6a)';
+            walletBtnText.innerHTML = `<span style="font-family:monospace">${address.slice(0, 6)}...${address.slice(-4)}</span>`;
+            localStorage.setItem('connectedWallet', address);
+        }
+
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    connectedAddress = null;
+                    walletBtn.style.background = 'linear-gradient(135deg, #627EEA, #4a5fc7)';
+                    walletBtnText.textContent = 'Connecter Wallet';
+                    localStorage.removeItem('connectedWallet');
+                } else handleConnected(accounts[0]);
+            });
+        }
+
+        walletBtn.addEventListener('click', connectWallet);
+        checkConnection();
+    </script>
 </body>
 
 </html>
