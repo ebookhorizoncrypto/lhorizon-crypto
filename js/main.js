@@ -212,21 +212,26 @@ function initLeadMagnetForm() {
                     fbq('track', 'Lead');
                 }
             } else {
-                throw new Error('Server error');
+                throw new Error(`Erreur serveur ${response.status}: ${response.statusText}`);
             }
         } catch (error) {
             console.error('Lead magnet error:', error);
 
-            // For demo mode without backend, simulate success
-            if (error.message.includes('Failed to fetch')) {
+            // For demo mode (Network Error / Failed to Fetch), simulate success
+            // TypeError is thrown by fetch() only on network failure
+            if (error.name === 'TypeError' || error.message.includes('fetch')) {
                 form.style.display = 'none';
                 successDiv.style.display = 'block';
                 localStorage.setItem('lhorizon_lead_subscribed', email);
                 localStorage.setItem('user_email', email);
-                console.log('📧 Demo mode: Email would be sent to', email);
+                console.log('📧 Demo mode (Network Error): Email simulated for', email);
+
+                // Show a small toast to say it's simulation
+                showNotification("Mode Test: Email simulé (API inaccessible)", "info");
             } else {
                 errorDiv.style.display = 'block';
-                errorDiv.querySelector('p').textContent = '❌ Une erreur s\'est produite. Réessayez.';
+                // Show the exact error for debugging
+                errorDiv.querySelector('p').textContent = `❌ Erreur: ${error.message}`;
                 btnText.style.display = 'inline';
                 btnLoading.style.display = 'none';
             }
