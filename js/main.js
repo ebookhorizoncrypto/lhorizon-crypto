@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     initCinematicIntro();
+    initMobileMenu();
     initNavbarScroll();
     initScrollAnimations();
     initSmoothScroll();
@@ -13,6 +14,54 @@ document.addEventListener('DOMContentLoaded', () => {
     initEmailForm();
     initTestimonialsCarousel();
 });
+
+/* ========================================
+   MOBILE HAMBURGER MENU
+======================================== */
+function initMobileMenu() {
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const overlay = document.querySelector('.mobile-menu-overlay');
+
+    if (!toggle || !navLinks) return;
+
+    function openMenu() {
+        toggle.classList.add('active');
+        navLinks.classList.add('active');
+        overlay?.classList.add('active');
+        document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        toggle.classList.remove('active');
+        navLinks.classList.remove('active');
+        overlay?.classList.remove('active');
+        document.body.classList.remove('menu-open');
+    }
+
+    toggle.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    // Close on overlay click
+    overlay?.addEventListener('click', closeMenu);
+
+    // Close on nav link click
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+}
 
 /* ========================================
    CINEMATIC INTRO VIDEO
