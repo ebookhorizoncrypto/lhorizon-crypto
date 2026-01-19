@@ -703,40 +703,56 @@
         });
 
         // Step 3: Connect Wallet & Claim
+        // Step 3: Connect Wallet & Claim
         document.getElementById('connect-wallet-generic').addEventListener('click', async () => {
-            if (!window.ethereum) return alert("Aucun wallet détecté. Installez MetaMask ou utilisez un navigateur Web3.");
+            console.log("Button Clicked!");
 
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
-            claimState.walletAddress = await signer.getAddress();
+            // Debug check
+            if (typeof window.ethereum === 'undefined') {
+                alert("Erreur: MetaMask non détecté. Assurez-vous d'avoir l'extension installée.");
+                return;
+            }
 
-            document.getElementById('wallet-address').textContent = claimState.walletAddress;
-            document.getElementById('wallet-connected').style.display = 'block';
-
-            // Switch to Base Sepolia (84532)
             try {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x14a34' }], // 84532 in hex
-                });
-            } catch (switchError) {
-                if (switchError.code === 4902) {
-                    try {
-                        await window.ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: '0x14a34',
-                                chainName: 'Base Sepolia',
-                                nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-                                rpcUrls: ['https://sepolia.base.org'],
-                                blockExplorerUrls: ['https://sepolia.basescan.org']
-                            }]
-                        });
-                    } catch (addError) {
-                        console.error(addError);
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                // Force prompt
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                claimState.walletAddress = await signer.getAddress();
+
+                document.getElementById('wallet-address').textContent = claimState.walletAddress;
+                document.getElementById('wallet-connected').style.display = 'block';
+
+                // Switch to Base Sepolia (84532)
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: '0x14a34' }],
+                    });
+                } catch (switchError) {
+                    if (switchError.code === 4902) {
+                        try {
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [{
+                                    chainId: '0x14a34',
+                                    chainName: 'Base Sepolia',
+                                    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                                    rpcUrls: ['https://sepolia.base.org'],
+                                    blockExplorerUrls: ['https://sepolia.basescan.org']
+                                }]
+                            });
+                        } catch (addError) {
+                            console.error("Add Chain Error:", addError);
+                            alert("Erreur ajout réseau: " + addError.message);
+                        }
+                    } else {
+                        throw switchError;
                     }
                 }
+            } catch (err) {
+                console.error("Connect Error:", err);
+                alert("Erreur Connexion: " + err.message);
             }
         });
 
