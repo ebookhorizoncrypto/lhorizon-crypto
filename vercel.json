@@ -78,6 +78,22 @@
   },
   "rewrites": [
     {
+      "source": "/offres",
+      "destination": "/offres.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq.html"
+    },
+    {
+      "source": "/claim",
+      "destination": "/claim.html"
+    },
+    {
       "source": "/api/webhook/stripe",
       "destination": "/api/webhook/stripe"
     },
