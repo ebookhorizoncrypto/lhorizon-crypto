@@ -181,7 +181,12 @@ function initLeadMagnetForm() {
 
         try {
             // API call to send extract email
-            const response = await fetch('/api/lead-magnet', {
+            // Determine API URL (Local vs Prod)
+            const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                ? 'http://127.0.0.1:3001'
+                : '';
+
+            const response = await fetch(`${apiBase}/api/lead-magnet`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })

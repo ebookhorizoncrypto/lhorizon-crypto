@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 // Import handlers
 import signClaimHandler from './api/sign-claim.js';
+import leadMagnetHandler from './api/lead-magnet.js';
 import 'dotenv/config';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,10 +31,30 @@ const server = http.createServer(async (req, res) => {
         req.body = {};
     }
 
+    console.log(`[${req.method}] ${req.url}`);
+
+    // Default CORS for all requests (redundant protection)
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+
+    // Handle Preflight Globally at Server Level
+    if (req.method === 'OPTIONS') {
+        res.writeHead(200);
+        res.end();
+        return;
+    }
+
     // Router
-    if (req.url === '/api/sign-claim' && req.method === 'POST') {
-        // Adapt standard req/res to Vercel-like handler signature if needed
-        // Our handler expects (req, res) with .json() method on res
+    const routes = {
+        '/api/sign-claim': signClaimHandler,
+        '/api/lead-magnet': leadMagnetHandler
+    };
+
+    if (routes[req.url] && req.method === 'POST') {
+        const handler = routes[req.url];
+
+        // Adapt standard req/res to Vercel-like handler signature
         res.status = (code) => {
             res.statusCode = code;
             return res;
@@ -44,14 +65,20 @@ const server = http.createServer(async (req, res) => {
             return res;
         };
 
-        await signClaimHandler(req, res);
+        try {
+            await handler(req, res);
+        } catch (err) {
+            console.error("Handler Error:", err);
+            res.statusCode = 500;
+            res.end(JSON.stringify({ error: err.message }));
+        }
     } else {
         res.writeHead(404);
         res.end('Not Found');
     }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`Backend API running at http://localhost:${PORT}`);
     console.log(`Endpoint: http://localhost:${PORT}/api/sign-claim`);
 });
