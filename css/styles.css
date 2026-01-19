@@ -2891,6 +2891,9 @@ h3 {
         display: block;
         padding: 16px 20px;
         font-size: 1.1rem;
+        color: #ffffff;
+        opacity: 1;
+        text-decoration: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 0;
     }
