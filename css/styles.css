@@ -1468,6 +1468,32 @@ h3 {
     .btn-submit .btn-text {
         font-size: 0.9rem;
     }
+
+    /* Mobile Pricing Optimizations */
+    .pricing-grid {
+        gap: var(--space-lg);
+        width: 100%;
+    }
+
+    .pricing-card {
+        padding: var(--space-lg) var(--space-md);
+        /* Smaller padding */
+        margin-bottom: var(--space-sm);
+    }
+
+    .pricing-header h3 {
+        font-size: 1.3rem;
+        /* Smaller title */
+    }
+
+    .price-amount {
+        font-size: 2.5rem;
+        /* Smaller price */
+    }
+
+    .pricing-features li {
+        font-size: 0.9rem;
+    }
 }
 
 /* ========================================
@@ -2906,7 +2932,7 @@ h3 {
         right: 0 !important;
         visibility: visible !important;
         opacity: 1 !important;
-        display: flex !important;
+        /* display: flex is already inherited, no need to toggle it */
     }
 
     .nav-links a {
