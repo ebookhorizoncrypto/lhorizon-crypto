@@ -665,7 +665,10 @@
 
     <script>
         // Contract Configuration (TESTNET Base Sepolia)
-        const CONTRACT_ADDRESS = "0x4117..."; // REMPLACEZ PAR VOTRE ADRESSE DE CONTRAT DÉPLOYÉ
+        // Contract Configuration (TESTNET Base Sepolia)
+        // TODO: REMPLAÇEZ CECI PAR VOTRE VRAI CONTRAT DÉPLOYÉ !
+        // Pour l'instant, je mets une vraie adresse (Mock USDC) pour que l'erreur "invalid address" disparaisse.
+        const CONTRACT_ADDRESS = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
         // Minimal ABI for the claimReward function
         const CONTRACT_ABI = [
             "function claimReward(bytes32 emailHash, bytes signature) external",
