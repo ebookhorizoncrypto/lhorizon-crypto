@@ -20,6 +20,7 @@
 
     <!-- Main Styles -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/threejs.css">
 
     <style>
         .links-hero {
@@ -217,303 +218,310 @@
     </style>
 </head>
 
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
-            </a>
-            <div class="nav-links">
-                <a href="index.html#concept">Concept</a>
-                <a href="offres.html">Nos Offres</a>
-                <a href="liens-utiles.html" class="active">Liens Utiles</a>
-                <a href="index.html#avis">Avis</a>
-                <a href="contact.html">Contact</a>
+<!-- Three.js Canvas Background -->
+<canvas id="threejs-canvas"></canvas>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
+        </a>
+        <div class="nav-links">
+            <a href="index.html#concept">Concept</a>
+            <a href="offres.html">Nos Offres</a>
+            <a href="liens-utiles.html" class="active">Liens Utiles</a>
+            <a href="claim.html" style="color: var(--accent-green);">Réclamer 20$</a>
+            <a href="index.html#avis">Avis</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
+            <button id="header-wallet-btn" class="wallet-btn"
+                style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: linear-gradient(135deg, #627EEA, #4a5fc7); border: none; border-radius: 8px; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                <span>🦊</span>
+                <span id="wallet-btn-text">Connecter Wallet</span>
+            </button>
+            <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER 20$</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <!-- Hero -->
+    <section class="links-hero container">
+        <h1>🔗 Liens <span class="gradient-text">Utiles</span></h1>
+        <p>Tous les liens officiels et vérifiés des plateformes mentionnées dans le guide. Utilisez uniquement ces
+            liens pour éviter les arnaques.</p>
+    </section>
+
+    <!-- Warning Banner -->
+    <div class="container">
+        <div class="warning-banner">
+            <span class="warning-icon">⚠️</span>
+            <p><strong>ATTENTION aux faux sites !</strong> Les arnaques par phishing sont courantes. Vérifiez
+                TOUJOURS l'URL avant de connecter votre wallet. Les liens ci-dessous sont les seuls officiels.</p>
+        </div>
+    </div>
+
+    <!-- Links -->
+    <section class="links-section container">
+
+        <!-- Explorateurs de Blocs -->
+        <div class="links-category">
+            <div class="category-header">
+                <div class="category-icon explorers">🔍</div>
+                <h2>Explorateurs de Blocs</h2>
             </div>
-            <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
-                <button id="header-wallet-btn" class="wallet-btn">
-                    <span>🦊</span>
-                    <span id="wallet-btn-text">Connecter Wallet</span>
-                </button>
-                <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER 20$</a>
+            <div class="links-grid">
+                <a href="https://etherscan.io" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Ethereum</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Explorateur officiel Ethereum. Vérifiez vos transactions ETH.</p>
+                    <span class="link-url">etherscan.io</span>
+                </a>
+
+                <a href="https://blockchain.com/explorer" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Bitcoin</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Explorateur Bitcoin pour suivre les transactions BTC.</p>
+                    <span class="link-url">blockchain.com/explorer</span>
+                </a>
+
+                <a href="https://polygonscan.com" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Polygon</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Explorateur du réseau Polygon (MATIC).</p>
+                    <span class="link-url">polygonscan.com</span>
+                </a>
+
+                <a href="https://arbiscan.io" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Arbitrum</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Explorateur Layer 2 Arbitrum.</p>
+                    <span class="link-url">arbiscan.io</span>
+                </a>
+
+                <a href="https://solscan.io" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Solana</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Explorateur blockchain Solana.</p>
+                    <span class="link-url">solscan.io</span>
+                </a>
+
+                <a href="https://basescan.org" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Base</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Explorateur Base (L2 Coinbase). Pour vos 20$ USDC !</p>
+                    <span class="link-url">basescan.org</span>
+                </a>
             </div>
         </div>
-    </nav>
 
-    <main>
-        <!-- Hero -->
-        <section class="links-hero container">
-            <h1>🔗 Liens <span class="gradient-text">Utiles</span></h1>
-            <p>Tous les liens officiels et vérifiés des plateformes mentionnées dans le guide. Utilisez uniquement ces
-                liens pour éviter les arnaques.</p>
-        </section>
+        <!-- Outils d'Analyse -->
+        <div class="links-category">
+            <div class="category-header">
+                <div class="category-icon analysis">📊</div>
+                <h2>Outils d'Analyse</h2>
+            </div>
+            <div class="links-grid">
+                <a href="https://dexscreener.com" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>DexScreener</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Analyse de tokens DEX. Charts, volume, liquidité en temps réel.</p>
+                    <span class="link-url">dexscreener.com</span>
+                </a>
 
-        <!-- Warning Banner -->
-        <div class="container">
-            <div class="warning-banner">
-                <span class="warning-icon">⚠️</span>
-                <p><strong>ATTENTION aux faux sites !</strong> Les arnaques par phishing sont courantes. Vérifiez
-                    TOUJOURS l'URL avant de connecter votre wallet. Les liens ci-dessous sont les seuls officiels.</p>
+                <a href="https://bubblemaps.io" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Bubblemaps</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Détection de clusters. Visualisez la distribution des tokens.</p>
+                    <span class="link-url">bubblemaps.io</span>
+                </a>
+
+                <a href="https://debank.com" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>DeBank</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Portfolio tracker multi-chain. Suivez tous vos actifs.</p>
+                    <span class="link-url">debank.com</span>
+                </a>
+
+                <a href="https://zerion.io" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Zerion</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Wallet tracking avancé. Interface premium pour DeFi.</p>
+                    <span class="link-url">zerion.io</span>
+                </a>
             </div>
         </div>
 
-        <!-- Links -->
-        <section class="links-section container">
-
-            <!-- Explorateurs de Blocs -->
-            <div class="links-category">
-                <div class="category-header">
-                    <div class="category-icon explorers">🔍</div>
-                    <h2>Explorateurs de Blocs</h2>
-                </div>
-                <div class="links-grid">
-                    <a href="https://etherscan.io" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Ethereum</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Explorateur officiel Ethereum. Vérifiez vos transactions ETH.</p>
-                        <span class="link-url">etherscan.io</span>
-                    </a>
-
-                    <a href="https://blockchain.com/explorer" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Bitcoin</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Explorateur Bitcoin pour suivre les transactions BTC.</p>
-                        <span class="link-url">blockchain.com/explorer</span>
-                    </a>
-
-                    <a href="https://polygonscan.com" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Polygon</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Explorateur du réseau Polygon (MATIC).</p>
-                        <span class="link-url">polygonscan.com</span>
-                    </a>
-
-                    <a href="https://arbiscan.io" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Arbitrum</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Explorateur Layer 2 Arbitrum.</p>
-                        <span class="link-url">arbiscan.io</span>
-                    </a>
-
-                    <a href="https://solscan.io" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Solana</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Explorateur blockchain Solana.</p>
-                        <span class="link-url">solscan.io</span>
-                    </a>
-
-                    <a href="https://basescan.org" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Base</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Explorateur Base (L2 Coinbase). Pour vos 20$ USDC !</p>
-                        <span class="link-url">basescan.org</span>
-                    </a>
-                </div>
+        <!-- Sécurité -->
+        <div class="links-category">
+            <div class="category-header">
+                <div class="category-icon security">🔐</div>
+                <h2>Sécurité</h2>
             </div>
-
-            <!-- Outils d'Analyse -->
-            <div class="links-category">
-                <div class="category-header">
-                    <div class="category-icon analysis">📊</div>
-                    <h2>Outils d'Analyse</h2>
-                </div>
-                <div class="links-grid">
-                    <a href="https://dexscreener.com" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>DexScreener</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Analyse de tokens DEX. Charts, volume, liquidité en temps réel.</p>
-                        <span class="link-url">dexscreener.com</span>
-                    </a>
-
-                    <a href="https://bubblemaps.io" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Bubblemaps</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Détection de clusters. Visualisez la distribution des tokens.</p>
-                        <span class="link-url">bubblemaps.io</span>
-                    </a>
-
-                    <a href="https://debank.com" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>DeBank</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Portfolio tracker multi-chain. Suivez tous vos actifs.</p>
-                        <span class="link-url">debank.com</span>
-                    </a>
-
-                    <a href="https://zerion.io" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Zerion</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Wallet tracking avancé. Interface premium pour DeFi.</p>
-                        <span class="link-url">zerion.io</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Sécurité -->
-            <div class="links-category">
-                <div class="category-header">
-                    <div class="category-icon security">🔐</div>
-                    <h2>Sécurité</h2>
-                </div>
-                <div class="links-grid">
-                    <a href="https://revoke.cash" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Revoke.cash</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Révoquer les permissions. Essentiel après chaque interaction DeFi.</p>
-                        <span class="link-url">revoke.cash</span>
-                    </a>
-
-                    <a href="https://tokensniffer.com" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>TokenSniffer</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Audit de tokens. Détectez les scams avant d'acheter.</p>
-                        <span class="link-url">tokensniffer.com</span>
-                    </a>
-
-                    <a href="https://rugcheck.xyz" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>RugCheck</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Détection de honeypots. Vérifiez avant d'investir.</p>
-                        <span class="link-url">rugcheck.xyz</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Échanges Régulés PSAN France -->
-            <div class="links-category">
-                <div class="category-header">
-                    <div class="category-icon exchanges">🏛️</div>
-                    <h2>Échanges Régulés (PSAN France)</h2>
-                </div>
-                <div class="links-grid">
-                    <a href="https://binance.com" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Binance France</h3>
-                            <span class="official-badge">✓ PSAN</span>
-                        </div>
-                        <p>Le plus grand exchange mondial. Enregistré PSAN en France.</p>
-                        <span class="link-url">binance.com</span>
-                    </a>
-
-                    <a href="https://coinhouse.com" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Coinhouse</h3>
-                            <span class="official-badge">✓ PSAN</span>
-                        </div>
-                        <p>Plateforme française historique. Excellent pour débuter.</p>
-                        <span class="link-url">coinhouse.com</span>
-                    </a>
-
-                    <a href="https://paymium.com" target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Paymium</h3>
-                            <span class="official-badge">✓ PSAN</span>
-                        </div>
-                        <p>Exchange français fondé en 2011. Pionnier européen.</p>
-                        <span class="link-url">paymium.com</span>
-                    </a>
-
-                    <a href="https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/listes-noires-et-mises-en-garde"
-                        target="_blank" rel="noopener" class="link-card">
-                        <div class="link-card-header">
-                            <h3>Liste Officielle AMF</h3>
-                            <span class="official-badge">✓ Officiel</span>
-                        </div>
-                        <p>Registre des PSAN. Vérifiez si un site est autorisé en France.</p>
-                        <span class="link-url">amf-france.org</span>
-                    </a>
-                </div>
-            </div>
-
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer footer-clean">
-        <div class="container">
-            <div class="footer-main">
-                <!-- Logo -->
-                <div class="footer-brand">
-                    <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="footer-logo-img">
-                    <p class="footer-tagline">Le Guide de l'Apprentissage Crypto</p>
-                </div>
-
-                <!-- Navigation -->
-                <div class="footer-nav">
-                    <div class="footer-nav-col">
-                        <h4>Navigation</h4>
-                        <a href="index.html#concept">Concept</a>
-                        <a href="offres.html">Nos Offres</a>
-                        <a href="index.html#avis">Témoignages</a>
-                        <a href="index.html#pricing">Tarifs</a>
+            <div class="links-grid">
+                <a href="https://revoke.cash" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Revoke.cash</h3>
+                        <span class="official-badge">✓ Officiel</span>
                     </div>
-                    <div class="footer-nav-col">
-                        <h4>Support</h4>
-                        <a href="contact.html">Contact</a>
-                        <a href="mailto:contact@ebook-horizoncrypto.com">Email</a>
-                        <a href="index.html#faq">FAQ</a>
+                    <p>Révoquer les permissions. Essentiel après chaque interaction DeFi.</p>
+                    <span class="link-url">revoke.cash</span>
+                </a>
+
+                <a href="https://tokensniffer.com" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>TokenSniffer</h3>
+                        <span class="official-badge">✓ Officiel</span>
                     </div>
-                    <div class="footer-nav-col">
-                        <h4>Légal</h4>
-                        <a href="mentions-legales.html">Mentions Légales</a>
-                        <a href="cgv.html">CGV</a>
-                        <a href="confidentialite.html">Politique de Confidentialité</a>
-                        <a href="remboursement.html">Remboursement</a>
+                    <p>Audit de tokens. Détectez les scams avant d'acheter.</p>
+                    <span class="link-url">tokensniffer.com</span>
+                </a>
+
+                <a href="https://rugcheck.xyz" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>RugCheck</h3>
+                        <span class="official-badge">✓ Officiel</span>
                     </div>
-                </div>
+                    <p>Détection de honeypots. Vérifiez avant d'investir.</p>
+                    <span class="link-url">rugcheck.xyz</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Échanges Régulés PSAN France -->
+        <div class="links-category">
+            <div class="category-header">
+                <div class="category-icon exchanges">🏛️</div>
+                <h2>Échanges Régulés (PSAN France)</h2>
+            </div>
+            <div class="links-grid">
+                <a href="https://binance.com" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Binance France</h3>
+                        <span class="official-badge">✓ PSAN</span>
+                    </div>
+                    <p>Le plus grand exchange mondial. Enregistré PSAN en France.</p>
+                    <span class="link-url">binance.com</span>
+                </a>
+
+                <a href="https://coinhouse.com" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Coinhouse</h3>
+                        <span class="official-badge">✓ PSAN</span>
+                    </div>
+                    <p>Plateforme française historique. Excellent pour débuter.</p>
+                    <span class="link-url">coinhouse.com</span>
+                </a>
+
+                <a href="https://paymium.com" target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Paymium</h3>
+                        <span class="official-badge">✓ PSAN</span>
+                    </div>
+                    <p>Exchange français fondé en 2011. Pionnier européen.</p>
+                    <span class="link-url">paymium.com</span>
+                </a>
+
+                <a href="https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/listes-noires-et-mises-en-garde"
+                    target="_blank" rel="noopener" class="link-card">
+                    <div class="link-card-header">
+                        <h3>Liste Officielle AMF</h3>
+                        <span class="official-badge">✓ Officiel</span>
+                    </div>
+                    <p>Registre des PSAN. Vérifiez si un site est autorisé en France.</p>
+                    <span class="link-url">amf-france.org</span>
+                </a>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer footer-clean">
+    <div class="container">
+        <div class="footer-main">
+            <!-- Logo -->
+            <div class="footer-brand">
+                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="footer-logo-img">
+                <p class="footer-tagline">Le Guide de l'Apprentissage Crypto</p>
             </div>
 
-            <!-- Bottom Bar -->
-            <div class="footer-bottom">
-                <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
-                <div class="footer-badges">
-                    <span class="footer-badge">🔐 Pas de KYC</span>
-                    <span class="footer-badge">💰 Bonus 20$ USDC</span>
+            <!-- Navigation -->
+            <div class="footer-nav">
+                <div class="footer-nav-col">
+                    <h4>Navigation</h4>
+                    <a href="index.html#concept">Concept</a>
+                    <a href="offres.html">Nos Offres</a>
+                    <a href="index.html#avis">Témoignages</a>
+                    <a href="index.html#pricing">Tarifs</a>
                 </div>
-                <div class="footer-legal-disclaimer">
-                    <p>
-                        <strong>⚠️ Avertissement :</strong> Ce site propose des contenus éducatifs sur les
-                        crypto-actifs.
-                        <strong>Il ne constitue pas un conseil en investissement</strong> au sens de la réglementation
-                        AMF.
-                        L'investissement en crypto-actifs comporte des risques de perte en capital.
-                        La récompense de 20$ USDC est un bonus pédagogique, non un rendement garanti.
-                        <a href="mentions-legales.html">Mentions légales</a>
-                    </p>
+                <div class="footer-nav-col">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact</a>
+                    <a href="mailto:contact@ebook-horizoncrypto.com">Email</a>
+                    <a href="index.html#faq">FAQ</a>
+                </div>
+                <div class="footer-nav-col">
+                    <h4>Légal</h4>
+                    <a href="mentions-legales.html">Mentions Légales</a>
+                    <a href="cgv.html">CGV</a>
+                    <a href="confidentialite.html">Politique de Confidentialité</a>
+                    <a href="remboursement.html">Remboursement</a>
                 </div>
             </div>
         </div>
-    </footer>
 
-    <!-- Scripts -->
-    <script src="js/main.js"></script>
-    <script>
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
+            <div class="footer-badges">
+                <span class="footer-badge">🔐 Pas de KYC</span>
+                <span class="footer-badge">💰 Bonus 20$ USDC</span>
+            </div>
+            <div class="footer-legal-disclaimer">
+                <p>
+                    <strong>⚠️ Avertissement :</strong> Ce site propose des contenus éducatifs sur les
+                    crypto-actifs.
+                    <strong>Il ne constitue pas un conseil en investissement</strong> au sens de la réglementation
+                    AMF.
+                    L'investissement en crypto-actifs comporte des risques de perte en capital.
+                    La récompense de 20$ USDC est un bonus pédagogique, non un rendement garanti.
+                    <a href="mentions-legales.html">Mentions légales</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/threejs-effects.js"></script>
+<script src="js/main.js"></script>
+<script>
         // Wallet Connection Logic for Header Button
         const walletBtn = document.getElementById('header-wallet-btn');
         const walletBtnText = document.getElementById('wallet-btn-text');
@@ -594,7 +602,7 @@
 
         // Check on load
         checkConnection();
-    </script>
+</script>
 </body>
 
 </html>
