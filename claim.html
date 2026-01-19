@@ -574,15 +574,11 @@
 
                         <div class="error-message" id="wallet-error"></div>
 
-                        <div class="wallet-options">
-                            <button class="wallet-btn" id="connect-metamask">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg"
-                                    alt="MetaMask">
-                                MetaMask
-                            </button>
-                            <button class="wallet-btn" id="connect-coinbase">
-                                <img src="https://www.cdnlogo.com/logos/c/16/coinbase.svg" alt="Coinbase Wallet">
-                                Coinbase
+                        <div class="wallet-options" style="justify-content: center;">
+                            <button class="wallet-btn" id="connect-wallet-generic"
+                                style="max-width: 300px; width: 100%;">
+                                <span style="font-size: 1.5rem;">🔗</span>
+                                Connecter mon Wallet
                             </button>
                         </div>
 
@@ -700,12 +696,15 @@
             // Effectively merging step 1 & 2 logic for this specific dev iteration
         });
 
-        // Skip keys verification for this specific dev iteration as requested
-        // User wants to test the "Call to API" -> "Blockchain Transaction" flow.
+        // Step 2: Verify Keys (Mock for Local Testing)
+        document.getElementById('verify-words-btn').addEventListener('click', async () => {
+            // Simply proceed to Step 3 for local testing of signature
+            goToStep(3);
+        });
 
         // Step 3: Connect Wallet & Claim
-        document.getElementById('connect-metamask').addEventListener('click', async () => {
-            if (!window.ethereum) return alert("Installez MetaMask !");
+        document.getElementById('connect-wallet-generic').addEventListener('click', async () => {
+            if (!window.ethereum) return alert("Aucun wallet détecté. Installez MetaMask ou utilisez un navigateur Web3.");
 
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
