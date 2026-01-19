@@ -285,10 +285,25 @@
                             </div>
                         </div>
 
-                        <a href="assets/extrait-horizon-crypto.pdf" download class="btn btn-primary btn-lg extract-btn">
-                            <span class="btn-icon">📥</span>
-                            TÉLÉCHARGER L'EXTRAIT GRATUIT
-                        </a>
+                        <!-- Email Form -->
+                        <form id="extract-form" class="extract-form">
+                            <div class="extract-input-group">
+                                <input type="email" id="extract-email" placeholder="Votre email..." required>
+                                <button type="submit" class="btn btn-primary extract-btn">
+                                    <span class="btn-icon">📧</span>
+                                    <span class="btn-text">RECEVOIR L'EXTRAIT</span>
+                                    <span class="btn-loading" style="display: none;">Envoi...</span>
+                                </button>
+                            </div>
+                            <p class="extract-privacy">🔒 Votre email reste confidentiel. Pas de spam.</p>
+                        </form>
+
+                        <!-- Success Message (hidden by default) -->
+                        <div id="extract-success" class="extract-success" style="display: none;">
+                            <div class="success-icon">✅</div>
+                            <h4>C'est envoyé !</h4>
+                            <p>Vérifiez votre boîte mail (et les spams). L'extrait arrive dans 2 minutes.</p>
+                        </div>
 
                         <p class="extract-note">
                             <strong>🏆 Défi :</strong> Trouvez les 2 clés cachées dans l'extrait.<br>
@@ -565,6 +580,62 @@
     <script src="js/stripe.js"></script>
     <script src="js/main.js"></script>
     <script src="js/crypto-ticker.js"></script>
+
+    <!-- Extract Form Handler -->
+    <script>
+        const extractForm = document.getElementById('extract-form');
+        const extractSuccess = document.getElementById('extract-success');
+        
+        if (extractForm) {
+            extractForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const emailInput = document.getElementById('extract-email');
+                const email = emailInput.value.trim();
+                const btnText = extractForm.querySelector('.btn-text');
+                const btnLoading = extractForm.querySelector('.btn-loading');
+                const btn = extractForm.querySelector('button');
+                
+                if (!email || !email.includes('@')) {
+                    alert('Veuillez entrer un email valide.');
+                    return;
+                }
+                
+                // Show loading
+                btn.disabled = true;
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline';
+                
+                try {
+                    const response = await fetch('/api/send-extract', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        // Success - hide form, show success message
+                        extractForm.style.display = 'none';
+                        extractSuccess.style.display = 'block';
+                        
+                        // Store email
+                        localStorage.setItem('lhorizon_extract_email', email);
+                    } else {
+                        throw new Error(data.error || 'Erreur');
+                    }
+                } catch (error) {
+                    console.error('Extract error:', error);
+                    alert('Erreur lors de l\'envoi. Réessayez.');
+                } finally {
+                    btn.disabled = false;
+                    btnText.style.display = 'inline';
+                    btnLoading.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
