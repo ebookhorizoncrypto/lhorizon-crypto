@@ -653,7 +653,15 @@
     </footer>
 
     <!-- Ethers.js for Blockchain Interaction -->
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"
+        type="application/javascript"></script>
+    <script>
+        // Fallback for ethers
+        if (typeof ethers === 'undefined') {
+            console.error("Ethers.js library failed to load");
+            alert("Erreur critique: Impossible de charger la librairie blockchain. Vérifiez votre connexion.");
+        }
+    </script>
 
     <script>
         // Contract Configuration (TESTNET Base Sepolia)
