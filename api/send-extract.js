@@ -1,10 +1,5 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-// Use Resend's test domain if custom domain not verified
-const fromEmail = process.env.FROM_EMAIL || 'L\'Horizon Crypto <onboarding@resend.dev>';
-const domain = process.env.DOMAIN || 'https://lhorizon-crypto.vercel.app';
-
 export default async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,8 +21,23 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Email invalide' });
         }
 
+        // Check API key
+        if (!process.env.RESEND_API_KEY) {
+            console.error('RESEND_API_KEY not configured');
+            return res.status(500).json({ error: 'Configuration error: RESEND_API_KEY missing' });
+        }
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        // Use FROM_EMAIL or fallback to Resend test domain
+        const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+        const domain = process.env.DOMAIN || 'https://lhorizon-crypto.vercel.app';
+
+        console.log('Sending email to:', email);
+        console.log('From:', fromEmail);
+
         // Send the extract email
-        await resend.emails.send({
+        const result = await resend.emails.send({
             from: fromEmail,
             to: email,
             subject: "Voici votre extrait GRATUIT (+ 2 clés cachées à trouver dedans 👀)",
@@ -48,8 +58,6 @@ export default async function handler(req, res) {
         .keys-box h3 { color: #00ff88; margin: 0 0 10px 0; }
         .footer { padding: 20px 40px; background: #0a0a0f; text-align: center; font-size: 12px; color: #888; }
         .footer a { color: #f7931a; }
-        .story { font-size: 1rem; color: #ccc; }
-        .story strong { color: #fff; }
     </style>
 </head>
 <body>
@@ -60,23 +68,18 @@ export default async function handler(req, res) {
         <div class="content">
             <h2>Votre extrait gratuit est prêt !</h2>
             
-            <p class="story">
-                Il y a quelques années, j'étais exactement comme vous.<br><br>
-                
-                Je voyais les cryptos exploser... <strong>et je ne comprenais rien</strong>.<br><br>
-                
-                J'ai fait toutes les erreurs possibles : <strong>acheté au plus haut</strong>, <strong>vendu dans la panique</strong>, perdu de l'argent sur des "projets révolutionnaires" qui n'étaient que des arnaques.<br><br>
-                
-                Puis j'ai décidé d'arrêter de subir et de <strong>comprendre vraiment</strong>.
-            </p>
+            <p>Il y a quelques années, j'étais exactement comme vous. Je voyais les cryptos exploser... <strong>et je ne comprenais rien</strong>.</p>
+            
+            <p>J'ai fait toutes les erreurs possibles : <strong>acheté au plus haut</strong>, <strong>vendu dans la panique</strong>, perdu de l'argent sur des "projets révolutionnaires" qui n'étaient que des arnaques.</p>
+            
+            <p>Puis j'ai décidé d'arrêter de subir et de <strong>comprendre vraiment</strong>.</p>
             
             <div class="highlight-box">
-                <h3>📚 Ce que vous allez découvrir dans cet extrait :</h3>
+                <h3>📚 Ce que vous allez découvrir :</h3>
                 <ul>
                     <li>✅ Les 3 erreurs fatales que font 90% des débutants</li>
-                    <li>✅ Comment fonctionne VRAIMENT la blockchain (sans jargon)</li>
-                    <li>✅ La stratégie "DCA" que même les pros utilisent</li>
-                    <li>✅ <strong>2 mots-clés CACHÉS</strong> à trouver (sur les 12 du guide complet)</li>
+                    <li>✅ Comment fonctionne VRAIMENT la blockchain</li>
+                    <li>✅ <strong>2 mots-clés CACHÉS</strong> à trouver</li>
                 </ul>
             </div>
             
@@ -86,41 +89,27 @@ export default async function handler(req, res) {
             
             <div class="keys-box">
                 <h3>🔑 Le Défi des 2 Clés</h3>
-                <p>J'ai caché <strong>2 mots-clés secrets</strong> dans ces 20 pages.<br>
-                Si vous les trouvez, vous avez prouvé que vous êtes prêt(e) pour la suite...</p>
+                <p>J'ai caché <strong>2 mots-clés secrets</strong> dans ces 20 pages.</p>
                 <p style="color: #00ff88; font-weight: bold;">Le guide complet en contient 12. Trouvez-les tous = 20$ USDC sur votre wallet.</p>
             </div>
             
-            <p class="story" style="margin-top: 30px;">
-                La crypto n'est pas un casino.<br>
-                <strong>C'est un outil de liberté financière</strong> pour ceux qui prennent le temps de comprendre.<br><br>
-                
-                À vous de jouer,<br>
-                <strong>L'équipe L'Horizon Crypto</strong>
-            </p>
-            
-            <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                <small>
-                    PS : Si vous trouvez les 2 clés, répondez à cet email avec votre réponse.<br>
-                    Ceux qui réussissent recevront une <strong>surprise exclusive</strong>. 👀
-                </small>
-            </p>
+            <p>À vous de jouer,<br><strong>L'équipe L'Horizon Crypto</strong></p>
         </div>
         <div class="footer">
             <p>© 2026 L'Horizon Crypto. Tous droits réservés.</p>
-            <p><a href="${domain}/cgv">CGV</a> | <a href="${domain}/confidentialite">Confidentialité</a></p>
         </div>
     </div>
 </body>
 </html>`
         });
 
-        console.log(`📧 Extract email sent to ${email}`);
+        console.log('Email sent successfully:', result);
 
         return res.status(200).json({ success: true, message: 'Email envoyé !' });
 
     } catch (error) {
-        console.error('Error sending extract email:', error);
-        return res.status(500).json({ error: 'Erreur lors de l\'envoi' });
+        console.error('Error sending extract email:', error.message);
+        console.error('Full error:', JSON.stringify(error, null, 2));
+        return res.status(500).json({ error: error.message || 'Erreur lors de l\'envoi' });
     }
 }
