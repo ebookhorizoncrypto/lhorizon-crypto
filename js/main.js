@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initSocialProofTicker();
     initEmailForm();
     initTestimonialsCarousel();
+    initLeadMagnetForm();
+    initWalletConnection();
 });
 
 /* ========================================
@@ -614,3 +616,64 @@ extraStyles.textContent = `
 document.head.appendChild(extraStyles);
 
 console.log('🌅 L\'Horizon Crypto - Landing Page Loaded');
+
+/* ========================================
+   WALLET CONNECTION (GLOBAL)
+======================================== */
+function initWalletConnection() {
+    const walletBtn = document.getElementById('header-wallet-btn');
+    const walletBtnText = document.getElementById('wallet-btn-text');
+    
+    if (!walletBtn || !walletBtnText) return;
+
+    let connectedAddress = null;
+
+    async function checkConnection() {
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) handleConnected(accounts[0]);
+            } catch (err) { }
+        }
+    }
+
+    async function connectWallet() {
+        if (typeof window.ethereum === 'undefined') {
+            alert('Veuillez installer MetaMask ou un wallet compatible.');
+            window.open('https://metamask.io/download/', '_blank');
+            return;
+        }
+        try {
+            walletBtn.disabled = true;
+            walletBtnText.textContent = 'Connexion...';
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            if (accounts.length > 0) handleConnected(accounts[0]);
+        } catch (err) {
+            alert('Connexion annulée.');
+        } finally {
+            walletBtn.disabled = false;
+            if (!connectedAddress) walletBtnText.textContent = 'Connecter Wallet';
+        }
+    }
+
+    function handleConnected(address) {
+        connectedAddress = address;
+        walletBtn.style.background = 'linear-gradient(135deg, #00ff88, #00cc6a)';
+        walletBtnText.innerHTML = `<span style="font-family:monospace">${address.slice(0, 6)}...${address.slice(-4)}</span>`;
+        localStorage.setItem('connectedWallet', address);
+    }
+
+    if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if (accounts.length === 0) {
+                connectedAddress = null;
+                walletBtn.style.background = 'linear-gradient(135deg, #627EEA, #4a5fc7)';
+                walletBtnText.textContent = 'Connecter Wallet';
+                localStorage.removeItem('connectedWallet');
+            } else handleConnected(accounts[0]);
+        });
+    }
+
+    walletBtn.addEventListener('click', connectWallet);
+    checkConnection();
+}
