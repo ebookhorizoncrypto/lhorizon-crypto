@@ -2797,3 +2797,54 @@ h3 {
         font-size: 1.5rem;
     }
 }
+/* ========================================
+   FAQ SECTION (Added)
+======================================== */
+
+.faq-section {
+    padding: var(--space-4xl) 0;
+    position: relative;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+}
+
+.faq-item {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    transition: all var(--transition-base);
+}
+
+.faq-item:hover {
+    transform: translateY(-5px);
+    border-color: rgba(247, 147, 26, 0.3);
+    box-shadow: var(--shadow-glow);
+}
+
+.faq-question {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+    align-items: center;
+}
+
+.faq-question span {
+    font-size: 1.5rem;
+}
+
+.faq-question h4 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.faq-item p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+}
