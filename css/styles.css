@@ -2797,6 +2797,7 @@ h3 {
         font-size: 1.5rem;
     }
 }
+
 /* ========================================
    FAQ SECTION (Added)
 ======================================== */
@@ -2852,37 +2853,104 @@ h3 {
 /* ========================================
    MOBILE MENU FIXES (Added)
 ======================================== */
+/* ========================================
+   MOBILE MENU FIXES (Premium & Responsive)
+======================================== */
 @media (max-width: 1024px) {
+
+    /* Ensure Hamburger is ALWAYS on top */
+    .mobile-menu-toggle {
+        display: flex !important;
+        position: relative;
+        z-index: 20005 !important;
+        /* Higher than menu */
+    }
+
     .nav-links {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        /* Center items vertically */
+        align-items: center;
+        /* Center items horizontally */
         position: fixed;
         top: 0;
         right: -100%;
-        width: 80%; /* Adjust width as needed */
-        max-width: 320px;
+        width: 100%;
+        /* Full screen width for mobile */
         height: 100vh;
-        background: #12121a; /* Hardcoded dark bg */
-        z-index: 10002 !important; /* Super high z-index */
-        padding-top: 80px;
-        transition: right 0.3s ease;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        background: rgba(10, 10, 15, 0.95);
+        /* Deep dark background */
+        backdrop-filter: blur(20px);
+        /* Glassmorphism */
+        z-index: 20000 !important;
+        padding: 0;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Smooth ease-out */
+        opacity: 0;
+        visibility: hidden;
     }
-    
+
     .nav-links.active {
         right: 0 !important;
         visibility: visible !important;
         opacity: 1 !important;
+        display: flex !important;
     }
-    
+
     .nav-links a {
-        color: #ffffff !important; /* Force white text */
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        padding: 15px 20px;
+        color: #ffffff !important;
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        /* Larger text */
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 20px;
+        border-bottom: none;
+        /* Remove separator */
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    /* Animated underline for links */
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: var(--gradient-primary);
+        transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+        width: 30px;
+    }
+
+    /* Mobile CTA Button */
+    .nav-cta-mobile {
+        display: block;
+        margin-top: 40px;
+        width: 80%;
+        max-width: 300px;
+        border-top: none;
+        padding-top: 0;
+    }
+
+    .nav-cta-mobile .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 16px;
         font-size: 1.1rem;
     }
 
     .mobile-menu-overlay {
-        z-index: 10001 !important; /* Below menu but above navbar */
+        z-index: 10005 !important;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
     }
 }
