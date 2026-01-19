@@ -1657,10 +1657,30 @@ h3 {
         font-size: 1rem;
     }
 
-    /* --- HEADER/NAV --- */
+    /* --- HEADER/NAV RESTORATION --- */
+    .mobile-menu-toggle {
+        display: flex !important;
+        z-index: 2000 !important;
+        /* Ensure on top */
+    }
+
+    /* Hide Desktop Buttons on Mobile (Fix Double Button) */
+    .nav-cta,
+    .btn-nav {
+        display: none !important;
+    }
+
+    /* Restore Mobile Menu Visibility */
+    .nav-links {
+        /* Ensuring the menu itself isn't hidden by global resets */
+        display: flex;
+    }
+
     .logo-img {
         height: 28px;
         /* Smaller Logo */
+        z-index: 2000;
+        position: relative;
     }
 
     /* Hide specific elements to declutter */
@@ -2849,8 +2869,10 @@ h3 {
         width: 80%;
         max-width: 320px;
         height: 100vh;
-        background: var(--bg-secondary);
-        flex-direction: column;
+        background: rgba(5, 5, 8, 0.99);
+        /* Solid dark background */
+        flex-direction: column !important;
+        /* Force column layout */
         align-items: stretch;
         justify-content: flex-start;
         padding: 100px 30px 40px;
