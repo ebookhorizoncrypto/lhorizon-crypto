@@ -2848,3 +2848,41 @@ h3 {
     line-height: 1.7;
     font-size: 1rem;
 }
+
+/* ========================================
+   MOBILE MENU FIXES (Added)
+======================================== */
+@media (max-width: 1024px) {
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%; /* Adjust width as needed */
+        max-width: 320px;
+        height: 100vh;
+        background: #12121a; /* Hardcoded dark bg */
+        z-index: 10002 !important; /* Super high z-index */
+        padding-top: 80px;
+        transition: right 0.3s ease;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    }
+    
+    .nav-links.active {
+        right: 0 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .nav-links a {
+        color: #ffffff !important; /* Force white text */
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding: 15px 20px;
+        font-size: 1.1rem;
+    }
+
+    .mobile-menu-overlay {
+        z-index: 10001 !important; /* Below menu but above navbar */
+    }
+}
