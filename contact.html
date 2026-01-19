@@ -488,18 +488,19 @@
 
                 const result = await response.json();
 
-                if (response.ok) {
-                    alert('✅ Merci ! Votre message a été envoyé. Nous vous répondrons sous 24h.');
-                    this.reset();
+                if (result.success) {
+                    showNotification('Message envoyé avec succès !', 'success');
+                    e.target.reset();
                 } else {
-                    throw new Error(result.error || 'Erreur');
+                    console.error('API Error:', result);
+                    showNotification(result.error || 'Erreur lors de l\'envoi. Vérifiez les logs console.', 'error');
                 }
             } catch (error) {
-                console.error('Contact form error:', error);
-                alert('❌ Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter par email.');
+                console.error('Fetch Error:', error);
+                showNotification('Erreur réseau : ' + error.message, 'error');
             } finally {
-                btn.disabled = false;
-                btn.textContent = originalText;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
             }
         });
 
