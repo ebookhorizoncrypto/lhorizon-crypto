@@ -2631,6 +2631,11 @@ h3 {
     visibility: visible;
 }
 
+/* Hide mobile-only CTA on desktop */
+.nav-cta-mobile {
+    display: none;
+}
+
 /* Mobile Menu Styles */
 @media (max-width: 968px) {
     .mobile-menu-toggle {
@@ -2686,6 +2691,7 @@ h3 {
     }
 
     .nav-cta-mobile {
+        display: block;
         margin-top: auto;
         padding-top: 30px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
