@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="FAQ L'Horizon Crypto - Toutes vos questions sur le guide, les récompenses 20$ USDC, et le Proof of Learning.">
+    <meta name="robots" content="index, follow">
+    <title>FAQ - L'Horizon Crypto</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo-horizon-crypto.png">
+    <link rel="apple-touch-icon" href="assets/logo-horizon-crypto.png">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/threejs.css">
+
+    <style>
+        /* FAQ Page Specific Styles */
+        .faq-page {
+            min-height: 100vh;
+            padding: calc(80px + var(--space-3xl)) 0 var(--space-4xl);
+        }
+
+        .faq-hero {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .faq-hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: var(--space-md);
+        }
+
+        .faq-hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .faq-search {
+            max-width: 500px;
+            margin: var(--space-xl) auto;
+            position: relative;
+        }
+
+        .faq-search input {
+            width: 100%;
+            padding: var(--space-md) var(--space-xl);
+            padding-left: 50px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .faq-search input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .faq-search::before {
+            content: "🔍";
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .faq-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            justify-content: center;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .faq-category-btn {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .faq-category-btn:hover,
+        .faq-category-btn.active {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+        }
+
+        .faq-section {
+            margin-bottom: var(--space-3xl);
+        }
+
+        .faq-section-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-section-icon {
+            font-size: 1.5rem;
+        }
+
+        .faq-section-title h2 {
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .faq-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+
+        .faq-item:hover {
+            border-color: rgba(247, 147, 26, 0.3);
+        }
+
+        .faq-question {
+            padding: var(--space-lg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-question span {
+            flex: 1;
+        }
+
+        .faq-toggle {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(247, 147, 26, 0.2);
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+            background: var(--accent-gold);
+            color: #000;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 var(--space-lg) var(--space-lg);
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .faq-answer-content a {
+            color: var(--accent-gold);
+            text-decoration: underline;
+        }
+
+        .faq-answer-content ul {
+            margin: var(--space-md) 0;
+            padding-left: var(--space-lg);
+        }
+
+        .faq-answer-content li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .faq-cta {
+            text-align: center;
+            padding: var(--space-3xl);
+            background: var(--bg-card);
+            border: 1px solid rgba(247, 147, 26, 0.3);
+            border-radius: var(--radius-xl);
+            margin-top: var(--space-3xl);
+        }
+
+        .faq-cta h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .faq-cta p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+        }
+
+        @media (max-width: 768px) {
+            .faq-categories {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: var(--space-sm);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="bg-gradient"></div>
+    <canvas id="threejs-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
+            </a>
+            <div class="nav-links">
+                <a href="index.html#concept">Concept</a>
+                <a href="offres.html">Nos Offres</a>
+                <a href="liens-utiles.html">Liens Utiles</a>
+                <a href="claim.html" style="color: var(--accent-green);">Réclamer 20$</a>
+                <a href="faq.html" class="active">FAQ</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
+                <a href="offres.html" class="btn btn-nav btn-glow">🚀 DÉBLOQUER 20$</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FAQ Page -->
+    <main class="faq-page">
+        <div class="container">
+            <!-- Hero -->
+            <div class="faq-hero">
+                <span class="section-badge">❓ Support</span>
+                <h1>Questions <span class="gradient-text">Fréquentes</span></h1>
+                <p>Trouvez rapidement les réponses à toutes vos questions sur L'Horizon Crypto, le guide, et la
+                    récompense de 20$ USDC.</p>
+
+                <div class="faq-search">
+                    <input type="text" id="faq-search" placeholder="Rechercher une question...">
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="faq-categories">
+                <button class="faq-category-btn active" data-category="all">Toutes</button>
+                <button class="faq-category-btn" data-category="guide">📚 Le Guide</button>
+                <button class="faq-category-btn" data-category="reward">💰 Récompense 20$</button>
+                <button class="faq-category-btn" data-category="payment">💳 Paiement</button>
+                <button class="faq-category-btn" data-category="discord">💬 Discord</button>
+                <button class="faq-category-btn" data-category="security">🔐 Sécurité</button>
+            </div>
+
+            <!-- Section: Le Guide -->
+            <section class="faq-section" data-category="guide">
+                <div class="faq-section-title">
+                    <span class="faq-section-icon">📚</span>
+                    <h2>Le Guide L'Horizon Crypto</h2>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>C'est quoi exactement L'Horizon Crypto ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>L'Horizon Crypto est un guide PDF premium de <strong>+100 pages</strong> qui vous
+                                    enseigne tout ce que vous devez savoir sur la crypto, de A à Z.</p>
+                                <p>Mais ce n'est pas qu'un simple ebook. C'est un système de <strong>"Proof of
+                                        Learning"</strong> (preuve d'apprentissage) : 12 mots-clés sont cachés dans le
+                                    guide. Si vous les trouvez tous, vous récupérez <strong>20$ USDC</strong>
+                                    directement sur votre wallet.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Le guide est-il adapté aux débutants complets ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Oui, absolument !</strong> Le guide est conçu pour partir de zéro. Nous
+                                    expliquons :</p>
+                                <ul>
+                                    <li>Ce qu'est vraiment la blockchain (sans jargon)</li>
+                                    <li>Comment créer et sécuriser votre premier wallet</li>
+                                    <li>Les erreurs fatales à éviter</li>
+                                    <li>La stratégie DCA (Dollar Cost Averaging)</li>
+                                    <li>Le nouveau cadre réglementaire MiCA 2026</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Quel format reçois-je après l'achat ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Vous recevez <strong>immédiatement par email</strong> :</p>
+                                <ul>
+                                    <li>Le guide complet au format <strong>PDF</strong> (lisible partout)</li>
+                                    <li>Un lien vers la page de réclamation des 20$ USDC</li>
+                                    <li>L'accès au Discord (selon le pack choisi)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Y a-t-il des mises à jour du contenu ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Oui ! La crypto évolue vite. Le guide est régulièrement mis à jour pour inclure les
+                                    dernières informations (MiCA, nouveaux airdrops, etc.).</p>
+                                <p>Les membres <strong>Pro</strong> et <strong>VIP</strong> reçoivent les mises à jour
+                                    gratuitement via le Discord.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Récompense 20$ -->
+            <section class="faq-section" data-category="reward">
+                <div class="faq-section-title">
+                    <span class="faq-section-icon">💰</span>
+                    <h2>La Récompense 20$ USDC</h2>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Comment fonctionne la récompense ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>C'est simple :</p>
+                                <ul>
+                                    <li><strong>1.</strong> Lisez le guide complet</li>
+                                    <li><strong>2.</strong> Trouvez les 12 mots-clés cachés (un par chapitre)</li>
+                                    <li><strong>3.</strong> Rendez-vous sur <a href="claim.html">la page Claim</a></li>
+                                    <li><strong>4.</strong> Connectez votre wallet et entrez les 12 mots</li>
+                                    <li><strong>5.</strong> Recevez 20$ USDC instantanément !</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>C'est vraiment 20$ garantis ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Oui, 100% garanti</strong> si vous trouvez les 12 mots-clés. C'est notre
+                                    système de "Proof of Learning" :</p>
+                                <p>Nous croyons que ceux qui <strong>lisent vraiment</strong> méritent d'être
+                                    récompensés. Ce n'est pas un tirage au sort, c'est une récompense pour votre
+                                    apprentissage.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>C'est quoi l'USDC et le réseau Base ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>USDC</strong> (USD Coin) est une crypto-monnaie stable. 1 USDC = 1 dollar.
+                                    Elle ne fluctue pas comme Bitcoin.</p>
+                                <p><strong>Base</strong> est une blockchain Layer 2 créée par Coinbase. Les frais de
+                                    transaction sont très bas (&lt;0.01$) et c'est rapide (quelques secondes).</p>
+                                <p>Le guide vous explique comment ajouter Base à votre MetaMask en 2 clics.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Et si je ne trouve pas les 12 mots ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Si vous lisez attentivement, vous les trouverez. Ils sont <strong>soulignés ou mis en
+                                        évidence</strong> dans le texte.</p>
+                                <p>Si vraiment vous bloquez, les membres <strong>VIP</strong> peuvent demander des
+                                    indices dans le Discord privé.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Combien de temps pour recevoir les 20$ ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Instantanément !</strong> Dès que vous entrez les 12 bons mots et que votre
+                                    wallet est connecté, les 20$ USDC sont envoyés automatiquement.</p>
+                                <p>Vous pouvez vérifier la transaction sur <a href="https://basescan.org"
+                                        target="_blank">BaseScan</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Paiement -->
+            <section class="faq-section" data-category="payment">
+                <div class="faq-section-title">
+                    <span class="faq-section-icon">💳</span>
+                    <h2>Paiement & Facturation</h2>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Quels moyens de paiement acceptez-vous ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Nous acceptons :</p>
+                                <ul>
+                                    <li>Cartes bancaires (Visa, Mastercard, Amex)</li>
+                                    <li>Apple Pay</li>
+                                    <li>Google Pay</li>
+                                    <li>PayPal</li>
+                                </ul>
+                                <p>Tous les paiements sont sécurisés via <strong>Stripe</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Puis-je me faire rembourser ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Oui !</strong> Nous offrons une garantie <strong>30 jours satisfait ou
+                                        remboursé</strong>.</p>
+                                <p>Si le guide ne vous convient pas, envoyez-nous un email à <a
+                                        href="mailto:contact@ebook-horizoncrypto.com">contact@ebook-horizoncrypto.com</a>
+                                    et nous vous remboursons intégralement.</p>
+                                <p>Note : La récompense de 20$ sera déduite si elle a déjà été réclamée.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Vais-je recevoir une facture ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Oui, une facture vous est automatiquement envoyée par email après l'achat.</p>
+                                <p>Pour toute demande de facture personnalisée, contactez-nous.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>C'est quoi la différence entre les packs ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Pack Solo (99€)</strong> : Le guide + récompense 20$ USDC</p>
+                                <p><strong>Pack Pro (249€)</strong> : Solo + 3 mois Discord (87€ offerts) + support
+                                    prioritaire + masterclass</p>
+                                <p><strong>Pack VIP (497€)</strong> : Pro + 6 mois Discord (174€ offerts) + 1h coaching
+                                    + analyse portefeuille</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Discord -->
+            <section class="faq-section" data-category="discord">
+                <div class="faq-section-title">
+                    <span class="faq-section-icon">💬</span>
+                    <h2>Communauté Discord</h2>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Comment accéder au Discord ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Après l'achat d'un pack <strong>Pro</strong> ou <strong>VIP</strong>, vous recevez un
+                                    lien d'invitation par email.</p>
+                                <p>Votre rôle est automatiquement attribué via <strong>Whop</strong> (connectez votre
+                                    compte Discord à Whop).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Que contient le Discord ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <ul>
+                                    <li>📢 Alertes airdrops et opportunités</li>
+                                    <li>🎓 Masterclass mensuelles en direct</li>
+                                    <li>💬 Échanges avec la communauté</li>
+                                    <li>🤖 Assistant IA disponible 24/7</li>
+                                    <li>📈 Analyses de marché exclusives</li>
+                                    <li>🎫 Support via tickets privés</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Combien coûte l'abonnement Discord après la période offerte ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Après les 3 mois (Pro) ou 6 mois (VIP) offerts, l'abonnement est de
+                                    <strong>29€/mois</strong>.</p>
+                                <p>C'est sans engagement et résiliable en 1 clic directement sur Whop.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Sécurité -->
+            <section class="faq-section" data-category="security">
+                <div class="faq-section-title">
+                    <span class="faq-section-icon">🔐</span>
+                    <h2>Sécurité & Confidentialité</h2>
+                </div>
+                <div class="faq-accordion">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Est-ce que je dois faire un KYC ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Non !</strong> Aucune inscription sur une plateforme d'échange, aucune
+                                    vérification d'identité.</p>
+                                <p>Vous avez juste besoin d'un wallet comme MetaMask pour recevoir vos 20$ USDC.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Dois-je partager ma seed phrase ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>NON, JAMAIS !</strong></p>
+                                <p>Nous ne vous demanderons <strong>jamais</strong> votre seed phrase (12/24 mots de
+                                    récupération).</p>
+                                <p>Si quelqu'un vous la demande, c'est une <strong>ARNAQUE</strong>. Bloquez cette
+                                    personne immédiatement.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Le paiement est-il sécurisé ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p><strong>Oui, 100%</strong>. Nous utilisons Stripe, le leader mondial du paiement en
+                                    ligne.</p>
+                                <p>Vos données bancaires ne sont jamais stockées sur nos serveurs.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Êtes-vous conforme à la réglementation ?</span>
+                            <div class="faq-toggle">+</div>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                <p>Nous vendons un <strong>produit éducatif</strong>, pas des services d'investissement.
+                                </p>
+                                <p>La récompense de 20$ USDC est un <strong>bonus pédagogique</strong>, pas un rendement
+                                    garanti sur investissement.</p>
+                                <p>Nous respectons le RGPD et les CGV sont disponibles sur notre site.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <div class="faq-cta">
+                <h3>Vous n'avez pas trouvé votre réponse ?</h3>
+                <p>Notre équipe est là pour vous aider. Contactez-nous et nous vous répondons sous 24h.</p>
+                <a href="contact.html" class="btn btn-primary">📧 Nous Contacter</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-clean">
+        <div class="container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="footer-logo-img">
+                    <p class="footer-tagline">Le Guide de l'Apprentissage Crypto</p>
+                </div>
+
+                <div class="footer-nav">
+                    <div class="footer-nav-col">
+                        <h4>Navigation</h4>
+                        <a href="index.html#concept">Concept</a>
+                        <a href="offres.html">Nos Offres</a>
+                        <a href="faq.html">FAQ</a>
+                    </div>
+                    <div class="footer-nav-col">
+                        <h4>Support</h4>
+                        <a href="contact.html">Contact</a>
+                        <a href="mailto:contact@ebook-horizoncrypto.com">Email</a>
+                        <a href="claim.html">Réclamer 20$</a>
+                    </div>
+                    <div class="footer-nav-col">
+                        <h4>Légal</h4>
+                        <a href="mentions-legales.html">Mentions Légales</a>
+                        <a href="cgv.html">CGV</a>
+                        <a href="confidentialite.html">Confidentialité</a>
+                        <a href="remboursement.html">Remboursement</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
+                <div class="footer-badges">
+                    <span class="footer-badge">🔐 Pas de KYC</span>
+                    <span class="footer-badge">💰 Récompense 20$ USDC</span>
+                    <span class="footer-badge">🛡️ Garantie 30 jours</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threejs-effects.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.closest('.faq-item');
+                const wasOpen = item.classList.contains('open');
+
+                // Close all items
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+                // Open clicked item if it wasn't already open
+                if (!wasOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+
+        // Category Filter
+        document.querySelectorAll('.faq-category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                document.querySelectorAll('.faq-category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const category = btn.dataset.category;
+
+                // Show/hide sections
+                document.querySelectorAll('.faq-section').forEach(section => {
+                    if (category === 'all' || section.dataset.category === category) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Search
+        document.getElementById('faq-search').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'block' : 'none';
+            });
+
+            // Show all sections when searching
+            document.querySelectorAll('.faq-section').forEach(s => s.style.display = 'block');
+        });
+    </script>
+</body>
+
+</html>

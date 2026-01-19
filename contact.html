@@ -265,6 +265,7 @@
                 <a href="offres.html">Nos Offres</a>
                 <a href="liens-utiles.html">Liens Utiles</a>
                 <a href="claim.html" style="color: var(--accent-green);">Réclamer 20$</a>
+                <a href="faq.html">FAQ</a>
                 <a href="index.html#avis">Avis</a>
                 <a href="contact.html" class="active">Contact</a>
             </div>
@@ -457,19 +458,40 @@
 
     <script>
         // Contact Form Submission
-        document.getElementById('contact-form').addEventListener('submit', function (e) {
+        document.getElementById('contact-form').addEventListener('submit', async function (e) {
             e.preventDefault();
+
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ Envoi en cours...';
 
             // Get form data
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
 
-            // Here you would typically send to your backend
-            console.log('Form submitted:', data);
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
 
-            // Show success message
-            alert('Merci ! Votre message a été envoyé. Nous vous répondrons sous 24h.');
-            this.reset();
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('✅ Merci ! Votre message a été envoyé. Nous vous répondrons sous 24h.');
+                    this.reset();
+                } else {
+                    throw new Error(result.error || 'Erreur');
+                }
+            } catch (error) {
+                console.error('Contact form error:', error);
+                alert('❌ Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter par email.');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
         });
 
         // Active nav link

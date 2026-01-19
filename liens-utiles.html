@@ -232,6 +232,7 @@
             <a href="offres.html">Nos Offres</a>
             <a href="liens-utiles.html" class="active">Liens Utiles</a>
             <a href="claim.html" style="color: var(--accent-green);">Réclamer 20$</a>
+            <a href="faq.html">FAQ</a>
             <a href="index.html#avis">Avis</a>
             <a href="contact.html">Contact</a>
         </div>
@@ -522,86 +523,86 @@
 <script src="js/threejs-effects.js"></script>
 <script src="js/main.js"></script>
 <script>
-        // Wallet Connection Logic for Header Button
-        const walletBtn = document.getElementById('header-wallet-btn');
-        const walletBtnText = document.getElementById('wallet-btn-text');
+    // Wallet Connection Logic for Header Button
+    const walletBtn = document.getElementById('header-wallet-btn');
+    const walletBtnText = document.getElementById('wallet-btn-text');
 
-        let connectedAddress = null;
+    let connectedAddress = null;
 
-        // Check if already connected
-        async function checkConnection() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-                    if (accounts.length > 0) {
-                        handleConnected(accounts[0]);
-                    }
-                } catch (err) {
-                    console.log('Not connected');
-                }
-            }
-        }
-
-        // Connect wallet
-        async function connectWallet() {
-            if (typeof window.ethereum === 'undefined') {
-                alert('Veuillez installer MetaMask ou un autre wallet compatible.');
-                window.open('https://metamask.io/download/', '_blank');
-                return;
-            }
-
+    // Check if already connected
+    async function checkConnection() {
+        if (typeof window.ethereum !== 'undefined') {
             try {
-                walletBtn.disabled = true;
-                walletBtnText.textContent = 'Connexion...';
-
-                const accounts = await window.ethereum.request({
-                    method: 'eth_requestAccounts'
-                });
-
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
                 if (accounts.length > 0) {
                     handleConnected(accounts[0]);
                 }
             } catch (err) {
-                console.error('Connection error:', err);
-                alert('Connexion annulée.');
-            } finally {
-                walletBtn.disabled = false;
-                if (!connectedAddress) {
-                    walletBtnText.textContent = 'Connecter Wallet';
-                }
+                console.log('Not connected');
             }
         }
+    }
 
-        function handleConnected(address) {
-            connectedAddress = address;
-            const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
-
-            walletBtn.classList.add('connected');
-            walletBtnText.innerHTML = `<span class="wallet-address-short">${shortAddress}</span>`;
-
-            // Store in localStorage
-            localStorage.setItem('connectedWallet', address);
+    // Connect wallet
+    async function connectWallet() {
+        if (typeof window.ethereum === 'undefined') {
+            alert('Veuillez installer MetaMask ou un autre wallet compatible.');
+            window.open('https://metamask.io/download/', '_blank');
+            return;
         }
 
-        // Disconnect on account change
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length === 0) {
-                    connectedAddress = null;
-                    walletBtn.classList.remove('connected');
-                    walletBtnText.textContent = 'Connecter Wallet';
-                    localStorage.removeItem('connectedWallet');
-                } else {
-                    handleConnected(accounts[0]);
-                }
+        try {
+            walletBtn.disabled = true;
+            walletBtnText.textContent = 'Connexion...';
+
+            const accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
             });
+
+            if (accounts.length > 0) {
+                handleConnected(accounts[0]);
+            }
+        } catch (err) {
+            console.error('Connection error:', err);
+            alert('Connexion annulée.');
+        } finally {
+            walletBtn.disabled = false;
+            if (!connectedAddress) {
+                walletBtnText.textContent = 'Connecter Wallet';
+            }
         }
+    }
 
-        // Event listener
-        walletBtn.addEventListener('click', connectWallet);
+    function handleConnected(address) {
+        connectedAddress = address;
+        const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
 
-        // Check on load
-        checkConnection();
+        walletBtn.classList.add('connected');
+        walletBtnText.innerHTML = `<span class="wallet-address-short">${shortAddress}</span>`;
+
+        // Store in localStorage
+        localStorage.setItem('connectedWallet', address);
+    }
+
+    // Disconnect on account change
+    if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if (accounts.length === 0) {
+                connectedAddress = null;
+                walletBtn.classList.remove('connected');
+                walletBtnText.textContent = 'Connecter Wallet';
+                localStorage.removeItem('connectedWallet');
+            } else {
+                handleConnected(accounts[0]);
+            }
+        });
+    }
+
+    // Event listener
+    walletBtn.addEventListener('click', connectWallet);
+
+    // Check on load
+    checkConnection();
 </script>
 </body>
 
