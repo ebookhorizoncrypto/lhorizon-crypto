@@ -2675,6 +2675,10 @@ h3 {
         /* Ensure visibility */
     }
 
+    .nav-links .logo {
+        display: none !important;
+    }
+
     .nav-links a:last-child {
         border-bottom: none;
     }
