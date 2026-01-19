@@ -1,7 +1,8 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const fromEmail = process.env.FROM_EMAIL || 'L\'Horizon Crypto <noreply@ebook-horizoncrypto.com>';
+// Use Resend's test domain if custom domain not verified
+const fromEmail = process.env.FROM_EMAIL || 'L\'Horizon Crypto <onboarding@resend.dev>';
 const domain = process.env.DOMAIN || 'https://lhorizon-crypto.vercel.app';
 
 export default async function handler(req, res) {
