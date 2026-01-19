@@ -92,13 +92,13 @@ contract ProofOfLearning is ERC2771Context, Ownable, Pausable, ReentrancyGuard {
         require(!hasWalletClaimed[recipient], "Wallet already claimed");
         require(usdc.balanceOf(address(this)) >= rewardAmount, "Insufficient USDC balance");
         
-        // 2. Verify Signature (Security against Fraud)
+    // 2. Verify Signature (Security against Fraud)
         // Message structure: keccak256(recipient + emailHash + contractAddress)
         // This prevents replay attacks on other contracts or for other users
         bytes32 messageHash = keccak256(abi.encodePacked(recipient, emailHash, address(this)));
-        bytes32 ethSignedMessageHash = messageHash.toEthSignedMessageHash();
+        bytes32 ethSignedMessageHash = ECDSA.toEthSignedMessageHash(messageHash);
         
-        address signer = ethSignedMessageHash.recover(signature);
+        address signer = ECDSA.recover(ethSignedMessageHash, signature);
         require(signer == trustedSigner, "Invalid Backend Signature");
 
         // 3. Effects
