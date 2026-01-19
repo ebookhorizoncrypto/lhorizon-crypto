@@ -13,287 +13,293 @@ document.addEventListener('DOMContentLoaded', () => {
     initSocialProofTicker();
     initEmailForm();
     initTestimonialsCarousel();
+    initGDPRPopup(); // Add GDPR Popup
+
+    // Check if Stripe script is loaded and init
+    if (typeof initStripeCheckout === 'function') {
+        initStripeCheckout();
+    }
+});
 
 
+/* ========================================
+   MOBILE HAMBURGER MENU
+======================================== */
+function initMobileMenu() {
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const overlay = document.querySelector('.mobile-menu-overlay');
 
-    /* ========================================
-       MOBILE HAMBURGER MENU
-    ======================================== */
-    function initMobileMenu() {
-        const toggle = document.querySelector('.mobile-menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        const overlay = document.querySelector('.mobile-menu-overlay');
+    if (!toggle || !navLinks) return;
 
-        if (!toggle || !navLinks) return;
-
-        function openMenu() {
-            toggle.classList.add('active');
-            navLinks.classList.add('active');
-            overlay?.classList.add('active');
-            document.body.classList.add('menu-open');
-        }
-
-        function closeMenu() {
-            toggle.classList.remove('active');
-            navLinks.classList.remove('active');
-            overlay?.classList.remove('active');
-            document.body.classList.remove('menu-open');
-        }
-
-        toggle.addEventListener('click', () => {
-            if (navLinks.classList.contains('active')) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
-        });
-
-        // Close on overlay click
-        overlay?.addEventListener('click', closeMenu);
-
-        // Close on nav link click
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
-
-        // Close on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                closeMenu();
-            }
-        });
+    function openMenu() {
+        toggle.classList.add('active');
+        navLinks.classList.add('active');
+        overlay?.classList.add('active');
+        document.body.classList.add('menu-open');
     }
 
-    /* ========================================
-       CINEMATIC INTRO VIDEO
-    ======================================== */
-    function initCinematicIntro() {
-        const splash = document.getElementById('intro-splash');
-        const video = document.getElementById('intro-video');
-        const skipBtn = document.getElementById('skip-intro');
-        const progressBar = document.getElementById('intro-progress-bar');
-
-        // Check if elements exist
-        if (!splash || !video) return;
-
-        // Check if user has already seen the intro (localStorage)
-        const hasSeenIntro = localStorage.getItem('lhorizon_intro_seen');
-
-        if (hasSeenIntro) {
-            // Immediately hide intro for returning visitors
-            splash.classList.add('hidden');
-            document.body.classList.add('intro-seen');
-            return;
-        }
-
-        // Update progress bar as video plays
-        video.addEventListener('timeupdate', () => {
-            if (video.duration) {
-                const progress = (video.currentTime / video.duration) * 100;
-                progressBar.style.width = progress + '%';
-            }
-        });
-
-        // Auto-hide when video ends
-        video.addEventListener('ended', () => {
-            hideIntro();
-        });
-
-        // Skip button click
-        if (skipBtn) {
-            skipBtn.addEventListener('click', () => {
-                hideIntro();
-            });
-        }
-
-        // Also allow keyboard skip (Enter or Space or Escape)
-        document.addEventListener('keydown', (e) => {
-            if (!splash.classList.contains('hidden') && (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape')) {
-                e.preventDefault();
-                hideIntro();
-            }
-        });
-
-        function hideIntro() {
-            splash.classList.add('hidden');
-            video.pause();
-
-            // Remember that user has seen the intro
-            localStorage.setItem('lhorizon_intro_seen', 'true');
-
-            // Remove splash from DOM after animation
-            setTimeout(() => {
-                splash.remove();
-            }, 1000);
-        }
+    function closeMenu() {
+        toggle.classList.remove('active');
+        navLinks.classList.remove('active');
+        overlay?.classList.remove('active');
+        document.body.classList.remove('menu-open');
     }
 
-    /* ========================================
-       TESTIMONIALS INFINITE CAROUSEL
-    ======================================== */
-    function initTestimonialsCarousel() {
-        const carousel = document.querySelector('.testimonials-carousel');
-        if (!carousel) return;
-
-        // Duplicate all cards for seamless infinite scroll
-        const cards = carousel.querySelectorAll('.testimonial-card');
-        cards.forEach(card => {
-            const clone = card.cloneNode(true);
-            carousel.appendChild(clone);
-        });
-    }
-
-    /* ========================================
-       LEAD MAGNET FORM - FREE EXTRACT
-    ======================================== */
-    function initLeadMagnetForm() {
-        const form = document.getElementById('lead-magnet-form');
-        if (!form) return;
-
-        const emailInput = document.getElementById('lead-email');
-        const btnText = form.querySelector('.btn-text');
-        const btnLoading = form.querySelector('.btn-loading');
-        const successDiv = document.getElementById('lead-success');
-        const errorDiv = document.getElementById('lead-error');
-
-        // Check if already subscribed
-        if (localStorage.getItem('lhorizon_lead_subscribed')) {
-            form.style.display = 'none';
-            successDiv.style.display = 'block';
-            successDiv.querySelector('h3').textContent = 'Déjà inscrit !';
-            successDiv.querySelector('p').textContent = 'Vérifiez votre email pour l\'extrait.';
-            return;
+    toggle.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+            closeMenu();
+        } else {
+            openMenu();
         }
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = emailInput.value.trim();
-            if (!email || !email.includes('@')) {
-                errorDiv.style.display = 'block';
-                errorDiv.querySelector('p').textContent = '❌ Veuillez entrer un email valide.';
-                return;
-            }
-
-            // Show loading
-            btnText.style.display = 'none';
-            btnLoading.style.display = 'inline';
-            errorDiv.style.display = 'none';
-
-            try {
-                // API call to send extract email
-                const response = await fetch('/api/lead-magnet', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-
-                if (response.ok) {
-                    // Success
-                    form.style.display = 'none';
-                    successDiv.style.display = 'block';
-                    localStorage.setItem('lhorizon_lead_subscribed', email);
-
-                    // Store email for later
-                    localStorage.setItem('user_email', email);
-
-                    // Track conversion
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'generate_lead', {
-                            currency: 'EUR',
-                            value: 0
-                        });
-                    }
-                    if (typeof fbq !== 'undefined') {
-                        fbq('track', 'Lead');
-                    }
-                } else {
-                    throw new Error('Server error');
-                }
-            } catch (error) {
-                console.error('Lead magnet error:', error);
-
-                // For demo mode without backend, simulate success
-                if (error.message.includes('Failed to fetch')) {
-                    form.style.display = 'none';
-                    successDiv.style.display = 'block';
-                    localStorage.setItem('lhorizon_lead_subscribed', email);
-                    localStorage.setItem('user_email', email);
-                    console.log('📧 Demo mode: Email would be sent to', email);
-                } else {
-                    errorDiv.style.display = 'block';
-                    errorDiv.querySelector('p').textContent = '❌ Une erreur s\'est produite. Réessayez.';
-                    btnText.style.display = 'inline';
-                    btnLoading.style.display = 'none';
-                }
-            }
-        });
-    }
-
-    // Add to DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
-        initLeadMagnetForm();
-
-        // Load Crypto Ticker
-        const script = document.createElement('script');
-        script.src = 'js/crypto-ticker.js';
-        document.body.appendChild(script);
     });
 
+    // Close on overlay click
+    overlay?.addEventListener('click', closeMenu);
 
-    /* ========================================
-       NAVBAR SCROLL EFFECT
-    ======================================== */
-    function initNavbarScroll() {
-        const navbar = document.querySelector('.navbar');
-        if (!navbar) return;
+    // Close on nav link click
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
 
-        let lastScroll = 0;
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+}
 
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
+/* ========================================
+   CINEMATIC INTRO VIDEO
+======================================== */
+function initCinematicIntro() {
+    const splash = document.getElementById('intro-splash');
+    const video = document.getElementById('intro-video');
+    const skipBtn = document.getElementById('skip-intro');
+    const progressBar = document.getElementById('intro-progress-bar');
 
-            // Add/remove background opacity based on scroll
-            if (currentScroll > 50) {
-                navbar.style.background = 'rgba(10, 10, 15, 0.98)';
-                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
-            } else {
-                navbar.style.background = 'rgba(10, 10, 15, 0.8)';
-                navbar.style.boxShadow = 'none';
-            }
+    // Check if elements exist
+    if (!splash || !video) return;
 
-            // Hide/show navbar on scroll direction
-            if (currentScroll > lastScroll && currentScroll > 200) {
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                navbar.style.transform = 'translateY(0)';
-            }
+    // Check if user has already seen the intro (localStorage)
+    const hasSeenIntro = localStorage.getItem('lhorizon_intro_seen');
 
-            lastScroll = currentScroll;
+    if (hasSeenIntro) {
+        // Immediately hide intro for returning visitors
+        splash.classList.add('hidden');
+        document.body.classList.add('intro-seen');
+        return;
+    }
+
+    // Update progress bar as video plays
+    video.addEventListener('timeupdate', () => {
+        if (video.duration) {
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = progress + '%';
+        }
+    });
+
+    // Auto-hide when video ends
+    video.addEventListener('ended', () => {
+        hideIntro();
+    });
+
+    // Skip button click
+    if (skipBtn) {
+        skipBtn.addEventListener('click', () => {
+            hideIntro();
         });
     }
 
-    /* ========================================
-       SCROLL ANIMATIONS (Fade In)
-    ======================================== */
-    function initScrollAnimations() {
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
+    // Also allow keyboard skip (Enter or Space or Escape)
+    document.addEventListener('keydown', (e) => {
+        if (!splash.classList.contains('hidden') && (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape')) {
+            e.preventDefault();
+            hideIntro();
+        }
+    });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                    observer.unobserve(entry.target);
-                }
+    function hideIntro() {
+        splash.classList.add('hidden');
+        video.pause();
+
+        // Remember that user has seen the intro
+        localStorage.setItem('lhorizon_intro_seen', 'true');
+
+        // Remove splash from DOM after animation
+        setTimeout(() => {
+            splash.remove();
+        }, 1000);
+    }
+}
+
+/* ========================================
+   TESTIMONIALS INFINITE CAROUSEL
+======================================== */
+function initTestimonialsCarousel() {
+    const carousel = document.querySelector('.testimonials-carousel');
+    if (!carousel) return;
+
+    // Duplicate all cards for seamless infinite scroll
+    const cards = carousel.querySelectorAll('.testimonial-card');
+    cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        carousel.appendChild(clone);
+    });
+}
+
+/* ========================================
+   LEAD MAGNET FORM - FREE EXTRACT
+======================================== */
+function initLeadMagnetForm() {
+    const form = document.getElementById('lead-magnet-form');
+    if (!form) return;
+
+    const emailInput = document.getElementById('lead-email');
+    const btnText = form.querySelector('.btn-text');
+    const btnLoading = form.querySelector('.btn-loading');
+    const successDiv = document.getElementById('lead-success');
+    const errorDiv = document.getElementById('lead-error');
+
+    // Check if already subscribed
+    if (localStorage.getItem('lhorizon_lead_subscribed')) {
+        form.style.display = 'none';
+        successDiv.style.display = 'block';
+        successDiv.querySelector('h3').textContent = 'Déjà inscrit !';
+        successDiv.querySelector('p').textContent = 'Vérifiez votre email pour l\'extrait.';
+        return;
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        if (!email || !email.includes('@')) {
+            errorDiv.style.display = 'block';
+            errorDiv.querySelector('p').textContent = '❌ Veuillez entrer un email valide.';
+            return;
+        }
+
+        // Show loading
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+        errorDiv.style.display = 'none';
+
+        try {
+            // API call to send extract email
+            const response = await fetch('/api/lead-magnet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
             });
-        }, observerOptions);
 
-        // Elements to animate
-        const animateElements = document.querySelectorAll(`
+            if (response.ok) {
+                // Success
+                form.style.display = 'none';
+                successDiv.style.display = 'block';
+                localStorage.setItem('lhorizon_lead_subscribed', email);
+
+                // Store email for later
+                localStorage.setItem('user_email', email);
+
+                // Track conversion
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'generate_lead', {
+                        currency: 'EUR',
+                        value: 0
+                    });
+                }
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead');
+                }
+            } else {
+                throw new Error('Server error');
+            }
+        } catch (error) {
+            console.error('Lead magnet error:', error);
+
+            // For demo mode without backend, simulate success
+            if (error.message.includes('Failed to fetch')) {
+                form.style.display = 'none';
+                successDiv.style.display = 'block';
+                localStorage.setItem('lhorizon_lead_subscribed', email);
+                localStorage.setItem('user_email', email);
+                console.log('📧 Demo mode: Email would be sent to', email);
+            } else {
+                errorDiv.style.display = 'block';
+                errorDiv.querySelector('p').textContent = '❌ Une erreur s\'est produite. Réessayez.';
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+            }
+        }
+    });
+}
+
+// Add to DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    initLeadMagnetForm();
+
+    // Load Crypto Ticker
+    const script = document.createElement('script');
+    script.src = 'js/crypto-ticker.js';
+    document.body.appendChild(script);
+});
+
+
+/* ========================================
+   NAVBAR SCROLL EFFECT
+======================================== */
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+
+        // Add/remove background opacity based on scroll
+        if (currentScroll > 50) {
+            navbar.style.background = 'rgba(10, 10, 15, 0.98)';
+            navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
+        } else {
+            navbar.style.background = 'rgba(10, 10, 15, 0.8)';
+            navbar.style.boxShadow = 'none';
+        }
+
+        // Hide/show navbar on scroll direction
+        if (currentScroll > lastScroll && currentScroll > 200) {
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            navbar.style.transform = 'translateY(0)';
+        }
+
+        lastScroll = currentScroll;
+    });
+}
+
+/* ========================================
+   SCROLL ANIMATIONS (Fade In)
+======================================== */
+function initScrollAnimations() {
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Elements to animate
+    const animateElements = document.querySelectorAll(`
         .trust-card,
         .preview-card,
         .program-card,
@@ -307,82 +313,82 @@ document.addEventListener('DOMContentLoaded', () => {
         .urgency-box
     `);
 
-        animateElements.forEach((el, index) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = `opacity 0.6s ease ${(index % 6) * 0.1}s, transform 0.6s ease ${(index % 6) * 0.1}s`;
-            observer.observe(el);
-        });
-    }
+    animateElements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = `opacity 0.6s ease ${(index % 6) * 0.1}s, transform 0.6s ease ${(index % 6) * 0.1}s`;
+        observer.observe(el);
+    });
+}
 
-    // Add CSS class for animated elements
-    const style = document.createElement('style');
-    style.textContent = `
+// Add CSS class for animated elements
+const style = document.createElement('style');
+style.textContent = `
     .animate-in {
         opacity: 1 !important;
         transform: translateY(0) !important;
     }
 `;
-    document.head.appendChild(style);
+document.head.appendChild(style);
 
-    /* ========================================
-       SMOOTH SCROLL
-    ======================================== */
-    function initSmoothScroll() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+/* ========================================
+   SMOOTH SCROLL
+======================================== */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
 
-                if (target) {
-                    const offsetTop = target.offsetTop - 100;
+            if (target) {
+                const offsetTop = target.offsetTop - 100;
 
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
         });
-    }
+    });
+}
 
-    /* ========================================
-       BUTTON EFFECTS
-    ======================================== */
-    function initButtonEffects() {
-        const buttons = document.querySelectorAll('.btn-primary');
+/* ========================================
+   BUTTON EFFECTS
+======================================== */
+function initButtonEffects() {
+    const buttons = document.querySelectorAll('.btn-primary');
 
-        buttons.forEach(button => {
-            button.addEventListener('mouseenter', function (e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function (e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
 
-                this.style.setProperty('--mouse-x', `${x}px`);
-                this.style.setProperty('--mouse-y', `${y}px`);
-            });
-
-            // Add ripple effect on click
-            button.addEventListener('click', function (e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const ripple = document.createElement('span');
-                ripple.className = 'ripple';
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
-
-                this.appendChild(ripple);
-
-                setTimeout(() => ripple.remove(), 1000);
-            });
+            this.style.setProperty('--mouse-x', `${x}px`);
+            this.style.setProperty('--mouse-y', `${y}px`);
         });
-    }
 
-    // Add ripple styles
-    const rippleStyle = document.createElement('style');
-    rippleStyle.textContent = `
+        // Add ripple effect on click
+        button.addEventListener('click', function (e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+
+            this.appendChild(ripple);
+
+            setTimeout(() => ripple.remove(), 1000);
+        });
+    });
+}
+
+// Add ripple styles
+const rippleStyle = document.createElement('style');
+rippleStyle.textContent = `
     .btn-primary {
         position: relative;
         overflow: hidden;
@@ -406,151 +412,151 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 `;
-    document.head.appendChild(rippleStyle);
+document.head.appendChild(rippleStyle);
 
-    /* ========================================
-       SOCIAL PROOF TICKER
-    ======================================== */
-    function initSocialProofTicker() {
-        const ticker = document.querySelector('.ticker-content');
-        if (!ticker) return;
+/* ========================================
+   SOCIAL PROOF TICKER
+======================================== */
+function initSocialProofTicker() {
+    const ticker = document.querySelector('.ticker-content');
+    if (!ticker) return;
 
-        // Duplicate content for seamless loop
-        const content = ticker.innerHTML;
-        ticker.innerHTML = content + content;
-    }
+    // Duplicate content for seamless loop
+    const content = ticker.innerHTML;
+    ticker.innerHTML = content + content;
+}
 
-    /* ========================================
-       EMAIL FORM HANDLING
-    ======================================== */
-    function initEmailForm() {
-        const form = document.getElementById('email-form');
-        const modal = document.getElementById('success-modal');
+/* ========================================
+   EMAIL FORM HANDLING
+======================================== */
+function initEmailForm() {
+    const form = document.getElementById('email-form');
+    const modal = document.getElementById('success-modal');
 
-        if (!form) return;
+    if (!form) return;
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            const emailInput = document.getElementById('email-input');
-            const email = emailInput.value.trim();
-            const submitBtn = form.querySelector('button[type="submit"]');
+        const emailInput = document.getElementById('email-input');
+        const email = emailInput.value.trim();
+        const submitBtn = form.querySelector('button[type="submit"]');
 
-            // Validate email
-            if (!isValidEmail(email)) {
-                showNotification('Veuillez entrer une adresse email valide.', 'error');
-                return;
-            }
-
-            // Show loading state
-            const originalText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="btn-icon">⏳</span> Envoi...';
-
-            // Simulate API call
-            await simulateApiCall(email);
-
-            // Show success
-            if (modal) {
-                modal.classList.add('active');
-                createConfetti();
-            } else {
-                showNotification('Merci ! Vérifiez votre email pour recevoir le guide gratuit.', 'success');
-                createConfetti();
-            }
-
-            // Reset form
-            form.reset();
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-
-            // Store email
-            storeEmail(email);
-        });
-
-        // Modal close handlers
-        const modalClose = document.getElementById('modal-close');
-        if (modalClose && modal) {
-            modalClose.addEventListener('click', () => modal.classList.remove('active'));
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.classList.remove('active');
-            });
+        // Validate email
+        if (!isValidEmail(email)) {
+            showNotification('Veuillez entrer une adresse email valide.', 'error');
+            return;
         }
-    }
 
-    function isValidEmail(email) {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    }
+        // Show loading state
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="btn-icon">⏳</span> Envoi...';
 
-    async function simulateApiCall(email) {
-        return new Promise(resolve => setTimeout(resolve, 1500));
-    }
+        // Simulate API call
+        await simulateApiCall(email);
 
-    function storeEmail(email) {
-        const emails = JSON.parse(localStorage.getItem('horizon_emails') || '[]');
-        emails.push({
-            email,
-            timestamp: new Date().toISOString()
+        // Show success
+        if (modal) {
+            modal.classList.add('active');
+            createConfetti();
+        } else {
+            showNotification('Merci ! Vérifiez votre email pour recevoir le guide gratuit.', 'success');
+            createConfetti();
+        }
+
+        // Reset form
+        form.reset();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+
+        // Store email
+        storeEmail(email);
+    });
+
+    // Modal close handlers
+    const modalClose = document.getElementById('modal-close');
+    if (modalClose && modal) {
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
         });
-        localStorage.setItem('horizon_emails', JSON.stringify(emails));
-        console.log('📧 Email enregistré:', email);
     }
+}
 
-    /* ========================================
-       NOTIFICATION SYSTEM
-    ======================================== */
-    function showNotification(message, type = 'info') {
-        // Remove existing notifications
-        document.querySelectorAll('.notification').forEach(n => n.remove());
+function isValidEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
 
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
+async function simulateApiCall(email) {
+    return new Promise(resolve => setTimeout(resolve, 1500));
+}
+
+function storeEmail(email) {
+    const emails = JSON.parse(localStorage.getItem('horizon_emails') || '[]');
+    emails.push({
+        email,
+        timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('horizon_emails', JSON.stringify(emails));
+    console.log('📧 Email enregistré:', email);
+}
+
+/* ========================================
+   NOTIFICATION SYSTEM
+======================================== */
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    document.querySelectorAll('.notification').forEach(n => n.remove());
+
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
         <span class="notification-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
         <span class="notification-message">${message}</span>
     `;
 
-        document.body.appendChild(notification);
+    document.body.appendChild(notification);
 
-        // Animate in
-        setTimeout(() => notification.classList.add('show'), 10);
+    // Animate in
+    setTimeout(() => notification.classList.add('show'), 10);
 
-        // Remove after delay
+    // Remove after delay
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
+}
+
+/* ========================================
+   CONFETTI EFFECT
+======================================== */
+function createConfetti() {
+    const colors = ['#f7931a', '#9945ff', '#00d4ff', '#00ff88', '#ffbe0b', '#ff6b6b'];
+    const confettiCount = 80;
+
+    for (let i = 0; i < confettiCount; i++) {
         setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
-        }, 4000);
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 0.5 + 's';
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            confetti.style.width = (Math.random() * 8 + 5) + 'px';
+            confetti.style.height = (Math.random() * 8 + 5) + 'px';
+            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            document.body.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 5000);
+        }, i * 30);
     }
+}
 
-    /* ========================================
-       CONFETTI EFFECT
-    ======================================== */
-    function createConfetti() {
-        const colors = ['#f7931a', '#9945ff', '#00d4ff', '#00ff88', '#ffbe0b', '#ff6b6b'];
-        const confettiCount = 80;
-
-        for (let i = 0; i < confettiCount; i++) {
-            setTimeout(() => {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                confetti.style.width = (Math.random() * 8 + 5) + 'px';
-                confetti.style.height = (Math.random() * 8 + 5) + 'px';
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                document.body.appendChild(confetti);
-
-                setTimeout(() => confetti.remove(), 5000);
-            }, i * 30);
-        }
-    }
-
-    // Add notification and confetti styles
-    const extraStyles = document.createElement('style');
-    extraStyles.textContent = `
+// Add notification and confetti styles
+const extraStyles = document.createElement('style');
+extraStyles.textContent = `
     .notification {
         position: fixed;
         bottom: 20px;
@@ -602,41 +608,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 `;
-    document.head.appendChild(extraStyles);
+document.head.appendChild(extraStyles);
 
-    console.log('🌅 L\'Horizon Crypto - Landing Page Loaded');
-    /* ========================================
-       GDPR POPUP
-    ======================================== */
-    function initGDPRPopup() {
-        // Check if consent has already been given in this session
-        if (sessionStorage.getItem('gdpr_consent')) {
-            return;
-        }
+console.log('🌅 L\'Horizon Crypto - Landing Page Loaded');
+/* ========================================
+   GDPR POPUP
+======================================== */
+function initGDPRPopup() {
+    // Check if consent has already been given in this session
+    if (sessionStorage.getItem('gdpr_consent')) {
+        return;
+    }
 
-        // Create popup element
-        const popup = document.createElement('div');
-        popup.className = 'gdpr-popup';
-        popup.innerHTML = `
+    // Create popup element
+    const popup = document.createElement('div');
+    popup.className = 'gdpr-popup';
+    popup.innerHTML = `
         <div class="gdpr-content">
             <p>🍪 Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre <a href="confidentialite.html">politique de confidentialité</a>.</p>
             <button id="accept-gdpr" class="btn-gdpr">Accepter</button>
         </div>
     `;
 
-        document.body.appendChild(popup);
+    document.body.appendChild(popup);
 
-        // Trigger animation
+    // Trigger animation
+    setTimeout(() => {
+        popup.classList.add('active');
+    }, 1000);
+
+    // Handle acceptance
+    document.getElementById('accept-gdpr').addEventListener('click', () => {
+        popup.classList.remove('active');
+        sessionStorage.setItem('gdpr_consent', 'true');
         setTimeout(() => {
-            popup.classList.add('active');
-        }, 1000);
-
-        // Handle acceptance
-        document.getElementById('accept-gdpr').addEventListener('click', () => {
-            popup.classList.remove('active');
-            sessionStorage.setItem('gdpr_consent', 'true');
-            setTimeout(() => {
-                popup.remove();
-            }, 300);
-        });
-    }
+            popup.remove();
+        }, 300);
+    });
+}

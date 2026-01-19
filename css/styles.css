@@ -2692,15 +2692,19 @@ h3 {
         display: block;
     }
 
+    /* Hide desktop CTA on mobile */
     .nav-cta {
-        display: none;
+        display: none !important;
     }
 
+    /* Show mobile CTA inside menu */
     .nav-cta-mobile {
-        display: block;
+        display: block !important;
         margin-top: auto;
         padding-top: 30px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        text-align: center;
     }
 
     .nav-cta-mobile .btn {

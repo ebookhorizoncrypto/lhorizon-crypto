@@ -26,11 +26,14 @@ function initStripeCheckout() {
     packButtons.forEach(button => {
         button.addEventListener('click', async (e) => {
             e.preventDefault();
+            console.log('💳 Stripe button clicked:', button);
 
             // Get pack type from button data-pack OR parent card
             const card = button.closest('.pricing-card');
             const pack = button.dataset.pack || card?.dataset.pack || 'solo';
             const price = button.dataset.price || '99';
+
+            console.log('📦 Pack selected:', pack);
 
             // Show loading state
             const originalHTML = button.innerHTML;
