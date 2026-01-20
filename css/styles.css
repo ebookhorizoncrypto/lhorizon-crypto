@@ -3971,6 +3971,13 @@ h3 {
         padding: 12px !important;
         margin-top: 15px !important;
         /* Reduce gap above stats */
+        margin-bottom: 10px !important;
+        /* Reduce gap below stats */
+    }
+
+    /* Reduce space before pricing/title on mobile */
+    .pricing-section {
+        padding-top: 10px !important;
     }
 
     .stat-item {
