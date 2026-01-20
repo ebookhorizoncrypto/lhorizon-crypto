@@ -629,15 +629,24 @@
                                         color: white;
                                         font-family: 'Inter', sans-serif;
                                         font-weight: 700;
-                                        font-size: 1.1rem;
+                                        font-size: 1rem;
                                         cursor: not-allowed;
                                         text-transform: uppercase;
                                         position: relative;
                                         left: 0;
                                         transform: none;
                                         opacity: 0.5;
+                                        white-space: normal; /* Allow wrap */
+                                        word-wrap: break-word; /* Break long words */
+                                        line-height: 1.2;
+                                        overflow: hidden;
                                     ">
-                                    🚀 <span id="claim-btn-text">Réclamer ma récompense</span>
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+                                        <span>🚀</span>
+                                        <span id="claim-btn-text" style="display: inline-block;">Réclamer ma
+                                            récompense</span>
+                                    </div>
                                 </button>
                             </div>
                         </div>

@@ -40,6 +40,10 @@ function initMobileMenu() {
         navLinks.classList.add('active');
         overlay?.classList.add('active');
         document.body.classList.add('menu-open');
+
+        // FAILSAFE: Force visibility via inline styles
+        navLinks.style.setProperty('left', '0', 'important');
+        navLinks.style.setProperty('display', 'flex', 'important');
     }
 
     function closeMenu() {
@@ -47,6 +51,10 @@ function initMobileMenu() {
         navLinks.classList.remove('active');
         overlay?.classList.remove('active');
         document.body.classList.remove('menu-open');
+
+        // RESET styles for desktop compatibility
+        navLinks.style.left = '';
+        navLinks.style.display = '';
     }
 
     toggle.addEventListener('click', () => {
