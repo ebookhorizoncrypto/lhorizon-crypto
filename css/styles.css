@@ -3968,8 +3968,10 @@ h3 {
     }
 
     .no-kyc-text p {
-        display: none !important;
-        /* Hide detailed text on mobile */
+        display: block !important;
+        font-size: 0.85rem !important;
+        margin-top: 5px !important;
+        opacity: 0.9;
     }
 
     /* Stats bar compact */
@@ -4324,6 +4326,7 @@ h3 {
         display: none !important;
     }
 }
+
 /* ========================================
    MISSING RIBBON STYLES (Fixing cut-off)
 ======================================== */
@@ -4338,24 +4341,27 @@ h3 {
     font-weight: 700;
     text-transform: uppercase;
     transform: rotate(45deg);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 10;
     white-space: nowrap;
 }
 
 /* Ensure container doesn't clip it */
 .pricing-card {
-    overflow: hidden; /* Default desktop behavior, often useful for rounded corners */
+    overflow: hidden;
+    /* Default desktop behavior, often useful for rounded corners */
 }
 
 /* On mobile, we NEED overflow visible for the ribbon if it sticks out, 
    OR we position it inside. Let's position it inside securely. */
 @media (max-width: 768px) {
     .pricing-card {
-        overflow: hidden !important; /* Keep it hidden to clip the ribbon nicely at corners */
-        padding-top: 40px !important; /* Make space inside */
+        overflow: hidden !important;
+        /* Keep it hidden to clip the ribbon nicely at corners */
+        padding-top: 40px !important;
+        /* Make space inside */
     }
-    
+
     .card-ribbon {
         top: 15px !important;
         right: -32px !important;
