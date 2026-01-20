@@ -3693,3 +3693,148 @@ h3 {
         flex: 0 0 48%;
     }
 }
+
+/* ========================================
+   MOBILE MENU - FORCE CLEAR VISIBILITY
+======================================== */
+@media (max-width: 1200px) {
+    /* FORCE menu container to be solid and visible */
+    .nav-links {
+        display: flex !important;
+        flex-direction: column !important;
+        position: fixed !important;
+        top: 0 !important;
+        right: -100vw !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        background: #050508 !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        z-index: 99999 !important;
+        padding: 120px 20px 40px !important;
+        gap: 0 !important;
+        transition: right 0.35s ease-out !important;
+        overflow-y: auto !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        opacity: 1 !important;
+        visibility: hidden !important;
+    }
+    
+    .nav-links.active {
+        right: 0 !important;
+        visibility: visible !important;
+    }
+    
+    /* FORCE links to be WHITE and READABLE */
+    .nav-links > a,
+    .nav-links a {
+        display: block !important;
+        width: 90% !important;
+        max-width: 350px !important;
+        padding: 20px 24px !important;
+        margin: 4px 0 !important;
+        font-size: 1.15rem !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        text-align: center !important;
+        text-decoration: none !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+    }
+    
+    .nav-links > a:hover,
+    .nav-links a:hover {
+        color: #f7931a !important;
+        background: rgba(247, 147, 26, 0.15) !important;
+        border-color: rgba(247, 147, 26, 0.3) !important;
+    }
+    
+    /* Green color for cashback link */
+    .nav-links a[href*="claim"] {
+        color: #00ff88 !important;
+        border-color: rgba(0, 255, 136, 0.3) !important;
+    }
+    
+    /* Mobile hamburger ALWAYS visible and on top */
+    .mobile-menu-toggle {
+        display: flex !important;
+        position: relative !important;
+        z-index: 999999 !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .mobile-menu-toggle span {
+        background: #ffffff !important;
+    }
+    
+    /* Active state - X icon */
+    .mobile-menu-toggle.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg) !important;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(2) {
+        opacity: 0 !important;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg) !important;
+    }
+    
+    /* Hide desktop CTA completely */
+    .nav-cta {
+        display: none !important;
+    }
+    
+    /* Mobile CTA at bottom of menu */
+    .nav-cta-mobile {
+        display: block !important;
+        width: 90% !important;
+        max-width: 350px !important;
+        margin-top: 30px !important;
+        padding-top: 20px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .nav-cta-mobile .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 18px !important;
+        font-size: 1rem !important;
+    }
+    
+    /* Overlay */
+    .mobile-menu-overlay {
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        z-index: 99998 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .mobile-menu-overlay.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Body lock */
+    body.menu-open {
+        overflow: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+    }
+}
