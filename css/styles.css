@@ -4092,35 +4092,14 @@ h3 {
 }
 
 .no-kyc-text p {
+    display: block !important;
     color: rgba(255, 255, 255, 0.8);
     font-size: 0.95rem;
     line-height: 1.5;
+    margin: 0;
 }
 
-/* Mobile: compact version */
-@media (max-width: 768px) {
-    .no-kyc-banner {
-        padding: 14px 18px;
-    }
-
-    .no-kyc-content {
-        gap: 12px;
-    }
-
-    .no-kyc-icon {
-        font-size: 1.8rem;
-    }
-
-    .no-kyc-text strong {
-        font-size: 0.9rem;
-        margin-bottom: 4px;
-    }
-
-    .no-kyc-text p {
-        font-size: 0.8rem;
-        display: block !important;
-    }
-}
+/* [REMOVED REDUNDANT NO-KYC CSS BLOCK] */
 
 /* ========================================
    MOBILE HEADER: WALLET BUTTON CENTERED
