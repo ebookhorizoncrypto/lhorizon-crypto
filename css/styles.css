@@ -3943,7 +3943,8 @@ h3 {
 @media (max-width: 768px) {
 
     /* No KYC Banner - HIDDEN ON MOBILE AS REQUESTED */
-    .no-kyc-banner {
+    .no-kyc-banner,
+    .no-kyc-section {
         display: none !important;
     }
 
