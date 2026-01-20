@@ -4396,3 +4396,14 @@ h3 {
         margin-bottom: 15px !important;
     }
 }
+
+/* CRITICAL FIX: Ensure Three.js background does not block clicks */
+#threejs-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}

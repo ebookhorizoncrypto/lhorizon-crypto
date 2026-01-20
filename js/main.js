@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Other initializations
-    initCinematicIntro();
+    // initCinematicIntro(); // Disabled per user request
     initNavbarScroll();
     initScrollAnimations();
     initSmoothScroll();
@@ -84,66 +84,7 @@ function initMobileMenu() {
 /* ========================================
    CINEMATIC INTRO VIDEO
 ======================================== */
-function initCinematicIntro() {
-    const splash = document.getElementById('intro-splash');
-    const video = document.getElementById('intro-video');
-    const skipBtn = document.getElementById('skip-intro');
-    const progressBar = document.getElementById('intro-progress-bar');
-
-    // Check if elements exist
-    if (!splash || !video) return;
-
-    // Check if user has already seen the intro (localStorage)
-    const hasSeenIntro = localStorage.getItem('lhorizon_intro_seen');
-
-    if (hasSeenIntro) {
-        // Immediately hide intro for returning visitors
-        splash.classList.add('hidden');
-        document.body.classList.add('intro-seen');
-        return;
-    }
-
-    // Update progress bar as video plays
-    video.addEventListener('timeupdate', () => {
-        if (video.duration) {
-            const progress = (video.currentTime / video.duration) * 100;
-            progressBar.style.width = progress + '%';
-        }
-    });
-
-    // Auto-hide when video ends
-    video.addEventListener('ended', () => {
-        hideIntro();
-    });
-
-    // Skip button click
-    if (skipBtn) {
-        skipBtn.addEventListener('click', () => {
-            hideIntro();
-        });
-    }
-
-    // Also allow keyboard skip (Enter or Space or Escape)
-    document.addEventListener('keydown', (e) => {
-        if (!splash.classList.contains('hidden') && (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape')) {
-            e.preventDefault();
-            hideIntro();
-        }
-    });
-
-    function hideIntro() {
-        splash.classList.add('hidden');
-        video.pause();
-
-        // Remember that user has seen the intro
-        localStorage.setItem('lhorizon_intro_seen', 'true');
-
-        // Remove splash from DOM after animation
-        setTimeout(() => {
-            splash.remove();
-        }, 1000);
-    }
-}
+/* Cinematic Intro Removed */
 
 /* ========================================
    TESTIMONIALS INFINITE CAROUSEL
