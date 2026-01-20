@@ -45,52 +45,67 @@ export default async function handler(req, res) {
             replyTo: email,
             subject: `[Contact] ${subject || 'Message de ' + name}`,
             html: `
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <style>
-        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #fff; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #0a0a0f; border-radius: 12px; padding: 30px; }
-        .header { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 20px; }
-        .field { margin-bottom: 15px; }
-        .label { color: #f7931a; font-weight: bold; font-size: 12px; text-transform: uppercase; }
-        .value { margin-top: 5px; line-height: 1.6; }
-        .message-box { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; margin-top: 20px; }
-        .reply-btn { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #f7931a; color: #000; text-decoration: none; border-radius: 8px; font-weight: bold; }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Nouveau Contact</title>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h2>📧 Nouveau message de contact</h2>
-            <p style="color: #888;">Reçu le ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</p>
-        </div>
-        
-        <div class="field">
-            <div class="label">Nom</div>
-            <div class="value">${name}</div>
-        </div>
-        
-        <div class="field">
-            <div class="label">Email</div>
-            <div class="value"><a href="mailto:${email}" style="color: #f7931a;">${email}</a></div>
-        </div>
-        
-        ${subject ? `
-        <div class="field">
-            <div class="label">Sujet</div>
-            <div class="value">${subject}</div>
-        </div>
-        ` : ''}
-        
-        <div class="field">
-            <div class="label">Message</div>
-            <div class="message-box">${message.replace(/\n/g, '<br>')}</div>
-        </div>
-        
-        <a href="mailto:${email}?subject=Re: ${subject || 'Votre message'}" class="reply-btn">↩️ Répondre</a>
-    </div>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; color: #000000; font-family: Arial, sans-serif;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #dddddd; max-width: 600px; width: 100%;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="background-color: #1a1a2e; padding: 20px; color: #ffffff;">
+                            <h2 style="margin: 0; color: #f7931a; font-size: 20px;">📧 Nouveau Contact</h2>
+                            <p style="margin: 5px 0 0; color: #cccccc; font-size: 12px;">${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</p>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 30px; color: #000000;">
+                            
+                            <!-- Fields -->
+                            <div style="margin-bottom: 20px;">
+                                <div style="color: #666666 !important; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Nom</div>
+                                <div style="font-size: 16px; color: #000000 !important; font-weight: bold;">${name}</div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <div style="color: #666666 !important; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Email</div>
+                                <div style="font-size: 16px;"><a href="mailto:${email}" style="color: #f7931a; text-decoration: none; font-weight: bold;">${email}</a></div>
+                            </div>
+
+                            ${subject ? `
+                            <div style="margin-bottom: 20px;">
+                                <div style="color: #666666 !important; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Sujet</div>
+                                <div style="font-size: 16px; color: #000000 !important;">${subject}</div>
+                            </div>
+                            ` : ''}
+
+                            <div style="margin-bottom: 30px;">
+                                <div style="color: #666666 !important; font-size: 12px; text-transform: uppercase; font-weight: bold; margin-bottom: 10px;">Message</div>
+                                <div style="background-color: #f9f9f9; border-left: 4px solid #f7931a; padding: 20px; border-radius: 4px; color: #000000 !important; line-height: 1.6;">
+                                    ${message.replace(/\n/g, '<br>')}
+                                </div>
+                            </div>
+
+                            <!-- Action -->
+                            <div style="text-align: center;">
+                                <a href="mailto:${email}?subject=Re: ${subject || 'Votre message'}" style="display: inline-block; padding: 12px 24px; background-color: #f7931a; color: #000000 !important; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;">↩️ Répondre maintenant</a>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>`
         });
