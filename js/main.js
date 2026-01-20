@@ -4,8 +4,15 @@
 ======================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // CRITICAL: Mobile Menu First
+    try {
+        initMobileMenu();
+    } catch (e) {
+        console.error('Mobile menu init failed:', e);
+    }
+
+    // Other initializations
     initCinematicIntro();
-    initMobileMenu();
     initNavbarScroll();
     initScrollAnimations();
     initSmoothScroll();
