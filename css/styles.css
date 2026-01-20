@@ -4385,3 +4385,14 @@ h3 {
         transform: rotate(45deg) !important;
     }
 }
+/* FORCE MARGINS FOR NO-KYC BANNER */
+@media (min-width: 769px) {
+    .no-kyc-banner {
+        margin-bottom: 40px !important;
+    }
+}
+@media (max-width: 768px) {
+    .no-kyc-banner {
+        margin-bottom: 15px !important;
+    }
+}
