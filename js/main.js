@@ -114,14 +114,14 @@ function initLeadMagnetForm() {
     const successDiv = document.getElementById('lead-success');
     const errorDiv = document.getElementById('lead-error');
 
-    // Check if already subscribed
+    /* Check if already subscribed (Disabled for testing)
     if (localStorage.getItem('lhorizon_lead_subscribed')) {
         form.style.display = 'none';
         successDiv.style.display = 'block';
         successDiv.querySelector('h3').textContent = 'Déjà inscrit !';
         successDiv.querySelector('p').textContent = 'Vérifiez votre email pour l\'extrait.';
         return;
-    }
+    } */
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
