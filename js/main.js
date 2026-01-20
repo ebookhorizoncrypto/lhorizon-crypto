@@ -29,55 +29,61 @@ document.addEventListener('DOMContentLoaded', () => {
    MOBILE HAMBURGER MENU
 ======================================== */
 function initMobileMenu() {
-    const toggle = document.querySelector('.mobile-menu-toggle');
+    // Select by ID (primary) or Class (legacy)
+    const toggle = document.getElementById('mobile-menu-btn') || document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     const overlay = document.querySelector('.mobile-menu-overlay');
 
-    if (!toggle || !navLinks) return;
-
-    function openMenu() {
-        toggle.classList.add('active');
-        navLinks.classList.add('active');
-        overlay?.classList.add('active');
-        document.body.classList.add('menu-open');
-
-        // FAILSAFE: Force visibility via inline styles
-        navLinks.style.setProperty('left', '0', 'important');
-        navLinks.style.setProperty('display', 'flex', 'important');
+    if (!toggle || !navLinks) {
+        console.warn('Mobile menu elements missing');
+        return;
     }
 
-    function closeMenu() {
-        toggle.classList.remove('active');
-        navLinks.classList.remove('active');
-        overlay?.classList.remove('active');
-        document.body.classList.remove('menu-open');
+    // Toggle Function
+    function toggleMenu() {
+        const isActive = navLinks.classList.contains('active');
 
-        // RESET styles for desktop compatibility
-        navLinks.style.left = '';
-        navLinks.style.display = '';
-    }
+        if (isActive) {
+            // Close
+            toggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.classList.remove('menu-open');
 
-    toggle.addEventListener('click', () => {
-        if (navLinks.classList.contains('active')) {
-            closeMenu();
+            // Cleanup inline styles to let CSS take over
+            navLinks.style.removeProperty('left');
+            navLinks.style.removeProperty('display');
         } else {
-            openMenu();
+            // Open
+            toggle.classList.add('active');
+            navLinks.classList.add('active');
+            if (overlay) overlay.classList.add('active');
+            document.body.classList.add('menu-open');
+
+            // Force visibility (Failsafe)
+            navLinks.style.setProperty('left', '0', 'important');
+            navLinks.style.setProperty('display', 'flex', 'important');
         }
+    }
+
+    // Event Listeners
+    toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
     });
 
     // Close on overlay click
-    overlay?.addEventListener('click', closeMenu);
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            if (navLinks.classList.contains('active')) toggleMenu();
+        });
+    }
 
     // Close on nav link click
     navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMenu);
-    });
-
-    // Close on escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-            closeMenu();
-        }
+        link.addEventListener('click', () => {
+            if (navLinks.classList.contains('active')) toggleMenu();
+        });
     });
 }
 

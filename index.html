@@ -197,7 +197,7 @@
                 <a href="#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
             </div>
             <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" aria-label="Menu" onclick="toggleMenuDirect(this)"
+            <button class="mobile-menu-toggle" id="mobile-menu-btn" aria-label="Menu"
                 style="z-index: 2147483647; position: relative;">
                 <span></span>
                 <span></span>
@@ -1318,42 +1318,7 @@
     <script src="js/main.js"></script>
     <script src="js/stripe.js"></script>
 
-    <!-- CRITICAL FIX: Direct Menu Handler -->
-    <script>
-        function toggleMenuDirect(btn) {
-            // DEBUG: Check if click is received
-            // alert('Menu click received'); 
-
-            const nav = document.querySelector('.nav-links');
-            const overlay = document.querySelector('.mobile-menu-overlay');
-            if (!nav) {
-                console.error("Nav not found");
-                return;
-            }
-
-            const isActive = nav.classList.contains('active');
-
-            if (isActive) {
-                btn.classList.remove('active');
-                nav.classList.remove('active');
-                if (overlay) overlay.classList.remove('active');
-                document.body.classList.remove('menu-open');
-
-                // Cleanup inline styles
-                nav.style.left = '';
-                nav.style.display = '';
-            } else {
-                btn.classList.add('active');
-                nav.classList.add('active');
-                if (overlay) overlay.classList.add('active');
-                document.body.classList.add('menu-open');
-
-                // Force visibility
-                nav.style.setProperty('display', 'flex', 'important');
-                nav.style.setProperty('left', '0', 'important');
-            }
-        }
-    </script>
+    <!-- Mobile Menu Handler moved to main.js -->
 
 
 </body>
