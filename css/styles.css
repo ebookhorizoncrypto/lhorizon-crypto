@@ -3941,43 +3941,35 @@ h3 {
 
 /* No KYC Banner - Mobile compact with lock in front */
 @media (max-width: 768px) {
+
+    /* No KYC Banner - HIDDEN ON MOBILE AS REQUESTED */
     .no-kyc-banner {
-        padding: 12px 16px !important;
-        border-radius: 12px !important;
+        display: none !important;
     }
 
-    .no-kyc-content {
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 10px !important;
+    /* Trust Badges - Reduce spacing */
+    .trust-badges {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+        gap: 8px !important;
     }
 
-    .no-kyc-icon {
-        font-size: 1.5rem !important;
-        order: -1 !important;
-        /* Lock icon first */
+    .trust-badge {
+        padding: 6px 10px !important;
+        font-size: 0.75rem !important;
     }
 
-    .no-kyc-text {
-        flex: 1 !important;
-    }
-
-    .no-kyc-text strong {
-        font-size: 0.85rem !important;
-        display: block !important;
-    }
-
-    .no-kyc-text p {
-        display: block !important;
-        font-size: 0.85rem !important;
-        margin-top: 5px !important;
-        opacity: 0.9;
+    .hero-cta {
+        margin-bottom: 15px !important;
+        /* Reduce space below buttons before badges */
     }
 
     /* Stats bar compact */
     .stats-bar {
         gap: 8px !important;
         padding: 12px !important;
+        margin-top: 15px !important;
+        /* Reduce gap above stats */
     }
 
     .stat-item {
