@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTestimonialsCarousel();
     initLeadMagnetForm();
     initWalletConnection();
+    initPackAccordion();
 });
 
 /* ========================================
@@ -623,7 +624,7 @@ console.log('🌅 L\'Horizon Crypto - Landing Page Loaded');
 function initWalletConnection() {
     const walletBtn = document.getElementById('header-wallet-btn');
     const walletBtnText = document.getElementById('wallet-btn-text');
-    
+
     if (!walletBtn || !walletBtnText) return;
 
     let connectedAddress = null;
@@ -676,4 +677,38 @@ function initWalletConnection() {
 
     walletBtn.addEventListener('click', connectWallet);
     checkConnection();
+}
+
+/* ========================================
+   PACK ACCORDION (Mobile)
+======================================== */
+function initPackAccordion() {
+    // Add toggle buttons to pricing cards
+    document.querySelectorAll('.pricing-card').forEach(card => {
+        // Check if toggle already exists
+        if (card.querySelector('.pack-toggle')) return;
+        
+        // Create toggle button
+        const toggle = document.createElement('button');
+        toggle.className = 'pack-toggle';
+        toggle.textContent = 'Voir les détails';
+        toggle.type = 'button';
+        
+        // Insert after price-net-badge
+        const priceNetBadge = card.querySelector('.price-net-badge');
+        if (priceNetBadge) {
+            priceNetBadge.insertAdjacentElement('afterend', toggle);
+        } else {
+            // Fallback: insert in pricing-header
+            const header = card.querySelector('.pricing-header');
+            if (header) header.appendChild(toggle);
+        }
+        
+        // Toggle click handler
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            card.classList.toggle('expanded');
+            toggle.textContent = card.classList.contains('expanded') ? 'Masquer' : 'Voir les détails';
+        });
+    });
 }
