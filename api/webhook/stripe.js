@@ -83,87 +83,156 @@ async function handleSuccessfulPayment(session) {
 }
 
 async function sendPurchaseEmail(email, pack, amount) {
+    // Robust pack detection based on amount if metadata is missing
+    // Default is 'solo' from handler
+    if (Math.round(amount) >= 290 && Math.round(amount) < 500) pack = 'pro';
+    if (Math.round(amount) >= 540) pack = 'vip';
+
     const packNames = {
-        solo: 'Pack Solo',
-        pro: 'Pack Pro',
-        vip: 'Pack VIP'
+        solo: 'Pack Solo 🥉',
+        pro: 'Pack Pro 🥈',
+        vip: 'Pack VIP 🥇'
     };
+
+    const downloadLink = `${domain}/assets/Horizon-Crypto-Ebook.pdf`; // Direct link assuming assets
+    const discordLink = "https://discord.gg/votre-invite-pro"; // Example
+    const calendlyLink = "https://calendly.com/lhorizon-crypto/coaching-vip"; // Example
+    const claimLink = `${domain}/claim.html`;
+
+    // Content Customization
+    let specificContent = '';
+    let emailTitle = '';
+
+    if (pack === 'vip') {
+        emailTitle = "🥇 Confirmation Pack VIP - L'Horizon Crypto";
+        specificContent = `
+            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #f7931a; margin-bottom: 25px;">
+                <h3 style="margin-top: 0; color: #f7931a;">Votre Accès VIP est débloqué !</h3>
+                <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
+                    <li><strong>Coaching Privé :</strong> 1h d'appel stratégique avec nos experts.</li>
+                    <li><strong>Accès Discord Secret :</strong> Le canal des baleines vous attend.</li>
+                    <li><strong>Ebook Complet :</strong> La bible de la crypto.</li>
+                </ul>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="${calendlyLink}" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">📅 Réserver mon Coaching</a>
+                </div>
+            </div>
+            <p>N'oubliez pas de rejoindre le Discord pour échanger avec les autres membres VIP.</p>
+            <div style="text-align: center; margin-bottom: 20px;">
+                 <a href="${discordLink}" style="color: #5865F2; font-weight: bold; text-decoration: none;">Rejoindre le Discord VIP →</a>
+            </div>
+        `;
+    } else if (pack === 'pro') {
+        emailTitle = "🥈 Confirmation Pack Pro - L'Horizon Crypto";
+        specificContent = `
+            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #627EEA; margin-bottom: 25px;">
+                <h3 style="margin-top: 0; color: #627EEA;">Vous passez au niveau supérieur !</h3>
+                <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
+                    <li><strong>Masterclass Mensuelle :</strong> Accès aux lives d'analyse.</li>
+                    <li><strong>Discord Pro :</strong> Signaux et entraide prioritaire.</li>
+                    <li><strong>Ebook Complet :</strong> Toutes les stratégies avancées.</li>
+                </ul>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">💬 Rejoindre le Discord Pro</a>
+                </div>
+            </div>
+        `;
+    } else {
+        // SOLOD
+        emailTitle = "🥉 Confirmation Pack Solo - L'Horizon Crypto";
+        specificContent = `
+            <p style="margin-bottom: 20px;">Vous ne regretterez pas cet investissement en vous-même. Ce guide contient tout ce qu'il faut pour passer de débutant à initié.</p>
+            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
+                <strong>Inclus :</strong> Guide PDF Complet + Accès aux mises à jour à vie.
+            </div>
+        `;
+    }
 
     await resend.emails.send({
         from: fromEmail,
         to: email,
-        subject: "🎉 Votre Guide L'Horizon Crypto est prêt !",
-        html: `<!DOCTYPE html>
-<html>
+        subject: emailTitle,
+        html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a0f; color: #ffffff; padding: 40px 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #1a1a2e; border-radius: 16px; overflow: hidden; }
-        .header { background: linear-gradient(135deg, #f7931a, #ffb347); padding: 40px; text-align: center; }
-        .header h1 { margin: 0; font-size: 24px; color: #000; }
-        .content { padding: 40px; }
-        .content h2 { color: #f7931a; margin-top: 0; }
-        .button { display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #f7931a, #e68a00); color: #000; text-decoration: none; border-radius: 8px; font-weight: bold; margin: 20px 0; }
-        .info-box { background: rgba(247, 147, 26, 0.1); border: 1px solid rgba(247, 147, 26, 0.3); border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .reward-badge { background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; padding: 20px; text-align: center; }
-        .reward-badge h3 { color: #00ff88; margin: 0 0 10px 0; }
-        .footer { padding: 20px 40px; background: #0a0a0f; text-align: center; font-size: 12px; color: #888; }
-        .footer a { color: #f7931a; }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Confirmation Commande</title>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🌅 L'Horizon Crypto</h1>
-        </div>
-        <div class="content">
-            <h2>Félicitations pour votre achat !</h2>
-            <p>Merci pour votre confiance ! Votre <strong>${packNames[pack] || 'Guide'}</strong> est maintenant disponible.</p>
-            
-            <div style="text-align: center;">
-                <a href="${process.env.PDF_DOWNLOAD_URL || domain + '/download'}" class="button">📥 Télécharger mon Guide</a>
-            </div>
-            
-            <div class="info-box">
-                <h3>📋 Ce qui vous attend :</h3>
-                <ul>
-                    <li>✅ Guide PDF complet (100+ pages)</li>
-                    <li>✅ 12 clés secrètes à découvrir</li>
-                    <li>✅ Guide Airdrops 2026 bonus</li>
-                    ${pack !== 'solo' ? '<li>✅ Accès Discord Communauté</li>' : ''}
-                    ${pack === 'pro' ? '<li>✅ Masterclass Mensuelle Discord</li><li>✅ Support Prioritaire (90j)</li>' : ''}
-                    ${pack === 'vip' ? '<li>✅ 1h de coaching privé</li><li>✅ 6 mois accès Groupe VIP</li>' : ''}
-                </ul>
-            </div>
-            
-            ${pack !== 'solo' ? `
-            <div class="info-box" style="background: rgba(88, 101, 242, 0.1); border-color: rgba(88, 101, 242, 0.3);">
-                <h3 style="color: #5865F2;">💬 Rejoignez le Discord</h3>
-                <p>Votre accès à la communauté est inclus ! Cliquez ci-dessous pour rejoindre :</p>
-                <a href="${process.env.DISCORD_INVITE_URL || 'https://discord.gg/VOTRE_INVITE'}" class="button" style="background: linear-gradient(135deg, #5865F2, #4752c4);">🎮 Rejoindre le Discord</a>
-            </div>
-            ` : ''}
-            
-            <div class="reward-badge">
-                <h3>💰 20$ USDC vous attendent !</h3>
-                <p>Trouvez les 12 clés cachées et réclamez votre récompense.</p>
-                <a href="${domain}/claim" class="button" style="background: linear-gradient(135deg, #00ff88, #00d4ff);">🎁 Réclamer ma récompense</a>
-            </div>
-            
-            <p>Une question ? Répondez à cet email.</p>
-            <p>Bonne lecture !<br><strong>L'équipe L'Horizon Crypto</strong></p>
-        </div>
-        <div class="footer">
-            <p>© 2026 L'Horizon Crypto. Tous droits réservés.</p>
-            <p><a href="${domain}/cgv">CGV</a> | <a href="${domain}/confidentialite">Confidentialité</a></p>
-        </div>
-    </div>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; color: #000000; font-family: Arial, sans-serif;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #dddddd; max-width: 600px; width: 100%;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="background-color: #1a1a2e; padding: 30px;">
+                            <div style="font-size: 32px; margin-bottom: 5px;">🌅</div>
+                            <h1 style="margin: 0; color: #f7931a; font-size: 24px; font-weight: bold; font-family: Arial, sans-serif;">L'Horizon Crypto</h1>
+                            <p style="color: #ccc; margin: 5px 0 0; font-size: 14px;">Merci pour votre commande !</p>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 30px; color: #000000;">
+                            <h2 style="color: #000000 !important; font-size: 22px; margin-top: 0; margin-bottom: 20px;">
+                                ${packNames[pack] || 'Confirmation Commande'}
+                            </h2>
+                            
+                            <p style="font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+                                Félicitations ! Vous venez de faire un grand pas vers votre souveraineté financière. Voici vos accès immédiats.
+                            </p>
+
+                            <!-- DOWNLOAD BUTTON (Main Action) -->
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <a href="${downloadLink}" download style="background-color: #f7931a; color: #000000 !important; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 18px; display: inline-block; box-shadow: 0 4px 15px rgba(247, 147, 26, 0.3);">
+                                    📥 Télécharger le Guide (PDF)
+                                </a>
+                                <p style="font-size: 12px; color: #666; margin-top: 10px;">Lien direct, pas d'inscription requise.</p>
+                            </div>
+
+                            <!-- Specific Pack Content -->
+                            ${specificContent}
+
+                            <!-- REWARD SECTION (Common to all) -->
+                            <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px;">
+                                <div style="background-color: #e6fffa; border: 1px solid #b2f5ea; border-radius: 12px; padding: 20px; text-align: center;">
+                                    <h3 style="color: #009970; margin-top: 0;">💰 N'oubliez pas vos 100$ !</h3>
+                                    <p style="font-size: 14px; margin-bottom: 15px; color: #333;">
+                                        12 mots-clés sont cachés dans le guide. Trouvez-les tous pour débloquer votre récompense sur la blockchain.
+                                    </p>
+                                    <a href="${claimLink}" style="color: #009970; font-weight: bold; text-decoration: underline;">Accéder à la page de réclamation →</a>
+                                </div>
+                            </div>
+                            
+                            <p style="color: #000000 !important; margin-top: 30px; font-size: 14px; text-align: center;">
+                                Une question ? Répondez simplement à cet email.<br>
+                                <strong>L'équipe L'Horizon Crypto</strong>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px; background-color: #f4f4f4; color: #888888; font-size: 12px; border-top: 1px solid #dddddd;">
+                            <p style="margin: 0;">L'Horizon Crypto © 2026. Tous droits réservés.</p>
+                            <p style="margin: 5px 0 0;">
+                                <a href="${domain}/cgv.html" style="color: #888; text-decoration: underline;">CGV</a> | 
+                                <a href="${domain}/confidentialite.html" style="color: #888; text-decoration: underline;">Confidentialité</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>`
     });
 
-    console.log(`📧 Purchase email sent to ${email}`);
+    console.log(`📧 Purchase email sent to ${email} (Pack: ${pack})`);
 }
 
 async function notifyDiscord(type, data) {
