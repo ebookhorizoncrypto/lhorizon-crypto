@@ -611,7 +611,8 @@
                                     ✓ Wallet connecté : <strong id="wallet-address"></strong>
                                 </p>
                             </div>
-                            <button id="claim-reward-btn" class="btn btn-primary btn-glow btn-lg" disabled>
+                            <button id="claim-reward-btn" class="btn btn-primary btn-glow btn-lg" disabled
+                                style="width: 100%; margin-top: var(--space-lg); justify-content: center;">
                                 <span class="btn-icon">🚀</span>
                                 <span id="claim-btn-text">Réclamer ma récompense</span>
                             </button>
@@ -909,19 +910,20 @@
     <script src="js/main.js"></script>
 </body>
 
-</html><script>
+</html>
+<script>
     // Dynamic Button Text based on Pack
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const pack = urlParams.get('pack');
         const claimBtnText = document.getElementById('claim-btn-text');
-        
+
         if (pack && claimBtnText) {
             let amount = '100$';
             if (pack === 'solo') amount = '20$';
             if (pack === 'pro') amount = '50$';
             if (pack === 'vip') amount = '100$';
-            
+
             claimBtnText.textContent = `Réclamer mes ${amount} USDC`;
         }
     });
