@@ -6,6 +6,7 @@ import { dirname } from 'path';
 // Import handlers
 import signClaimHandler from './api/sign-claim.js';
 import leadMagnetHandler from './api/lead-magnet.js';
+import contactHandler from './api/contact.js';
 import 'dotenv/config';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -48,7 +49,8 @@ const server = http.createServer(async (req, res) => {
     // Router
     const routes = {
         '/api/sign-claim': signClaimHandler,
-        '/api/lead-magnet': leadMagnetHandler
+        '/api/lead-magnet': leadMagnetHandler,
+        '/api/contact': contactHandler
     };
 
     if (routes[req.url] && req.method === 'POST') {
