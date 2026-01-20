@@ -104,119 +104,117 @@ async function notifyDiscord(email) {
 }
 
 function generateEmailHTML(domain) {
-    return `<!DOCTYPE html>
-<html>
+    return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Votre extrait gratuit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f6f6f6; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; width: 100% !important; }
-        .container { display: block; max-width: 600px; margin: 0 auto; padding: 20px; background: #ffffff; border-radius: 8px; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .header { background: #1a1a2e; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
-        .logo { font-size: 32px; margin-bottom: 5px; }
-        .header h1 { margin: 0; color: #f7931a; font-size: 24px; font-weight: 700; }
-        .header p { margin: 5px 0 0; color: #a0a0b0; font-size: 14px; }
-        .content { padding: 30px 20px; color: #000000; line-height: 1.6; }
-        h2 { color: #000000; font-size: 22px; margin-top: 0; margin-bottom: 20px; text-align: center; }
-        p { margin-bottom: 15px; font-size: 16px; color: #333333; }
-        .button-container { text-align: center; margin: 30px 0; }
-        .button { display: inline-block; padding: 16px 32px; background-color: #f7931a; color: #000000 !important; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 6px rgba(247, 147, 26, 0.3); }
-        
-        /* Box Challenge */
-        .challenge-box { background-color: #f0fff4; border: 1px solid #00ff88; border-radius: 8px; padding: 20px; text-align: center; margin: 30px 0; }
-        .challenge-title { color: #00aa55; font-size: 18px; font-weight: bold; margin-bottom: 10px; }
-        
-        /* Summary Section */
-        .summary-box { background-color: #f9f9f9; border: 1px solid #eeeeee; border-radius: 8px; padding: 25px; margin: 30px 0; }
-        .summary-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; color: #000; border-bottom: 2px solid #ddd; padding-bottom: 10px; display: inline-block; width: 100%; }
-        .summary-list { list-style: none; padding: 0; margin: 0; }
-        .summary-item { margin-bottom: 20px; border-bottom: 1px solid #eaeaea; padding-bottom: 15px; }
-        .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .item-title { display: block; font-weight: bold; color: #000; font-size: 16px; margin-bottom: 5px; }
-        .item-desc { display: block; color: #555; font-size: 14px; padding-left: 15px; border-left: 3px solid #f7931a; }
-        
-        /* CTA Section */
-        .cta-section { text-align: center; margin-top: 40px; padding: 20px; background: #fff8f0; border: 1px dashed #f7931a; border-radius: 8px; }
-        .cta-link { color: #f7931a; font-weight: bold; font-size: 18px; text-decoration: none; }
-        
-        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 20px; }
-        .footer a { color: #888; text-decoration: none; }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">🌅</div>
-            <h1>L'Horizon Crypto</h1>
-            <p>Minez Votre Savoir, Récoltez Vos Récompenses</p>
-        </div>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; color: #000000; font-family: Arial, sans-serif;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <!-- Main Container -->
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #dddddd; max-width: 600px; width: 100%;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="background-color: #1a1a2e; padding: 30px; color: #ffffff;">
+                            <div style="font-size: 32px; margin-bottom: 5px;">🌅</div>
+                            <h1 style="margin: 0; color: #f7931a; font-size: 24px; font-weight: bold; font-family: Arial, sans-serif;">L'Horizon Crypto</h1>
+                            <p style="margin: 5px 0 0; color: #a0a0b0; font-size: 14px;">Minez Votre Savoir, Récoltez Vos Récompenses</p>
+                        </td>
+                    </tr>
 
-        <!-- Content -->
-        <div class="content">
-            <h2>Votre extrait gratuit est prêt ! 🎉</h2>
-            <p>Merci pour votre intérêt. Voici le premier chapitre complet (20 pages) pour bien débuter.</p>
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 30px; color: #000000;">
+                            <h2 style="color: #000000 !important; font-size: 22px; margin-top: 0; margin-bottom: 20px; text-align: center;">Votre extrait gratuit est prêt ! 🎉</h2>
+                            
+                            <p style="color: #000000 !important; margin-bottom: 20px; font-size: 16px; line-height: 1.6;">
+                                Merci pour votre intérêt. Voici le premier chapitre complet (20 pages) pour bien débuter votre aventure.
+                            </p>
 
-            <div class="button-container">
-                <a href="${domain}/assets/extrait-horizon-crypto.pdf" class="button">📥 Télécharger l'Extrait PDF</a>
-            </div>
+                            <!-- Button -->
+                            <div style="text-align: center; margin: 30px 0;">
+                                <a href="${domain}/assets/extrait-horizon-crypto.pdf" style="display: inline-block; padding: 16px 32px; background-color: #f7931a; color: #000000 !important; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;">📥 Télécharger l'Extrait PDF</a>
+                            </div>
 
-            <!-- Detailed Summary -->
-            <div class="summary-box">
-                <div class="summary-title">Sommaire du Guide Complet</div>
-                <ul class="summary-list">
-                    <li class="summary-item">
-                        <span class="item-title">• Introduction & Protocole d'Activation</span>
-                        <span class="item-desc">Concept du "Proof of Learning" et cashback (20$ USDC).</span>
-                    </li>
-                    <li class="summary-item">
-                        <span class="item-title">• Cadre Légal & Avertissement</span>
-                        <span class="item-desc">Conformité AMF et MiCA.</span>
-                    </li>
-                    <li class="summary-item">
-                        <span class="item-title">• PARTIE I : LES FONDATIONS (2008-2026)</span>
-                        <span class="item-desc">Genèse, Bitcoin (Or numérique) et fonctionnement des Mineurs.</span>
-                    </li>
-                    <li class="summary-item">
-                        <span class="item-title">• PARTIE II : LE RÉACTEUR TECHNIQUE</span>
-                        <span class="item-desc">Blockchain, Cryptographie et Wallets (Vault).</span>
-                    </li>
-                    <li class="summary-item">
-                        <span class="item-title">• PARTIE III : L'ÉCOSYSTEME EN ACTION</span>
-                        <span class="item-desc">Transactions, Ethereum, DeFi, Stablecoins, NFTs et DAO.</span>
-                    </li>
-                    <li class="summary-item">
-                        <span class="item-title">• PARTIE IV : MAÎTRISE AVANCÉE</span>
-                        <span class="item-desc">Sécurité offensive, Analyse On-chain, Relation bancaire et Fiscalité.</span>
-                    </li>
-                    <li class="summary-item">
-                        <span class="item-title">• PARTIE V : MISSION FINALE</span>
-                        <span class="item-desc">Protocole de réclamation (Claim) des récompenses.</span>
-                    </li>
-                </ul>
-            </div>
+                            <!-- Summary -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f9f9f9; border: 1px solid #eeeeee; border-radius: 8px; margin: 30px 0;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <div style="font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 20px; color: #000000 !important; border-bottom: 2px solid #ddd; padding-bottom: 10px;">
+                                            Sommaire du Guide Complet
+                                        </div>
+                                        
+                                        <!-- List Items -->
+                                        <p style="margin: 0 0 15px 0; color: #000000 !important;">
+                                            <strong style="color: #000000 !important;">• Introduction & Protocole</strong><br>
+                                            <span style="color: #555555 !important; font-size: 14px;">"Proof of Learning" et cashback (20$ USDC).</span>
+                                        </p>
+                                        
+                                        <p style="margin: 0 0 15px 0; color: #000000 !important;">
+                                            <strong style="color: #000000 !important;">• Cadre Légal</strong><br>
+                                            <span style="color: #555555 !important; font-size: 14px;">Conformité AMF et MiCA.</span>
+                                        </p>
 
-            <!-- Challenge Box -->
-            <div class="challenge-box">
-                <div class="challenge-title">🔑 Défi : Trouvez les 2 clés cachées !</div>
-                <p>Deux mots secrets sont cachés dans cet extrait. Saurez-vous les trouver ?</p>
-                <div style="font-size: 14px; font-weight: bold;">Le guide complet en contient 12 → 20$ USDC</div>
-            </div>
+                                        <p style="margin: 0 0 15px 0; color: #000000 !important;">
+                                            <strong style="color: #000000 !important;">• PARTIE I : LES FONDATIONS</strong><br>
+                                            <span style="color: #555555 !important; font-size: 14px;">Genèse, Bitcoin et Mineurs.</span>
+                                        </p>
 
-            <!-- Footer CTA -->
-            <div class="cta-section">
-                <p><strong>Prêt pour la suite ?</strong><br>Débloquez le guide complet et les récompenses.</p>
-                <a href="${domain}/#pricing" class="cta-link">Voir les Offres →</a>
-            </div>
-        </div>
+                                        <p style="margin: 0 0 15px 0; color: #000000 !important;">
+                                            <strong style="color: #000000 !important;">• PARTIE II : LE RÉACTEUR</strong><br>
+                                            <span style="color: #555555 !important; font-size: 14px;">Blockchain, Cryptographie et Wallets.</span>
+                                        </p>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>L'Horizon Crypto © 2026. Tous droits réservés.</p>
-            <p><a href="${domain}">www.ebook-horizoncrypto.com</a></p>
-        </div>
-    </div>
+                                        <p style="margin: 0 0 15px 0; color: #000000 !important;">
+                                            <strong style="color: #000000 !important;">• PARTIE III : L'ÉCOSYSTEME</strong><br>
+                                            <span style="color: #555555 !important; font-size: 14px;">Ethereum, DeFi, Stablecoins, NFTs.</span>
+                                        </p>
+                                        
+                                        <p style="margin: 0 0 15px 0; color: #000000 !important;">
+                                            <strong style="color: #000000 !important;">• PARTIE IV : MAÎTRISE</strong><br>
+                                            <span style="color: #555555 !important; font-size: 14px;">Sécurité, Analyse On-chain et Fiscalité.</span>
+                                        </p>
+                                        
+                                        <p style="margin: 0 0 0 0; color: #000000 !important;">
+                                            <strong style="color: #000000 !important;">• PARTIE V : MISSION FINALE</strong><br>
+                                            <span style="color: #555555 !important; font-size: 14px;">Protocole de réclamation (Claim).</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Challenge Box -->
+                            <div style="background-color: #f0fff4; border: 1px solid #00ff88; border-radius: 8px; padding: 20px; text-align: center; margin: 30px 0;">
+                                <div style="color: #00aa55 !important; font-size: 18px; font-weight: bold; margin-bottom: 10px;">🔑 Défi : Trouvez les 2 clés cachées !</div>
+                                <p style="color: #000000 !important; margin: 0 0 10px 0;">Deux mots secrets sont cachés dans cet extrait.</p>
+                                <div style="font-size: 14px; font-weight: bold; color: #000000 !important;">Le guide complet en contient 12 → 20$ USDC</div>
+                            </div>
+
+                            <!-- Footer CTA -->
+                            <div style="text-align: center; margin-top: 30px; padding: 20px; background-color: #fff8f0; border: 1px dashed #f7931a; border-radius: 8px;">
+                                <p style="color: #000000 !important; margin: 0 0 10px 0; font-weight: bold;">Prêt pour la suite ?</p>
+                                <a href="${domain}/#pricing" style="color: #f7931a !important; font-weight: bold; font-size: 18px; text-decoration: none;">Voir les Offres →</a>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px; background-color: #f4f4f4; color: #888888; font-size: 12px; border-top: 1px solid #dddddd;">
+                            <p style="margin: 0 0 5px 0;">L'Horizon Crypto © 2026</p>
+                            <a href="${domain}" style="color: #888888; text-decoration: none;">www.ebook-horizoncrypto.com</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>`;
 }
