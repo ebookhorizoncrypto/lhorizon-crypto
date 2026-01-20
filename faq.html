@@ -225,11 +225,48 @@
         }
 
         @media (max-width: 768px) {
+            .faq-page {
+                padding-top: 100px;
+                /* More space for header */
+            }
+
             .faq-categories {
                 justify-content: flex-start;
                 overflow-x: auto;
                 flex-wrap: nowrap;
                 padding-bottom: var(--space-sm);
+                gap: 10px;
+            }
+
+            .faq-category-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+
+            .faq-question {
+                padding: 15px;
+                /* Comapct padding */
+                font-size: 0.95rem;
+                gap: 10px;
+            }
+
+            .faq-toggle {
+                width: 24px;
+                height: 24px;
+                font-size: 0.8rem;
+                min-width: 24px;
+                /* Prevent shrink */
+            }
+
+            .faq-answer-content {
+                padding: 0 15px 15px;
+                font-size: 0.9rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                /* Smaller title */
             }
         }
     </style>
