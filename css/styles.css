@@ -3495,3 +3495,61 @@ h3 {
         padding: 0 var(--space-sm);
     }
 }
+
+/* ========================================
+   PROMO PRICING STYLES
+======================================== */
+.promo-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    animation: pulse-promo 2s ease-in-out infinite;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+@keyframes pulse-promo {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 6px 25px rgba(255, 71, 87, 0.6);
+        transform: scale(1.02);
+    }
+}
+
+.price-old {
+    font-size: 1.2rem;
+    color: var(--text-tertiary);
+    text-decoration: line-through;
+    margin-right: var(--space-sm);
+    opacity: 0.6;
+    font-weight: 400;
+}
+
+.price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+}
+
+/* Mobile adjustments for promo */
+@media (max-width: 768px) {
+    .promo-badge {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+    
+    .price-old {
+        font-size: 1rem;
+    }
+}
