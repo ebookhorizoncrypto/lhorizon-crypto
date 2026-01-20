@@ -316,7 +316,7 @@
                 <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
             </div>
             <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" aria-label="Menu">
+            <button class="mobile-menu-toggle" aria-label="Menu" onclick="toggleMenuDirect(this)">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -779,7 +779,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="js/threejs-effects.js"></script>
     <script src="js/main.js"></script>
-
+    <script>
+        function toggleMenuDirect(btn) {
+            const nav = document.querySelector('.nav-links');
+            if (!nav) return;
+            const isActive = nav.classList.contains('active');
+            if (isActive) {
+                btn.classList.remove('active');
+                nav.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                nav.style.left = '';
+                nav.style.display = '';
+            } else {
+                btn.classList.add('active');
+                nav.classList.add('active');
+                document.body.classList.add('menu-open');
+                nav.style.setProperty('display', 'flex', 'important');
+                nav.style.setProperty('left', '0', 'important');
+            }
+        }
+    </script>
     <script>
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(question => {
