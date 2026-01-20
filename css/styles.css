@@ -3553,3 +3553,143 @@ h3 {
         font-size: 1rem;
     }
 }
+
+/* ========================================
+   CRITICAL MOBILE FIXES
+======================================== */
+
+/* Video Intro - Mobile Responsive */
+@media (max-width: 768px) {
+    .intro-splash {
+        overflow: hidden;
+    }
+    
+    .intro-video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        object-position: center center;
+    }
+}
+
+/* Force mobile menu visibility on all pages */
+@media (max-width: 1024px) {
+    /* Ensure nav-links are hidden by default but properly structured */
+    .nav-links {
+        display: flex !important;
+        flex-direction: column !important;
+        position: fixed !important;
+        top: 0 !important;
+        right: -100% !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: #050508 !important;
+        z-index: 20000 !important;
+        padding: 100px 40px 40px !important;
+        gap: 0 !important;
+        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        overflow-y: auto !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+    }
+    
+    .nav-links.active {
+        right: 0 !important;
+    }
+    
+    .nav-links a {
+        display: block !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        padding: 18px 24px !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        text-align: center !important;
+        text-decoration: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    .nav-links a:hover {
+        color: var(--accent-gold) !important;
+        background: rgba(247, 147, 26, 0.1) !important;
+    }
+    
+    /* Mobile hamburger always visible */
+    .mobile-menu-toggle {
+        display: flex !important;
+        z-index: 25000 !important;
+    }
+    
+    /* Hide desktop CTA */
+    .nav-cta {
+        display: none !important;
+    }
+    
+    /* Show mobile CTA in menu */
+    .nav-cta-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        margin-top: 30px !important;
+        padding-top: 20px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    .nav-cta-mobile .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Mobile menu overlay */
+    .mobile-menu-overlay {
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        z-index: 15000 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .mobile-menu-overlay.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+/* Extra small screens - additional fixes */
+@media (max-width: 480px) {
+    .nav-links a {
+        font-size: 1rem !important;
+        padding: 14px 20px !important;
+    }
+    
+    .hero-badge {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+    }
+    
+    .hero-title .title-line {
+        font-size: 1.3rem;
+    }
+    
+    .value-prop {
+        flex-basis: 100%;
+        text-align: center;
+    }
+    
+    .stats-bar {
+        padding: 16px;
+    }
+    
+    .stat-item {
+        flex: 0 0 48%;
+    }
+}
