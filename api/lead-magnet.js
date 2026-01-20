@@ -111,37 +111,45 @@ function generateEmailHTML(domain) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a0f; color: #ffffff; margin: 0; padding: 40px 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: linear-gradient(180deg, #1a1a2e 0%, #0f0f18 100%); border-radius: 16px; overflow: hidden; border: 1px solid rgba(247, 147, 26, 0.2); }
+        .container { max-width: 600px; margin: 0 auto; background: linear-gradient(180deg, #1a1a2e 0%, #0f0f18 100%); border-radius: 16px; overflow: hidden; border: 1px solid rgba(247, 147, 26, 0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
         .header { background: linear-gradient(135deg, rgba(247, 147, 26, 0.2), rgba(153, 69, 255, 0.2)); padding: 40px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .header h1 { margin: 0; font-size: 26px; color: #f7931a; font-weight: 700; }
-        .header p { margin: 8px 0 0; color: rgba(255,255,255,0.7); font-size: 14px; }
+        .logo { font-size: 28px; margin-bottom: 8px; }
+        .header h1 { margin: 0; font-size: 28px; background: linear-gradient(135deg, #f7931a, #ffb347); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; }
+        .header p { margin: 8px 0 0; color: rgba(255,255,255,0.7); font-size: 14px; font-style: italic; }
         .content { padding: 40px; }
-        .content h2 { color: #fff; margin-top: 0; font-size: 22px; }
-        .content p { line-height: 1.7; color: rgba(255,255,255,0.85); margin: 16px 0; }
-        .button { display: inline-block; padding: 18px 40px; background: linear-gradient(135deg, #f7931a, #e68a00); color: #000; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; margin: 24px 0; }
-        .key-box { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1)); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center; }
-        .key-box h3 { color: #00ff88; margin: 0 0 12px 0; font-size: 18px; }
-        .key-badge { display: inline-block; background: #00ff88; color: #000; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 14px; margin-top: 12px; }
-        .benefits { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 24px; margin: 24px 0; }
-        .benefits h3 { color: #f7931a; margin: 0 0 16px 0; font-size: 16px; }
-        .benefits ul { margin: 0; padding-left: 20px; }
-        .benefits li { padding: 6px 0; color: rgba(255,255,255,0.85); }
-        .cta-section { background: rgba(247, 147, 26, 0.1); border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center; }
-        .cta-section h3 { color: #fff; margin: 0 0 12px 0; }
-        .cta-button { display: inline-block; padding: 14px 32px; background: transparent; border: 2px solid #f7931a; color: #f7931a; text-decoration: none; border-radius: 50px; font-weight: 600; }
-        .footer { padding: 24px 40px; background: rgba(0,0,0,0.3); text-align: center; font-size: 12px; color: rgba(255,255,255,0.5); }
+        .content h2 { color: #fff; margin-top: 0; font-size: 24px; }
+        .highlight { color: #f7931a; }
+        .content p { line-height: 1.7; color: rgba(255,255,255,0.85); margin: 16px 0; font-size: 15px; }
+        .button { display: inline-block; padding: 18px 40px; background: linear-gradient(135deg, #f7931a, #e68a00); color: #000 !important; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; margin: 24px 0; box-shadow: 0 8px 25px rgba(247, 147, 26, 0.4); }
+        .key-box { background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.15)); border: 2px solid rgba(0, 255, 136, 0.4); border-radius: 16px; padding: 28px; margin: 28px 0; text-align: center; }
+        .key-box h3 { color: #00ff88; margin: 0 0 12px 0; font-size: 20px; }
+        .key-box p { color: rgba(255,255,255,0.9); margin: 8px 0; }
+        .key-badge { display: inline-block; background: linear-gradient(135deg, #00ff88, #00cc6a); color: #000; padding: 8px 20px; border-radius: 25px; font-weight: 700; font-size: 14px; margin-top: 12px; }
+        .benefits { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 28px; margin: 28px 0; border: 1px solid rgba(255,255,255,0.1); }
+        .benefits h3 { color: #f7931a; margin: 0 0 16px 0; font-size: 18px; }
+        .benefits ul { margin: 0; padding-left: 0; list-style: none; }
+        .benefits li { padding: 10px 0; color: rgba(255,255,255,0.9); font-size: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .benefits li:last-child { border-bottom: none; }
+        .check { color: #00ff88; margin-right: 10px; }
+        .cta-section { background: linear-gradient(135deg, rgba(247, 147, 26, 0.15), rgba(255, 179, 71, 0.1)); border: 2px solid rgba(247, 147, 26, 0.3); border-radius: 16px; padding: 28px; margin: 28px 0; text-align: center; }
+        .cta-section h3 { color: #fff; margin: 0 0 12px 0; font-size: 20px; }
+        .cta-section p { color: rgba(255,255,255,0.85); }
+        .cta-button { display: inline-block; padding: 16px 36px; background: transparent; border: 2px solid #f7931a; color: #f7931a !important; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 15px; transition: all 0.3s; }
+        .footer { padding: 28px 40px; background: rgba(0,0,0,0.4); text-align: center; font-size: 13px; color: rgba(255,255,255,0.5); }
         .footer a { color: #f7931a; text-decoration: none; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(247, 147, 26, 0.3), transparent); margin: 24px 0; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌅 L'Horizon Crypto</h1>
+            <div class="logo">🌅</div>
+            <h1>L'Horizon Crypto</h1>
             <p>Minez Votre Savoir, Récoltez Vos Récompenses</p>
         </div>
         <div class="content">
             <h2>Votre extrait gratuit est prêt ! 🎉</h2>
-            <p>Merci pour votre intérêt pour L'Horizon Crypto. Voici le premier chapitre complet — <strong>20 pages de contenu exclusif</strong>.</p>
+            <p>Merci pour votre intérêt pour <span class="highlight">L'Horizon Crypto</span>. Voici les <strong>2 premiers chapitres complets</strong> — <strong>20 pages de contenu exclusif</strong> pour bien démarrer votre aventure crypto.</p>
             
             <div style="text-align: center;">
                 <a href="${domain}/assets/extrait-horizon-crypto.pdf" class="button">📥 Télécharger l'Extrait Gratuit</a>
@@ -149,33 +157,35 @@ function generateEmailHTML(domain) {
             
             <div class="key-box">
                 <h3>🔑 Défi : Trouvez les 2 clés cachées !</h3>
-                <p>Deux mots secrets sont cachés dans cet extrait. Saurez-vous les trouver ?</p>
-                <span class="key-badge">Le guide complet en contient 12 → 20$ USDC</span>
+                <p>Deux mots secrets sont cachés dans cet extrait.<br>Saurez-vous les trouver ?</p>
+                <span class="key-badge">Le guide complet = 12 clés → 20$ à 100$ USDC</span>
             </div>
             
             <div class="benefits">
                 <h3>📋 Ce que vous découvrirez :</h3>
                 <ul>
-                    <li>✅ Les fondamentaux de la blockchain</li>
-                    <li>✅ Pourquoi 2026 est l'année charnière (MiCA)</li>
-                    <li>✅ Les 3 erreurs fatales des débutants</li>
-                    <li>✅ Comment le Proof of Learning fonctionne</li>
+                    <li><span class="check">✅</span> Les fondamentaux de la blockchain expliqués simplement</li>
+                    <li><span class="check">✅</span> Pourquoi 2026 est l'année charnière (MiCA)</li>
+                    <li><span class="check">✅</span> Les 3 erreurs fatales des débutants à éviter</li>
+                    <li><span class="check">✅</span> Comment le Proof of Learning fonctionne</li>
                 </ul>
             </div>
             
             <div class="cta-section">
-                <h3>Prêt pour la suite ?</h3>
-                <p>Le guide complet avec les 12 chapitres et <strong>20$ USDC</strong> de récompense.</p>
-                <a href="${domain}/#pricing" class="cta-button">Voir les offres →</a>
+                <h3>🚀 Prêt pour la suite ?</h3>
+                <p>Le guide complet avec les <strong>12 chapitres</strong> et jusqu'à <strong>100$ USDC</strong> de cashback.</p>
+                <p style="margin-top: 16px;"><a href="${domain}/offres.html" class="cta-button">Voir les offres →</a></p>
             </div>
             
-            <p>Une question ? Répondez simplement à cet email.</p>
-            <p>Bonne lecture !<br><strong>L'équipe L'Horizon Crypto</strong></p>
+            <div class="divider"></div>
+            
+            <p style="font-size: 14px;">Une question ? Répondez simplement à cet email.</p>
+            <p>Bonne lecture !<br><strong style="color: #f7931a;">L'équipe L'Horizon Crypto</strong></p>
         </div>
         <div class="footer">
             <p>© 2026 L'Horizon Crypto. Tous droits réservés.</p>
-            <p><a href="${domain}/confidentialite">Confidentialité</a> • <a href="${domain}/contact">Contact</a></p>
-            <p style="margin-top: 16px; font-size: 11px;">Vous recevez cet email car vous avez demandé l'extrait gratuit.</p>
+            <p><a href="${domain}/confidentialite.html">Confidentialité</a> • <a href="${domain}/contact.html">Contact</a></p>
+            <p style="margin-top: 16px; font-size: 11px; opacity: 0.7;">Vous recevez cet email car vous avez demandé l'extrait gratuit sur notre site.</p>
         </div>
     </div>
 </body>
