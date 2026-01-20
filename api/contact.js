@@ -101,41 +101,67 @@ export default async function handler(req, res) {
             to: email,
             subject: "Nous avons bien reçu votre message - L'Horizon Crypto",
             html: `
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <style>
-        body { font-family: Arial, sans-serif; background: #0a0a0f; color: #fff; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #1a1a2e; border-radius: 12px; overflow: hidden; }
-        .header { background: linear-gradient(135deg, #f7931a, #ffb347); padding: 30px; text-align: center; }
-        .header h1 { color: #000; margin: 0; font-size: 22px; }
-        .content { padding: 30px; }
-        .footer { padding: 20px 30px; background: rgba(0,0,0,0.3); text-align: center; font-size: 12px; color: #888; }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Message Reçu</title>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🌅 L'Horizon Crypto</h1>
-        </div>
-        <div class="content">
-            <h2>Merci ${name} ! 🙏</h2>
-            <p>Nous avons bien reçu votre message et nous vous répondrons <strong>sous 24 heures</strong>.</p>
-            
-            <p style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <strong>Votre message :</strong><br><br>
-                <em style="color: #ccc;">"${message.substring(0, 200)}${message.length > 200 ? '...' : ''}"</em>
-            </p>
-            
-            <p>En attendant, consultez notre <a href="https://lhorizon-crypto.vercel.app/faq.html" style="color: #f7931a;">FAQ</a> pour trouver des réponses immédiates à vos questions.</p>
-            
-            <p>À bientôt,<br><strong>L'équipe L'Horizon Crypto</strong></p>
-        </div>
-        <div class="footer">
-            <p>© 2026 L'Horizon Crypto. Tous droits réservés.</p>
-        </div>
-    </div>
+<body style="margin: 0; padding: 0; background-color: #f4f4f4; color: #000000; font-family: Arial, sans-serif;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #dddddd; max-width: 600px; width: 100%;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="background-color: #1a1a2e; padding: 30px;">
+                            <div style="font-size: 32px; margin-bottom: 5px;">🌅</div>
+                            <h1 style="margin: 0; color: #f7931a; font-size: 24px; font-weight: bold; font-family: Arial, sans-serif;">L'Horizon Crypto</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 30px; color: #000000;">
+                            <h2 style="color: #000000 !important; font-size: 20px; margin-top: 0; margin-bottom: 20px;">Merci ${name} ! 🙏</h2>
+                            
+                            <p style="color: #000000 !important; margin-bottom: 20px; font-size: 16px; line-height: 1.6;">
+                                Nous avons bien reçu votre message. Notre équipe vous répondra <strong>sous 24 heures</strong>.
+                            </p>
+                            
+                            <!-- Recap Message Box -->
+                            <div style="background-color: #f9f9f9; border-left: 4px solid #f7931a; padding: 20px; margin: 25px 0; border-radius: 4px;">
+                                <p style="color: #666666 !important; font-size: 12px; margin: 0 0 10px 0; text-transform: uppercase; font-weight: bold;">Rappel de votre message :</p>
+                                <p style="font-style: italic; color: #333333 !important; margin: 0; line-height: 1.5;">
+                                    "${message.substring(0, 300)}${message.length > 300 ? '...' : ''}"
+                                </p>
+                            </div>
+
+                            <p style="color: #000000 !important; border-top: 1px solid #eeeeee; padding-top: 20px; font-size: 14px;">
+                                En attendant, avez-vous consulté notre FAQ ?
+                                <br>
+                                <a href="https://lhorizoncrypto.com/faq.html" style="color: #f7931a; font-weight: bold; text-decoration: none;">Voir la FAQ →</a>
+                            </p>
+                            
+                            <p style="color: #000000 !important; margin-top: 20px; font-size: 14px;">
+                                À très vite,<br>
+                                <strong>L'équipe L'Horizon Crypto</strong>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px; background-color: #f4f4f4; color: #888888; font-size: 12px; border-top: 1px solid #dddddd;">
+                            <p style="margin: 0;">L'Horizon Crypto © 2026</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>`
         });
