@@ -4015,13 +4015,20 @@ h3 {
 ======================================== */
 @media (max-width: 768px) {
 
+    /* Ensure card allows badge overflow */
+    .pricing-card {
+        overflow: visible !important;
+        margin-top: 15px !important;
+        /* Space for the badge */
+    }
+
     /* Show first 3 features, hide rest */
     .pricing-features li {
         display: block !important;
     }
 
     .pricing-features li:nth-child(n+4) {
-        display: none;
+        display: none !important;
     }
 
     .pricing-card.expanded .pricing-features li:nth-child(n+4) {
@@ -4315,5 +4322,45 @@ h3 {
 
     .mobile-menu-toggle {
         display: none !important;
+    }
+}
+/* ========================================
+   MISSING RIBBON STYLES (Fixing cut-off)
+======================================== */
+.card-ribbon {
+    position: absolute;
+    top: 24px;
+    right: -34px;
+    background: var(--gradient-primary);
+    color: #fff;
+    padding: 4px 40px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transform: rotate(45deg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 10;
+    white-space: nowrap;
+}
+
+/* Ensure container doesn't clip it */
+.pricing-card {
+    overflow: hidden; /* Default desktop behavior, often useful for rounded corners */
+}
+
+/* On mobile, we NEED overflow visible for the ribbon if it sticks out, 
+   OR we position it inside. Let's position it inside securely. */
+@media (max-width: 768px) {
+    .pricing-card {
+        overflow: hidden !important; /* Keep it hidden to clip the ribbon nicely at corners */
+        padding-top: 40px !important; /* Make space inside */
+    }
+    
+    .card-ribbon {
+        top: 15px !important;
+        right: -32px !important;
+        padding: 4px 40px !important;
+        font-size: 0.65rem !important;
+        transform: rotate(45deg) !important;
     }
 }

@@ -687,23 +687,22 @@ function initPackAccordion() {
     document.querySelectorAll('.pricing-card').forEach(card => {
         // Check if toggle already exists
         if (card.querySelector('.pack-toggle')) return;
-        
+
         // Create toggle button
         const toggle = document.createElement('button');
         toggle.className = 'pack-toggle';
         toggle.textContent = 'Voir les détails';
         toggle.type = 'button';
-        
-        // Insert after price-net-badge
-        const priceNetBadge = card.querySelector('.price-net-badge');
-        if (priceNetBadge) {
-            priceNetBadge.insertAdjacentElement('afterend', toggle);
+
+        // Insert AFTER the pricing features list
+        const featuresList = card.querySelector('.pricing-features');
+        if (featuresList) {
+            featuresList.insertAdjacentElement('afterend', toggle);
         } else {
-            // Fallback: insert in pricing-header
-            const header = card.querySelector('.pricing-header');
-            if (header) header.appendChild(toggle);
+            // Fallback
+            card.appendChild(toggle);
         }
-        
+
         // Toggle click handler
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
