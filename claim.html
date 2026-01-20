@@ -444,7 +444,8 @@
                         <span>jusqu'à 100$ USDC sur Base</span>
                     </div>
                     <h1>Réclamez Votre <span class="gradient-text">Récompense</span></h1>
-                    <p>Vous avez trouvé les 12 clés ? Bravo ! Récupérez vos jusqu'à 100$ USDC directement sur votre wallet.</p>
+                    <p>Vous avez trouvé les 12 clés ? Bravo ! Récupérez vos jusqu'à 100$ USDC directement sur votre
+                        wallet.</p>
                 </div>
 
                 <!-- Stepper -->
@@ -589,7 +590,8 @@
                 <div class="claim-step" id="step3">
                     <div class="claim-card">
                         <h2>👛 Étape 3 : Connectez Votre Wallet</h2>
-                        <p>Connectez le wallet sur lequel vous souhaitez recevoir vos jusqu'à 100$ USDC. Assurez-vous d'être sur
+                        <p>Connectez le wallet sur lequel vous souhaitez recevoir vos jusqu'à 100$ USDC. Assurez-vous
+                            d'être sur
                             le réseau <strong>Base</strong>.</p>
 
                         <div class="error-message" id="wallet-error"></div>
@@ -609,10 +611,9 @@
                                     ✓ Wallet connecté : <strong id="wallet-address"></strong>
                                 </p>
                             </div>
-                            <button class="btn btn-primary" id="proceed-claim-btn"
-                                style="width: 100%; margin-top: var(--space-lg); position: relative; z-index: 10; cursor: pointer;">
+                            <button id="claim-reward-btn" class="btn btn-primary btn-glow btn-lg" disabled>
                                 <span class="btn-icon">🚀</span>
-                                Réclamer mes jusqu'à 100$ USDC
+                                <span id="claim-btn-text">Réclamer ma récompense</span>
                             </button>
                         </div>
 
@@ -905,7 +906,23 @@
             }
         });
     </script>
-<script src="js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
-</html>
+</html><script>
+    // Dynamic Button Text based on Pack
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pack = urlParams.get('pack');
+        const claimBtnText = document.getElementById('claim-btn-text');
+        
+        if (pack && claimBtnText) {
+            let amount = '100$';
+            if (pack === 'solo') amount = '20$';
+            if (pack === 'pro') amount = '50$';
+            if (pack === 'vip') amount = '100$';
+            
+            claimBtnText.textContent = `Réclamer mes ${amount} USDC`;
+        }
+    });
+</script>

@@ -3905,9 +3905,9 @@ h3 {
         margin-top: 6px !important;
     }
 
-    /* Hide some features on mobile to save space */
+    /* Show first 3 features, rest hidden until expanded */
     .pricing-features {
-        display: none !important;
+        display: block !important;
     }
 
     /* Compact button */
@@ -4178,82 +4178,139 @@ h3 {
 ======================================== */
 @media (max-width: 1024px) {
 
-    /* Nav links: full screen overlay */
+    /* Force nav container flex */
+    .nav-container,
+    .navbar-container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        position: relative !important;
+    }
+
+    /* Nav links: slide from right using left property */
     .nav-links {
         position: fixed !important;
         top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        background: #0a0a0f !important;
+        left: 100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100vh !important;
+        background: #070710 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 0 !important;
+        padding: 80px 20px 40px !important;
+        gap: 8px !important;
         z-index: 99999 !important;
-        transform: translateX(100%) !important;
-        transition: transform 0.35s ease !important;
-        opacity: 1 !important;
-        visibility: visible !important;
+        transition: left 0.3s ease-out !important;
+        overflow-y: auto !important;
     }
 
     .nav-links.active {
-        transform: translateX(0) !important;
+        left: 0 !important;
     }
 
     /* Links styling */
-    .nav-links a {
+    .nav-links>a {
         display: block !important;
-        width: 80% !important;
-        max-width: 300px !important;
-        padding: 18px 24px !important;
-        margin: 6px 0 !important;
-        font-size: 1.1rem !important;
+        width: 85% !important;
+        max-width: 320px !important;
+        padding: 16px 20px !important;
+        font-size: 1.05rem !important;
         font-weight: 600 !important;
         color: #ffffff !important;
         text-align: center !important;
         text-decoration: none !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 12px !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 10px !important;
     }
 
-    .nav-links a:hover {
+    .nav-links>a:hover,
+    .nav-links>a:active {
         background: rgba(247, 147, 26, 0.15) !important;
-        border-color: rgba(247, 147, 26, 0.3) !important;
-        color: #f7931a !important;
+        border-color: #f7931a !important;
     }
 
-    /* Cashback link in green */
-    .nav-links a[href*="claim"] {
+    /* Green cashback link */
+    .nav-links>a[href*="claim"] {
         color: #00ff88 !important;
+        background: rgba(0, 255, 136, 0.08) !important;
         border-color: rgba(0, 255, 136, 0.3) !important;
     }
 
-    /* Close button in menu */
-    .nav-links::before {
-        content: '✕';
-        position: absolute;
-        top: 30px;
-        right: 30px;
-        font-size: 1.5rem;
-        color: rgba(255, 255, 255, 0.5);
-        cursor: pointer;
+    /* Hide mobile CTA inside nav-links */
+    .nav-cta-mobile {
+        display: none !important;
+    }
+
+    /* Hamburger visible */
+    .mobile-menu-toggle {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        width: 26px !important;
+        height: 20px !important;
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        z-index: 100000 !important;
+        padding: 0 !important;
+    }
+
+    .mobile-menu-toggle span {
+        display: block !important;
+        width: 100% !important;
+        height: 3px !important;
+        background: #fff !important;
+        border-radius: 2px !important;
+        transition: all 0.25s ease !important;
+    }
+
+    /* X animation */
+    .mobile-menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 6px) !important;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(2) {
+        opacity: 0 !important;
+    }
+
+    .mobile-menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px) !important;
+    }
+
+    /* Wallet button smaller on mobile */
+    .wallet-btn,
+    #header-wallet-btn {
+        padding: 6px 10px !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* Hide desktop CTA */
+    .nav-cta .btn-glow {
+        display: none !important;
+    }
+
+    /* Body scroll lock */
+    body.menu-open {
+        overflow: hidden !important;
     }
 }
 
-/* Desktop: reset nav */
+/* Desktop reset */
 @media (min-width: 1025px) {
     .nav-links {
         position: static !important;
-        transform: none !important;
-        flex-direction: row !important;
-        background: transparent !important;
+        left: auto !important;
         width: auto !important;
         height: auto !important;
+        min-height: 0 !important;
+        flex-direction: row !important;
+        background: transparent !important;
+        padding: 0 !important;
+        transform: none !important;
     }
 
     .mobile-menu-toggle {
