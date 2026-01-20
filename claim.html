@@ -606,21 +606,25 @@
 
                         <div id="wallet-connected" style="display: none;">
                             <div
-                                style="padding: var(--space-lg); background: rgba(0, 255, 136, 0.1); border-radius: var(--radius-md); text-align: center;">
+                                style="padding: var(--space-lg); background: rgba(0, 255, 136, 0.1); border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
                                 <p style="color: var(--accent-green); margin: 0;">
                                     ✓ Wallet connecté : <strong id="wallet-address"></strong>
                                 </p>
                             </div>
-                            <button id="claim-reward-btn" class="btn btn-primary btn-glow btn-lg" disabled
-                                style="width: 100%; margin-top: var(--space-lg); justify-content: center;">
-                                <span class="btn-icon">🚀</span>
-                                <span id="claim-btn-text">Réclamer ma récompense</span>
-                            </button>
+
+                            <!-- Wrapper for button stability -->
+                            <div style="width: 100%; display: flex; justify-content: center;">
+                                <button id="claim-reward-btn" class="btn btn-primary btn-lg" disabled
+                                    style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px;">
+                                    <span class="btn-icon">🚀</span>
+                                    <span id="claim-btn-text">Réclamer ma récompense</span>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="loading" id="wallet-loading">
                             <div class="spinner"></div>
-                            <span>Connexion au wallet...</span>
+                            <span>Signature de la transaction...</span>
                         </div>
                     </div>
 
@@ -639,25 +643,19 @@
                     <div class="claim-card success-card">
                         <div class="success-icon">🎉</div>
                         <h2>Félicitations !</h2>
-                        <p>Vos <strong>jusqu'à 100$ USDC</strong> ont été envoyés avec succès sur votre wallet !</p>
+                        <p>Votre demande de récompense a été envoyée avec succès.</p>
 
                         <div class="tx-hash">
-                            <span>TX: </span>
-                            <a id="tx-link" href="#" target="_blank">Voir sur BaseScan</a>
+                            </p>
+
+                            <a href="index.html" class="btn btn-primary" style="margin-top: var(--space-xl);">
+                                Retour à l'accueil
+                            </a>
                         </div>
-
-                        <p style="font-size: 0.9rem; color: var(--text-tertiary);">
-                            La transaction peut prendre quelques secondes à apparaître dans votre wallet.
-                        </p>
-
-                        <a href="index.html" class="btn btn-primary" style="margin-top: var(--space-xl);">
-                            Retour à l'accueil
-                        </a>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
     </main>
 
     <!-- Footer -->
@@ -832,7 +830,7 @@
             }
         });
 
-        document.getElementById('proceed-claim-btn').addEventListener('click', async () => {
+        document.getElementById('claim-reward-btn').addEventListener('click', async () => {
             const loadingDiv = document.getElementById('wallet-loading');
             loadingDiv.classList.add('show');
             loadingDiv.querySelector('span').textContent = "Signature Backend en cours...";
