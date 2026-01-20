@@ -152,7 +152,7 @@ function generateEmailHTML(domain) {
                                         <!-- List Items -->
                                         <p style="margin: 0 0 15px 0; color: #000000 !important;">
                                             <strong style="color: #000000 !important;">• Introduction & Protocole</strong><br>
-                                            <span style="color: #555555 !important; font-size: 14px;">"Proof of Learning" et cashback (20$ USDC).</span>
+                                            <span style="color: #555555 !important; font-size: 14px;">"Proof of Learning" et cashback (jusqu'à 100$ USDC).</span>
                                         </p>
                                         
                                         <p style="margin: 0 0 15px 0; color: #000000 !important;">
@@ -192,7 +192,7 @@ function generateEmailHTML(domain) {
                             <div style="background-color: #f0fff4; border: 1px solid #00ff88; border-radius: 8px; padding: 20px; text-align: center; margin: 30px 0;">
                                 <div style="color: #00aa55 !important; font-size: 18px; font-weight: bold; margin-bottom: 10px;">🔑 Défi : Trouvez les 2 clés cachées !</div>
                                 <p style="color: #000000 !important; margin: 0 0 10px 0;">Deux mots secrets sont cachés dans cet extrait.</p>
-                                <div style="font-size: 14px; font-weight: bold; color: #000000 !important;">Le guide complet en contient 12 → 20$ USDC</div>
+                                <div style="font-size: 14px; font-weight: bold; color: #000000 !important;">Le guide complet en contient 12 → jusqu'à 100$ USDC</div>
                             </div>
 
                             <!-- Footer CTA -->
