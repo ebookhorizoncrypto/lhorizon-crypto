@@ -3990,3 +3990,127 @@ h3 {
         grid-column: 1 !important;
     }
 }
+
+/* ========================================
+   HIDE DUPLICATE CTA BUTTON (already have green Cashback link)
+======================================== */
+.nav-cta,
+.nav-cta-mobile {
+    display: none !important;
+}
+
+/* ========================================
+   MOBILE COMPACT SECTIONS - REDUCE SCROLLING
+======================================== */
+@media (max-width: 768px) {
+    /* Reduce all section paddings */
+    section {
+        padding-top: 40px !important;
+        padding-bottom: 40px !important;
+    }
+    
+    .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+    
+    /* Compact section headers */
+    .section-header {
+        margin-bottom: 20px !important;
+    }
+    
+    .section-title {
+        font-size: 1.4rem !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.85rem !important;
+        margin-bottom: 16px !important;
+    }
+    
+    /* Compact hero */
+    .hero-section {
+        padding: 60px 0 40px !important;
+        min-height: auto !important;
+    }
+    
+    .hero-title .title-line {
+        font-size: 1.4rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    .hero-desc {
+        font-size: 0.9rem !important;
+        margin-bottom: 16px !important;
+    }
+    
+    /* Compact USP cards */
+    .usp-grid {
+        gap: 12px !important;
+    }
+    
+    .usp-card {
+        padding: 16px !important;
+    }
+    
+    .usp-card h3 {
+        font-size: 1rem !important;
+    }
+    
+    .usp-card p {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Compact FAQ */
+    .faq-item {
+        padding: 12px !important;
+    }
+    
+    .faq-item h3 {
+        font-size: 0.9rem !important;
+    }
+    
+    .faq-item p {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Compact testimonials */
+    .testimonial-card {
+        padding: 16px !important;
+    }
+    
+    .testimonial-content {
+        font-size: 0.85rem !important;
+    }
+    
+    /* Compact lead magnet */
+    .lead-magnet-section {
+        padding: 30px 0 !important;
+    }
+    
+    .lead-magnet-box {
+        padding: 20px !important;
+    }
+    
+    /* Compact footer */
+    .footer {
+        padding: 30px 0 !important;
+    }
+    
+    .footer-grid {
+        gap: 20px !important;
+    }
+    
+    /* Hide less important elements on mobile */
+    .floating-coins,
+    .hero-3d-visual,
+    .testimonial-avatar {
+        display: none !important;
+    }
+    
+    /* Reduce gaps between sections */
+    .section-divider {
+        display: none !important;
+    }
+}

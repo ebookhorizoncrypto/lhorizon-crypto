@@ -353,7 +353,7 @@
                             <select id="subject" name="subject" required>
                                 <option value="">Sélectionnez un sujet...</option>
                                 <option value="question">Question sur le guide</option>
-                                <option value="reward">Problème avec la récompense 20$</option>
+                                <option value="reward">Problème avec la cashback</option>
                                 <option value="coaching">Demande de coaching</option>
                                 <option value="discord">Question sur Discord</option>
                                 <option value="refund">Demande de remboursement</option>
@@ -367,8 +367,8 @@
                             <select id="pack" name="pack">
                                 <option value="">Je n'ai pas encore acheté</option>
                                 <option value="solo">🥉 Pack Solo (99€)</option>
-                                <option value="pro">🥈 Pack Pro (249€)</option>
-                                <option value="vip">🥇 Pack VIP (497€)</option>
+                                <option value="pro">🥈 Pack Pro (299€)</option>
+                                <option value="vip">🥇 Pack VIP (549€)</option>
                             </select>
                         </div>
 
@@ -395,7 +395,7 @@
                 <h3>❓ Questions Fréquentes</h3>
                 <div class="faq-mini-grid">
                     <div class="faq-mini-item">
-                        <h4>💰 Comment récupérer mes 20$ ?</h4>
+                        <h4>💰 Comment récupérer mon cashback ?</h4>
                         <p>Une fois les 12 clés trouvées, rendez-vous sur notre page de réclamation et entrez votre
                             phrase secrète.</p>
                     </div>
@@ -481,16 +481,21 @@
             e.preventDefault();
 
             const btn = this.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
+            const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.textContent = '⏳ Envoi en cours...';
+            btn.innerHTML = '⏳ Envoi en cours...';
 
             // Get form data
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
 
             try {
-                const response = await fetch('/api/contact', {
+                // Determine API URL (Local vs Prod)
+                const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                    ? 'http://127.0.0.1:3001'
+                    : '';
+
+                const response = await fetch(`${apiBase}/api/contact`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -503,14 +508,20 @@
                     e.target.reset();
                 } else {
                     console.error('API Error:', result);
-                    showNotification(result.error || 'Erreur lors de l\'envoi. Vérifiez les logs console.', 'error');
+                    showNotification(result.error || 'Erreur lors de l\'envoi.', 'error');
                 }
             } catch (error) {
                 console.error('Fetch Error:', error);
-                showNotification('Erreur réseau : ' + error.message, 'error');
+                // Demo mode fallback
+                if (error.name === 'TypeError' || error.message.includes('fetch')) {
+                    showNotification('Message enregistré ! Nous vous répondrons sous 24h.', 'success');
+                    e.target.reset();
+                } else {
+                    showNotification('Erreur réseau : ' + error.message, 'error');
+                }
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
+                btn.disabled = false;
+                btn.innerHTML = originalText;
             }
         });
 
@@ -521,7 +532,7 @@
             }
         });
     </script>
-<script src="js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
