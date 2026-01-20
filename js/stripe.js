@@ -6,8 +6,8 @@
 // Configuration des Stripe Payment Links
 const STRIPE_PAYMENT_LINKS = {
     solo: 'https://buy.stripe.com/bJe9AS1BK4ov9jqa6s6wE02',
-    pro: 'https://buy.stripe.com/aFa7sK3JS2gngLSemI6wE01',
-    vip: 'https://buy.stripe.com/fZu4gydks7AH9jq4M86wE00',
+    pro: 'https://buy.stripe.com/6oUcN4a8gaMTcvC1zW6wE05',
+    vip: 'https://buy.stripe.com/aFaaEW1BKaMT1QY2E06wE04',
     discord: 'https://buy.stripe.com/eVqaEW0xG9IP67eemI6wE03'
 };
 
