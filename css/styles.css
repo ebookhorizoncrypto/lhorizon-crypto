@@ -4407,3 +4407,80 @@ h3 {
     z-index: -1 !important;
     pointer-events: none !important;
 }
+
+/* ========================================
+   CRITICAL FIX: MOBILE MENU FINAL OVERRIDE
+   ======================================== */
+@media (max-width: 1200px) {
+    .nav-links {
+        /* Reset positioning */
+        position: fixed !important;
+        top: 0 !important;
+        /* Default hidden state - ensuring it is off-screen but ready */
+        left: 100% !important;
+        right: auto !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        
+        /* Appearance */
+        background: #0a0a0f !important; /* Solid dark background */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important; /* Start from top to avoid cutting off on small screens */
+        padding: 100px 20px 40px !important; /* Top padding for header */
+        gap: 25px !important;
+        overflow-y: auto !important;
+        
+        /* Visibility */
+        z-index: 999999 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transition: left 0.3s ease-in-out !important;
+        transform: none !important;
+    }
+
+    .nav-links.active {
+        left: 0 !important;
+        right: 0 !important; /* Force full width anchor */
+        background: rgba(10, 10, 15, 0.98) !important; /* Slight transparency for premium feel but readable */
+        backdrop-filter: blur(10px) !important;
+    }
+
+    /* Links Styling */
+    .nav-links > a, 
+    .nav-links a:not(.btn) {
+        display: block !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-size: 1.5rem !important; /* Large text */
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        margin: 5px 0 !important;
+        padding: 10px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        text-align: center !important;
+        border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+        width: 80% !important;
+    }
+    
+    .nav-links a:hover {
+        color: #f7931a !important;
+        transform: translateX(5px) !important;
+    }
+
+    /* Mobile CTA specific */
+    .nav-cta-mobile {
+        display: block !important;
+        margin-top: 20px !important;
+        width: 80% !important;
+    }
+    
+    .nav-cta-mobile .btn {
+         width: 100% !important;
+         justify-content: center !important;
+         font-size: 1.1rem !important;
+    }
+}
