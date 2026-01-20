@@ -1,7 +1,11 @@
 import { ethers } from 'ethers';
 
-// Helper to load env for local development testing (if needed)
-// import 'dotenv/config'; 
+// Pack reward amounts in USDC (6 decimals)
+const PACK_REWARDS = {
+    'solo': 20 * 10 ** 6,   // 20 USDC
+    'pro': 50 * 10 ** 6,    // 50 USDC
+    'vip': 100 * 10 ** 6    // 100 USDC
+};
 
 // Vercel Serverless Function Handler
 export default async function handler(req, res) {
@@ -27,52 +31,54 @@ export default async function handler(req, res) {
 
     try {
         // 3. Parse Body
-        const { userAddress, emailHash } = req.body;
+        const { userAddress, emailHash, pack } = req.body;
 
         if (!userAddress || !emailHash) {
             return res.status(400).json({ error: 'Missing userAddress or emailHash' });
         }
 
-        // 4. Load Private Key from Env
+        // 4. Determine reward amount based on pack
+        // Default to 'solo' if pack not provided or invalid
+        const packType = (pack && PACK_REWARDS[pack.toLowerCase()]) ? pack.toLowerCase() : 'solo';
+        const rewardAmount = PACK_REWARDS[packType];
+
+        console.log(`Processing claim: pack=${packType}, amount=${rewardAmount / 10 ** 6} USDC`);
+
+        // 5. Load Private Key from Env
         const privateKey = process.env.STRIPE_REWARD_SIGNER_PRIVATE_KEY;
         if (!privateKey) {
             console.error("Missing STRIPE_REWARD_SIGNER_PRIVATE_KEY");
             return res.status(500).json({ error: 'Server Configuration Error' });
         }
 
-        // 5. Initialize Wallet
+        // 6. Initialize Wallet
         const wallet = new ethers.Wallet(privateKey);
 
-        // 6. Calculate Solidity Packed Keccak256
-        // Matches the smart contract: keccak256(abi.encodePacked(recipient, emailHash, contractAddress))
-        // NOTE: We need the contract address here. 
-        // For security, it's best to verify the CONTRACT ADDRESS too, or hardcode it env.
-        // Assuming we pass it or use an env variable. 
-        // For this implementation, I will use an ENV variable or receive it.
-        // However, the contract verifies: keccak256(abi.encodePacked(recipient, emailHash, address(this)))
-        // So the signer MUST sign the exact same data including the deployed contract address.
+        // 7. Get Contract Address
         const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || req.body.contractAddress;
 
         if (!contractAddress) {
             return res.status(400).json({ error: 'Missing contractAddress configuration' });
         }
 
+        // 8. Calculate Solidity Packed Keccak256
+        // Matches the smart contract: keccak256(abi.encodePacked(recipient, emailHash, amount, contractAddress))
         const messageHash = ethers.solidityPackedKeccak256(
-            ['address', 'bytes32', 'address'],
-            [userAddress, emailHash, contractAddress]
+            ['address', 'bytes32', 'uint256', 'address'],
+            [userAddress, emailHash, rewardAmount, contractAddress]
         );
 
-        // 7. Sign the Message
-        // In Solidity: ECDSA.toEthSignedMessageHash(...) is automatically applied by wallet.signMessage
-        // when passed a byte array. However, wallet.signMessage(string) treats it as string.
-        // We must pass the binary data of the hash.
+        // 9. Sign the Message
         const messageBytes = ethers.getBytes(messageHash);
         const signature = await wallet.signMessage(messageBytes);
 
-        // 8. Return Signature
+        // 10. Return Signature with amount info
         return res.status(200).json({
             signature,
-            signer: wallet.address
+            signer: wallet.address,
+            amount: rewardAmount,
+            amountReadable: `${rewardAmount / 10 ** 6} USDC`,
+            pack: packType
         });
 
     } catch (error) {

@@ -22,8 +22,8 @@ contract ProofOfLearning is ERC2771Context, Ownable, Pausable, ReentrancyGuard {
     // Authorization Signer (Backend Wallet that approves claims)
     address public trustedSigner;
     
-    // Reward amount: 20 USDC (6 decimals)
-    uint256 public rewardAmount = 20 * 10**6;
+    // Reward amount is now dynamic, passed in the claim function
+    // uint256 public rewardAmount = 20 * 10**6; // REMOVED
     
     // Tracking claims - email hash => claimed
     mapping(bytes32 => bool) public hasClaimed;
@@ -77,25 +77,28 @@ contract ProofOfLearning is ERC2771Context, Ownable, Pausable, ReentrancyGuard {
     /**
      * @dev User claims reward (Gasless)
      * @param emailHash Keccak256 hash of the verified email
+     * @param amount The reward amount in USDC (6 decimals)
      * @param signature Backend signature verifying this user is allowed to claim
      * @notice This function is called by the Relayer, but _msgSender() is the User
      */
     function claimReward(
         bytes32 emailHash,
+        uint256 amount,
         bytes calldata signature
     ) external nonReentrant whenNotPaused {
         address recipient = _msgSender();
         
         // 1. Checks
         require(recipient != address(0), "Invalid recipient");
+        require(amount > 0, "Invalid amount");
         require(!hasClaimed[emailHash], "Email already claimed");
         require(!hasWalletClaimed[recipient], "Wallet already claimed");
-        require(usdc.balanceOf(address(this)) >= rewardAmount, "Insufficient USDC balance");
+        require(usdc.balanceOf(address(this)) >= amount, "Insufficient USDC balance");
         
-    // 2. Verify Signature (Security against Fraud)
-        // Message structure: keccak256(recipient + emailHash + contractAddress)
+        // 2. Verify Signature (Security against Fraud)
+        // Message structure: keccak256(recipient + emailHash + amount + contractAddress)
         // This prevents replay attacks on other contracts or for other users
-        bytes32 messageHash = keccak256(abi.encodePacked(recipient, emailHash, address(this)));
+        bytes32 messageHash = keccak256(abi.encodePacked(recipient, emailHash, amount, address(this)));
         bytes32 ethSignedMessageHash = ECDSA.toEthSignedMessageHash(messageHash);
         
         address signer = ECDSA.recover(ethSignedMessageHash, signature);
@@ -105,12 +108,12 @@ contract ProofOfLearning is ERC2771Context, Ownable, Pausable, ReentrancyGuard {
         hasClaimed[emailHash] = true;
         hasWalletClaimed[recipient] = true;
         totalClaims++;
-        totalDistributed += rewardAmount;
+        totalDistributed += amount;
         
         // 4. Interaction
-        require(usdc.transfer(recipient, rewardAmount), "USDC transfer failed");
+        require(usdc.transfer(recipient, amount), "USDC transfer failed");
         
-        emit ClaimProcessed(recipient, emailHash, rewardAmount, block.timestamp);
+        emit ClaimProcessed(recipient, emailHash, amount, block.timestamp);
     }
     
     /**
