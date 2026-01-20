@@ -232,37 +232,27 @@
 
             .faq-categories {
                 display: flex;
-                /* Ensure flex behavior */
-                justify-content: flex-start;
-                overflow-x: auto;
-                flex-wrap: nowrap;
-                padding-bottom: 15px;
-                /* Space for scrollbar if any, or touch area */
+                justify-content: center;
+                /* Center buttons */
+                flex-wrap: wrap;
+                /* Wrap buttons to next line */
                 gap: 10px;
-                -webkit-overflow-scrolling: touch;
-                /* Smooth scroll iOS */
-                scrollbar-width: none;
-                /* Hide scrollbar Firefox */
-                padding-right: 20px;
-                /* Right padding to show end */
-                margin-right: -20px;
-                /* Negative margin to edge */
-                mask-image: linear-gradient(to right, black 90%, transparent 100%);
-                /* Fade effect optionally */
+                padding-bottom: 0;
             }
 
             .faq-categories::-webkit-scrollbar {
                 display: none;
-                /* Hide scrollbar Chrome/Safari */
             }
 
             .faq-category-btn {
-                padding: 8px 14px;
+                padding: 8px 12px;
                 font-size: 0.8rem;
                 white-space: nowrap;
-                flex-shrink: 0;
-                /* Prevent shrinking */
+                flex: 0 0 auto;
+                /* Don't stretch but don't shrink */
                 border-radius: 20px;
+                margin-bottom: 5px;
+                /* Spacing between rows */
             }
 
             .faq-question {
