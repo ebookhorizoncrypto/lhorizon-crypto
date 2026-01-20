@@ -208,7 +208,8 @@
                 <a href="#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
             </div>
             <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" aria-label="Menu" onclick="toggleMenuDirect(this)">
+            <button class="mobile-menu-toggle" aria-label="Menu" onclick="toggleMenuDirect(this)"
+                style="z-index: 2147483647; position: relative;">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -1326,9 +1327,15 @@
     <!-- CRITICAL FIX: Direct Menu Handler -->
     <script>
         function toggleMenuDirect(btn) {
+            // DEBUG: Check if click is received
+            // alert('Menu click received'); 
+
             const nav = document.querySelector('.nav-links');
             const overlay = document.querySelector('.mobile-menu-overlay');
-            if (!nav) return;
+            if (!nav) {
+                console.error("Nav not found");
+                return;
+            }
 
             const isActive = nav.classList.contains('active');
 

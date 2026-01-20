@@ -443,7 +443,8 @@
                 <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
             </div>
             <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" aria-label="Menu" onclick="toggleMenuDirect(this)">
+            <button class="mobile-menu-toggle" aria-label="Menu" onclick="toggleMenuDirect(this)"
+                style="z-index: 2147483647; position: relative;">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -634,13 +635,13 @@
                             </div>
 
                             <!-- Wrapper for button stability -->
-                            <!-- Wrapper for button stability - CLEAN LAYOUT FIX -->
+                            <!-- Wrapper for button stability - CLEAN LAYOUT FIX v2 -->
                             <div
-                                style="clear: both; width: 100%; box-sizing: border-box; margin-top: 20px; display: block;">
+                                style="clear: both; width: 100%; box-sizing: border-box; margin-top: 20px; display: flex; justify-content: center; overflow: hidden;">
                                 <button id="claim-reward-btn" disabled style="
                                         display: block;
-                                        width: 100%;
-                                        max-width: 100%;
+                                        width: 90%; /* SAFER WIDTH */
+                                        max-width: 350px;
                                         box-sizing: border-box;
                                         padding: 16px;
                                         margin: 0 auto;
@@ -654,17 +655,15 @@
                                         cursor: not-allowed;
                                         text-transform: uppercase;
                                         position: relative;
-                                        left: 0;
                                         transform: none;
                                         opacity: 0.5;
-                                        white-space: normal; /* Allow wrap */
-                                        word-wrap: break-word; /* Break long words */
+                                        white-space: normal;
+                                        word-wrap: break-word;
                                         line-height: 1.2;
-                                        overflow: hidden;
                                     ">
                                     <div
                                         style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
-                                        <span>🚀</span>
+                                        <span style="flex-shrink: 0;">🚀</span>
                                         <span id="claim-btn-text" style="display: inline-block;">Réclamer ma
                                             récompense</span>
                                     </div>
