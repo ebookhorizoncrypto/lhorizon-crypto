@@ -16,8 +16,8 @@
     <title>Claim jusqu'à 100$ USDC - L'Horizon Crypto</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/logo-horizon-crypto.png">
-    <link rel="apple-touch-icon" href="assets/logo-horizon-crypto.png">
+    <link rel="icon" type="image/png" href="/assets/logo-horizon-crypto.png">
+    <link rel="apple-touch-icon" href="/assets/logo-horizon-crypto.png">
     <meta name="theme-color" content="#0a0a0f">
 
     <!-- Fonts -->
@@ -1308,10 +1308,7 @@ Issued At: ${isoDate}`;
 
         if (pack && claimBtnText) {
             let amount = '100$';
-            if (pack === 'solo') amount = '20$';
-            if (pack === 'pro') amount = '50$';
-            if (pack === 'vip') amount = '100$';
-
+            // Unified reward amount
             claimBtnText.textContent = `Réclamer mes ${amount} USDC`;
         }
     });
