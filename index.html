@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Critical CSS: Prevent white flash on load -->
+    <style>
+        html,
+        body {
+            background: #0a0a0f;
+        }
+    </style>
 
     <!-- SEO Meta Tags -->
     <title>L'Horizon Crypto - Guide Crypto avec Récompense jusqu'à 100$ USDC sur Blockchain</title>
@@ -172,6 +179,8 @@
     <!-- Navigation - Ultra Clean -->
     <nav class="navbar">
         <div class="nav-container">
+            <!-- CSS Checkbox Hack Input (Must be before nav-links) -->
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" style="position: absolute; left: -9999px;">
             <a href="#" class="logo">
                 <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
             </a>
@@ -183,10 +192,8 @@
                 <a href="faq.html">FAQ</a>
                 <a href="#avis">Avis</a>
                 <a href="contact.html">Contact</a>
-                <!-- Mobile CTA at bottom of menu -->
-                <div class="nav-cta-mobile">
-                    <a href="#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
-                </div>
+                <a href="#pricing" style="display: none;"></a>
+                <!-- Mobile CTA at bottom of menu REMOVED -->
             </div>
             <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
                 <button id="header-wallet-btn" class="wallet-btn"
@@ -194,19 +201,21 @@
                     <span>🦊</span>
                     <span id="wallet-btn-text">Connecter Wallet</span>
                 </button>
-                <a href="#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
             </div>
-            <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" id="mobile-menu-btn" aria-label="Menu"
+
+
+            <!-- Mobile Hamburger Button (Label) -->
+            <label for="nav-toggle" class="mobile-menu-toggle" aria-label="Menu"
                 style="z-index: 2147483647; position: relative;">
                 <span></span>
                 <span></span>
                 <span></span>
-            </button>
+            </label>
+            <!-- Overlay moved inside for CSS Hack -->
+            <div class="mobile-menu-overlay"></div>
         </div>
     </nav>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay"></div>
+
 
     <!-- ========================================
          HERO SECTION - Ultra Premium Hook
@@ -239,6 +248,12 @@
                         Trouvez les <strong>12 mots-clés cachés</strong> dans ce guide interactif, assemblez votre
                         phrase secrète et <span class="highlight-reward">débloquez jusqu'à 100$ USDC sur Base</span>
                         directement sur la blockchain. Votre apprentissage a enfin une valeur réelle.
+                    </p>
+
+                    <!-- Age Restriction Notice -->
+                    <p class="age-notice">
+                        🔞 <strong>Réservé aux personnes majeures (+18 ans)</strong> désireuses d'apprendre
+                        l'investissement crypto.
                     </p>
 
                     <!-- Value Proposition -->
@@ -360,6 +375,13 @@
                 </div>
             </div>
 
+            <!-- Age Restriction Notice -->
+            <p class="age-notice-offers"
+                style="text-align: center; margin: 20px auto; display: block; max-width: fit-content;">
+                🔞 <strong>Contenu réservé aux personnes majeures (+18 ans)</strong> désireuses d'apprendre
+                l'investissement crypto.
+            </p>
+
             <!-- Pricing Grid - 3 Packs -->
             <div class="pricing-grid-3">
                 <!-- Pack Solo -->
@@ -387,7 +409,7 @@
                             <li class="disabled"><span class="cross">✗</span> Support prioritaire</li>
                             <li class="disabled"><span class="cross">✗</span> Accès Discord VIP</li>
                         </ul>
-                        <button class="btn btn-secondary btn-pack" data-price="99">
+                        <button class="btn btn-secondary btn-pack" data-price="99" data-upsell="true">
                             <span class="btn-icon">🔓</span>
                             CHOISIR SOLO
                         </button>
@@ -538,7 +560,7 @@
     <div class="social-proof-ticker">
         <div class="ticker-content">
             <div class="ticker-item">🔑 Thomas vient de trouver sa 8ème clé</div>
-            <div class="ticker-item">💰 Marie a débloqué ses 20$ de récompense</div>
+            <div class="ticker-item">💰 Marie a trouvé ses 12 clés et récupéré jusqu'à 100$ USDC sur Base</div>
             <div class="ticker-item">🎯 +127 missions lancées cette semaine</div>
             <div class="ticker-item">⭐ Lucas : "J'ai récupéré mon investissement x10"</div>
             <div class="ticker-item">🔑 Sophie vient de trouver sa 11ème clé</div>
@@ -923,7 +945,7 @@
             <div class="section-header">
                 <span class="section-badge">Témoignages Vérifiés</span>
                 <h2>Ils ont trouvé <span class="gradient-text">leurs 12 clés</span></h2>
-                <p class="section-subtitle">Et récupéré leurs jusqu'à 100$ USDC sur Base</p>
+                <p class="section-subtitle">Et récupèrent jusqu'à 100$ USDC sur Base</p>
             </div>
 
             <!-- Infinite Carousel -->
@@ -1308,6 +1330,11 @@
                         La récompense de jusqu'à 100$ USDC est un bonus pédagogique, non un rendement garanti.
                         <a href="mentions-legales.html">Mentions légales</a>
                     </p>
+                    <p class="age-restriction">
+                        <strong>🔞 Contenu réservé aux personnes majeures (+18 ans).</strong>
+                        Ce guide est destiné aux personnes majeures désireuses d'apprendre les bases de l'investissement
+                        en crypto-actifs.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1317,10 +1344,234 @@
     <script src="js/threejs-effects.js"></script>
     <script src="js/main.js"></script>
     <script src="js/stripe.js"></script>
+    <script src="js/rgpd-consent.js"></script>
 
     <!-- Mobile Menu Handler moved to main.js -->
 
 
+</body>
+
+
+<!-- DISCORD UPSELL MODAL -->
+<div id="discord-modal-home" class="discord-modal-overlay">
+    <div class="discord-modal-content">
+        <button class="discord-modal-close" onclick="closeDiscordModal()">×</button>
+        <div class="discord-modal-header">
+            <span class="discord-modal-icon">👾</span>
+            <h3>Rejoignez la Communauté !</h3>
+        </div>
+        <div class="discord-modal-body">
+            <p>Le <strong>Pack Solo</strong> inclut uniquement le Guide PDF.</p>
+            <p>Voulez-vous ajouter l'accès à notre <strong>Discord VIP</strong> pour échanger avec d'autres
+                investisseurs ?</p>
+
+            <div class="discord-upsell-box">
+                <div class="discord-upsell-price">+29€ <span class="discord-upsell-note">(Offre spéciale)</span></div>
+                <ul class="discord-upsell-features">
+                    <li>💬 Salon d'entraide général</li>
+                    <li>🚀 Alertes communautaires</li>
+                    <li>🤝 Réseau d'investisseurs</li>
+                </ul>
+            </div>
+        </div>
+        <div class="discord-modal-actions">
+            <button class="btn btn-primary btn-full" onclick="acceptDiscordUpsell()">
+                Oui, ajouter l'abonnement 1 mois (+29€)
+            </button>
+            <button class="btn btn-secondary btn-full btn-text" onclick="declineDiscordUpsell()">
+                Non merci, je prends juste le Guide
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .discord-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 999999;
+        /* Top level */
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+    }
+
+    .discord-modal-overlay.active {
+        display: flex;
+    }
+
+    .discord-modal-content {
+        background: #1a1a2e;
+        border: 1px solid rgba(247, 147, 26, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        width: 90%;
+        max-width: 450px;
+        position: relative;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .discord-modal-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .discord-modal-icon {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .discord-modal-header h3 {
+        color: #fff;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+    }
+
+    .discord-modal-body p {
+        color: #a0a0b0;
+        margin-bottom: 15px;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .discord-upsell-box {
+        background: rgba(88, 101, 242, 0.1);
+        border: 1px solid #5865F2;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: left;
+    }
+
+    .discord-upsell-price {
+        color: #5865F2;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .discord-upsell-note {
+        font-size: 0.8rem;
+        font-weight: 400;
+        opacity: 0.8;
+    }
+
+    .discord-upsell-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .discord-upsell-features li {
+        margin-bottom: 5px;
+        color: #fff;
+        font-size: 0.9rem;
+    }
+
+    .discord-modal-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-full {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-text {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+</style>
+
+<script>
+    // --- UPSELL POPUP LOGIC ---
+
+    // 1. CONFIGURATION LINKS (REPLACE WITH REAL STRIPE LINKS)
+    // Link when user says NO (Only Guide):
+    const LINK_SOLO_HOME = 'https://buy.stripe.com/test_eVq7sNe9T6ZN3v318U2wU00';
+
+    // Link when user says YES (Guide + Subscription):
+    // TODO: Replace this with the 'BUNDLE' product link (Guide + Sub = Total Price)
+    // User requested to add subscription TO the pack.
+    const LINK_BUNDLE_HOME = 'https://buy.stripe.com/test_dRmeVf3vfabZd5DbNy2wU04';
+
+    const homeModal = document.getElementById('discord-modal-home');
+
+    // 2. Intercept Solo Buttons
+    document.addEventListener('DOMContentLoaded', () => {
+        const soloBtns = document.querySelectorAll('button[data-upsell="true"]');
+
+        soloBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopImmediatePropagation(); // Stop other handlers
+                openDiscordModal();
+            });
+        });
+    });
+
+    function openDiscordModal() {
+        if (homeModal) {
+            homeModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeDiscordModal() {
+        if (homeModal) {
+            homeModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function acceptDiscordUpsell() {
+        // User chose YES: Redirect to BUNDLE/Subscription link
+        window.location.href = LINK_BUNDLE_HOME;
+    }
+
+    function declineDiscordUpsell() {
+        // User chose NO: Redirect to SOLO link
+        window.location.href = LINK_SOLO_HOME;
+    }
+
+    // Close on background click
+    if (homeModal) {
+        homeModal.addEventListener('click', (e) => {
+            if (e.target === homeModal) closeDiscordModal();
+        });
+    }
+</script>
 </body>
 
 </html>

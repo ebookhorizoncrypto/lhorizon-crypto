@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Critical CSS: Prevent white flash on load -->
+    <style>
+        html,
+        body {
+            background: #0a0a0f;
+        }
+    </style>
     <meta name="description"
         content="Découvrez nos offres pour maîtriser la crypto et recevez jusqu'à 100$ USDC dès la fin de votre lecture.">
     <title>Nos Offres - L'Horizon Crypto</title>
@@ -54,7 +61,7 @@
             font-size: 0.85rem;
         }
 
-        /* Pricing section with no top padding */
+        /* Pricing section spacing reset */
         .pricing-section-compact {
             padding-top: var(--space-md);
         }
@@ -67,11 +74,14 @@
 
 <body>
     <!-- Background -->
-    <div class="bg-gradient"></div>
+    <!-- Three.js Canvas Background -->
+    <canvas id="threejs-canvas"></canvas>
 
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
+            <!-- CSS Checkbox Hack Input -->
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" style="position: absolute; left: -9999px;">
             <a href="index.html" class="logo">
                 <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
             </a>
@@ -83,10 +93,7 @@
                 <a href="faq.html">FAQ</a>
                 <a href="index.html#avis">Avis</a>
                 <a href="contact.html">Contact</a>
-                <!-- Mobile CTA at bottom of menu -->
-                <div class="nav-cta-mobile">
-                    <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
-                </div>
+
             </div>
             <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
                 <button id="header-wallet-btn" class="wallet-btn"
@@ -94,19 +101,16 @@
                     <span>🦊</span>
                     <span id="wallet-btn-text">Connecter Wallet</span>
                 </button>
-                <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
             </div>
-            <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" aria-label="Menu" onclick="toggleMenuDirect(this)"
+            <label for="nav-toggle" class="mobile-menu-toggle" aria-label="Menu"
                 style="z-index: 2147483647; position: relative;">
                 <span></span>
                 <span></span>
                 <span></span>
-            </button>
+            </label>
+            <div class="mobile-menu-overlay"></div>
         </div>
     </nav>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay"></div>
 
     <main>
         <!-- Compact Header -->
@@ -114,6 +118,9 @@
             <div class="solution-badge">✨ Inclus : jusqu'à 100$ USDC offerts</div>
             <h1>Choisissez votre <span class="gradient-text">niveau de protection</span></h1>
             <p class="subtitle">Paiement sécurisé • Sans KYC • Accès immédiat</p>
+            <p class="age-notice-offers" style="margin-top: 20px;">🔞 <strong>Contenu réservé aux personnes majeures
+                    (+18 ans)</strong> désireuses
+                d'apprendre l'investissement crypto.</p>
         </section>
 
         <!-- Pricing Section - IMMEDIATE -->
@@ -146,7 +153,7 @@
                                 <li class="disabled"><span class="cross">✗</span> Support prioritaire</li>
                                 <li class="disabled"><span class="cross">✗</span> Accès Discord VIP</li>
                             </ul>
-                            <button class="btn btn-secondary btn-pack" data-price="99">
+                            <button class="btn btn-secondary btn-pack" data-price="99" data-upsell="true">
                                 <span class="btn-icon">🔓</span>
                                 CHOISIR SOLO
                             </button>
@@ -241,6 +248,37 @@
                             REJOINDRE LE DISCORD
                         </button>
                         <p class="subscription-note">Sans engagement • Résiliable en 1 clic</p>
+                    </div>
+                </div>
+
+                <!-- Discord Upsell Popup -->
+                <div id="discord-upsell-modal" class="modal">
+                    <div class="modal-content"
+                        style="max-width: 500px; text-align: center; border: 1px solid var(--accent-gold);">
+                        <span class="modal-close" onclick="closeUpsellModal()">&times;</span>
+                        <div class="modal-icon">⚠️</div>
+                        <h3 style="color: var(--accent-gold);">Attendez une seconde !</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                            Ne manquez pas l'opportunité de rejoindre la communauté privée.
+                        </p>
+                        <div class="upsell-offer"
+                            style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 10px;">Ajouter l'accès Discord VIP ?</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-tertiary);">
+                                Accédez aux signaux, aux masterclass en direct et au réseau d'entraide pour seulement
+                                <strong style="color:white">+29€/mois</strong> (sans engagement).
+                            </p>
+                        </div>
+                        <div class="upsell-actions" style="display: flex; flex-direction: column; gap: 10px;">
+                            <button id="upsell-yes-btn" class="btn btn-primary"
+                                style="width: 100%; justify-content: center;">
+                                <span class="btn-icon">✅</span> OUI, je veux maximiser mes gains
+                            </button>
+                            <button id="upsell-no-btn" class="btn btn-outline"
+                                style="width: 100%; justify-content: center; background: transparent; border: 1px solid rgba(255,255,255,0.2); color:white; cursor:pointer;">
+                                Non merci, je continue sans l'aide de la communauté
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -608,16 +646,25 @@
                         La récompense de jusqu'à 100$ USDC est un bonus pédagogique, non un rendement garanti.
                         <a href="mentions-legales.html">Mentions légales</a>
                     </p>
+                    <p class="age-restriction">
+                        <strong>🔞 Contenu réservé aux personnes majeures (+18 ans).</strong>
+                        Ce guide est destiné aux personnes majeures désireuses d'apprendre les bases de l'investissement
+                        en crypto-actifs.
+                    </p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
-    <script src="js/stripe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threejs-effects.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/stripe.js"></script>
+    <script src="js/rgpd-consent.js"></script>
     <script src="js/crypto-ticker.js"></script>
 
+    <!-- Script cleaned up -->
     <!-- Extract Form Handler -->
     <script>
         const extractForm = document.getElementById('extract-form');
@@ -705,6 +752,221 @@
                 nav.style.setProperty('left', '0', 'important');
             }
         }
+    </script>
+    <!-- DISCORD UPSELL MODAL -->
+    <div id="discord-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeDiscordModal()">×</button>
+            <div class="modal-header">
+                <span class="modal-icon">👾</span>
+                <h3>Rejoignez la Communauté !</h3>
+            </div>
+            <div class="modal-body">
+                <p>Le <strong>Pack Solo</strong> inclut uniquement le Guide PDF.</p>
+                <p>Voulez-vous ajouter l'accès à notre <strong>Discord VIP</strong> pour échanger avec d'autres
+                    investisseurs ?</p>
+
+                <div class="upsell-box">
+                    <div class="upsell-price">+29€ <span class="upsell-note">(Offre spéciale)</span></div>
+                    <ul class="upsell-features">
+                        <li>💬 Salon d'entraide général</li>
+                        <li>🚀 Alertes communautaires</li>
+                        <li>🤝 Réseau d'investisseurs</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary btn-full" onclick="acceptDiscordUpsell()">
+                    Oui, ajouter l'abonnement 1 mois (+29€)
+                </button>
+                <button class="btn btn-secondary btn-full btn-text" onclick="declineDiscordUpsell()">
+                    Non merci, je prends juste le Guide
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border: 1px solid rgba(247, 147, 26, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .modal-header h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .modal-body p {
+            color: #a0a0b0;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .upsell-box {
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid #5865F2;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .upsell-price {
+            color: #5865F2;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upsell-note {
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .upsell-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .upsell-features li {
+            margin-bottom: 5px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-text {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-text:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+
+    <script>
+        // Modal Logic
+        const modal = document.getElementById('discord-modal');
+
+        // Real Stripe Links (TEST ENVIRONMENT)
+        const LINK_SOLO_ONLY = 'https://buy.stripe.com/test_eVq7sNe9T6ZN3v318U2wU00';   // Pack Solo (Guide Only)
+
+        // IMPORTANT: Replace this with the link to the BUNDLE (Guide + Subscription = ~128€)
+        // Currently pointing to Subscription only as a placeholder.
+        const LINK_BUNDLE = 'https://buy.stripe.com/test_dRmeVf3vfabZd5DbNy2wU04';
+
+        // Intercept Upsell Button Clicks
+        document.addEventListener('DOMContentLoaded', () => {
+            const upsellBtns = document.querySelectorAll('.btn-pack[data-upsell="true"]');
+
+            upsellBtns.forEach(btn => {
+                // Remove existing onclicks - we want to handle it manually
+                btn.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openDiscordModal();
+                };
+            });
+        });
+
+        function openDiscordModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeDiscordModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function acceptDiscordUpsell() {
+            // Redirect to Bundle Link (Solob + Sub)
+            window.location.href = LINK_BUNDLE;
+        }
+
+        function declineDiscordUpsell() {
+            // Redirect to basic Solo Pack
+            window.location.href = LINK_SOLO_ONLY;
+        }
+
+        // Close on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeDiscordModal();
+        });
     </script>
 </body>
 

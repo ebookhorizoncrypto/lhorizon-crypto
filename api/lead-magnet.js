@@ -41,7 +41,13 @@ export default async function handler(req, res) {
     // Rate limiting (max 3 requests per email per hour)
     const now = Date.now();
     const rateKey = normalizedEmail;
-    const rateData = rateLimiter.get(rateKey) || { count: 0, resetAt: now + 3600000 };
+    const rateData = rateLimiter.get(rateKey) || { count: 0, resetAt: now + 3600000, lastSent: 0 };
+
+    // [ANTI-DOUBLE SEND] Deduplication: If sent < 60s ago, ignore silently (idempotency)
+    if (now - rateData.lastSent < 60000) {
+        console.log(`Duplicate request prevented for ${normalizedEmail} (sent <60s ago)`);
+        return res.status(200).json({ success: true, message: 'Email déjà envoyé récemment' });
+    }
 
     if (now > rateData.resetAt) {
         rateData.count = 0;
@@ -49,10 +55,11 @@ export default async function handler(req, res) {
     }
 
     if (rateData.count >= 3) {
-        return res.status(429).json({ error: 'Trop de requêtes. Réessayez plus tard.' });
+        return res.status(429).json({ error: 'Trop de tentatives. Réessayez plus tard.' });
     }
 
     rateData.count++;
+    rateData.lastSent = now; // Update timestamp for deduplication
     rateLimiter.set(rateKey, rateData);
 
     try {

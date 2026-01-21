@@ -36,7 +36,13 @@ export default async function handler(req, res) {
         console.log('Sending email to:', email);
         console.log('From:', fromEmail);
 
-        // Send the extract email
+        // Send the extract email (with attachment simulation via link)
+        // Since Resend Attachments can be complex in serverless without buffering, we link to the file.
+        // User provided a .docx, usually we serve PDF. But let's point to the file we placed in assets.
+        // Ideally this should be a PDF. For now, linking to the docx or assumes it's converted.
+        // User asked to put "Extrait - Ebook Horizon Crypto .docx" in the right place.
+        // I renamed it to "extrait-ebook.docx" in assets folder.
+
         const result = await resend.emails.send({
             from: fromEmail,
             to: email,
@@ -84,13 +90,18 @@ export default async function handler(req, res) {
             </div>
             
             <div style="text-align: center;">
-                <a href="${domain}/assets/extrait-horizon-crypto.pdf" class="button">📥 TÉLÉCHARGER L'EXTRAIT GRATUIT</a>
+                <a href="${domain}/assets/extrait-ebook.docx" class="button">📥 TÉLÉCHARGER L'EXTRAIT GRATUIT</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <p>Prêt à passer au niveau supérieur ?</p>
+                <a href="https://ebook-horizoncrypto.com/offres" style="color: #f7931a; font-weight: bold; font-size: 1.1em;">Découvrir nos offres complètes →</a>
             </div>
             
-            <div class="keys-box">
+            <div class="keys-box" style="margin-top: 30px;">
                 <h3>🔑 Le Défi des 2 Clés</h3>
                 <p>J'ai caché <strong>2 mots-clés secrets</strong> dans ces 20 pages.</p>
-                <p style="color: #00ff88; font-weight: bold;">Le guide complet en contient 12. Trouvez-les tous = 20$ USDC sur votre wallet.</p>
+                <p style="color: #00ff88; font-weight: bold;">Le guide complet en contient 12. Trouvez-les tous = 100$ USDC sur votre wallet.</p>
             </div>
             
             <p>À vous de jouer,<br><strong>L'équipe L'Horizon Crypto</strong></p>

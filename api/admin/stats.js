@@ -39,12 +39,12 @@ export default async function handler(req, res) {
     // In production, fetch from database (Vercel KV, Supabase, etc.)
     // For demo, return mock data
     const stats = {
-        totalSales: 0,
-        totalRevenue: 0,
-        totalClaims: 0,
-        todaySales: 0,
-        todayRevenue: 0,
-        claimRate: '0%',
+        totalSales: 184,
+        totalRevenue: 15840,
+        totalClaims: 42,
+        claimRate: '22.8%',
+        todaySales: 8,
+        todayRevenue: 1240,
         lastUpdated: new Date().toISOString()
     };
 

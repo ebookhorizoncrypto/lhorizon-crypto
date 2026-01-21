@@ -38,3 +38,5 @@ contracts/deployments/
 *.pem
 private_key*
 .env.production
+.vercel
+.env*.local

@@ -488,7 +488,8 @@ h3 {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: calc(80px + var(--space-3xl)) 0 var(--space-4xl);
+    padding: 100px 0 var(--space-3xl);
+    /* Reduced top padding from 80px + space-3xl */
     text-align: center;
 }
 
@@ -2230,6 +2231,7 @@ h3 {
     font-size: 1.2rem;
     background: var(--gradient-text);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -2919,7 +2921,7 @@ h3 {
         display: block;
         margin-top: auto;
         padding-top: 30px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        /* border-top removed - was causing ugly bar */
     }
 
     .nav-cta-mobile .btn {
@@ -3642,7 +3644,7 @@ h3 {
         max-width: 300px !important;
         margin-top: 30px !important;
         padding-top: 20px !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-top: none !important;
     }
 
     .nav-cta-mobile .btn {
@@ -3796,11 +3798,6 @@ h3 {
         transform: translateY(-7px) rotate(-45deg) !important;
     }
 
-    /* Hide desktop CTA completely */
-    .nav-cta {
-        display: none !important;
-    }
-
     /* Mobile CTA at bottom of menu */
     .nav-cta-mobile {
         display: block !important;
@@ -3808,7 +3805,7 @@ h3 {
         max-width: 350px !important;
         margin-top: 30px !important;
         padding-top: 20px !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+        border-top: none !important;
     }
 
     .nav-cta-mobile .btn {
@@ -4041,11 +4038,63 @@ h3 {
 }
 
 /* ========================================
-   HIDE ONLY ORANGE CTA BUTTON (keep wallet button)
+   HIDE ORANGE CTA BUTTON ON MOBILE
+   (Keep Wallet Button Visible)
 ======================================== */
-.nav-cta .btn-glow,
-.nav-cta-mobile .btn-glow {
-    display: none !important;
+/* ========================================
+   HIDE ORANGE CTA BUTTON ON MOBILE/TABLET
+   (Keep Wallet Button Visible)
+======================================== */
+@media (max-width: 1200px) {
+
+    /* Hide the text/large orange button in the header */
+    .nav-cta .btn-glow {
+        display: none !important;
+    }
+
+    /* Ensure container is visible for the wallet button */
+    .nav-cta {
+        display: flex !important;
+        gap: 8px;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 15px;
+    }
+}
+
+/* ========================================
+   MOBILE HEADER LAYOUT
+======================================== */
+@media (max-width: 768px) {
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+    }
+
+    .logo-img {
+        height: 32px;
+        /* Smaller logo */
+    }
+
+    /* Wallet Button Compact */
+    .wallet-btn {
+        padding: 6px 10px !important;
+        font-size: 0.75rem !important;
+    }
+
+    #wallet-btn-text {
+        display: none;
+        /* Hide text, show only fox icon if very small */
+    }
+}
+
+@media (max-width: 768px) and (min-width: 380px) {
+    #wallet-btn-text {
+        display: inline;
+        /* Show text on slightly larger mobiles */
+    }
 }
 
 /* ========================================
@@ -4138,26 +4187,35 @@ h3 {
 /* [REMOVED REDUNDANT NO-KYC CSS BLOCK] */
 
 /* ========================================
-   MOBILE HEADER: WALLET BUTTON CENTERED
+   MOBILE HEADER: WALLET BUTTON CENTERED -> NOW RIGHT ALIGNED
 ======================================== */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
 
-    /* Header layout */
-    .navbar-container {
+    /* Header layout - Ensure Logo Left, Others Right */
+    .nav-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    /* Wallet button in center */
-    #wallet-btn,
-    .wallet-btn,
-    [id*="wallet"] {
+    /* Push wallet to the right, next to burger */
+    .nav-cta {
+        margin-left: auto;
+        margin-right: 15px;
+        /* Space between wallet and burger */
+    }
+
+    /* Wallet button - Standard Right Align */
+    #header-wallet-btn {
         display: flex !important;
-        order: 2;
-        margin: 0 auto;
-        padding: 8px 12px;
+        margin-right: 10px;
         font-size: 0.75rem;
+        padding: 8px 12px;
+    }
+
+    /* Hide any accidental duplicates */
+    [id*="wallet"]:not(#header-wallet-btn) {
+        display: none !important;
     }
 
     /* Hamburger on right */
@@ -4324,7 +4382,7 @@ h3 {
 }
 
 /* Desktop reset */
-@media (min-width: 1025px) {
+@media (min-width: 1201px) {
     .nav-links {
         position: static !important;
         left: auto !important;
@@ -4385,12 +4443,14 @@ h3 {
         transform: rotate(45deg) !important;
     }
 }
+
 /* FORCE MARGINS FOR NO-KYC BANNER */
 @media (min-width: 769px) {
     .no-kyc-banner {
         margin-bottom: 40px !important;
     }
 }
+
 @media (max-width: 768px) {
     .no-kyc-banner {
         margin-bottom: 15px !important;
@@ -4422,17 +4482,20 @@ h3 {
         width: 100vw !important;
         height: 100vh !important;
         height: 100dvh !important;
-        
+
         /* Appearance */
-        background: #0a0a0f !important; /* Solid dark background */
+        background: #0a0a0f !important;
+        /* Solid dark background */
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: flex-start !important; /* Start from top to avoid cutting off on small screens */
-        padding: 100px 20px 40px !important; /* Top padding for header */
+        justify-content: flex-start !important;
+        /* Start from top to avoid cutting off on small screens */
+        padding: 100px 20px 40px !important;
+        /* Top padding for header */
         gap: 25px !important;
         overflow-y: auto !important;
-        
+
         /* Visibility */
         z-index: 999999 !important;
         opacity: 1 !important;
@@ -4443,17 +4506,20 @@ h3 {
 
     .nav-links.active {
         left: 0 !important;
-        right: 0 !important; /* Force full width anchor */
-        background: rgba(10, 10, 15, 0.98) !important; /* Slight transparency for premium feel but readable */
+        right: 0 !important;
+        /* Force full width anchor */
+        background: rgba(10, 10, 15, 0.98) !important;
+        /* Slight transparency for premium feel but readable */
         backdrop-filter: blur(10px) !important;
     }
 
     /* Links Styling */
-    .nav-links > a, 
+    .nav-links>a,
     .nav-links a:not(.btn) {
         display: block !important;
         font-family: 'Space Grotesk', sans-serif !important;
-        font-size: 1.5rem !important; /* Large text */
+        font-size: 1.5rem !important;
+        /* Large text */
         font-weight: 700 !important;
         color: #ffffff !important;
         text-decoration: none !important;
@@ -4462,10 +4528,10 @@ h3 {
         opacity: 1 !important;
         visibility: visible !important;
         text-align: center !important;
-        border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
         width: 80% !important;
     }
-    
+
     .nav-links a:hover {
         color: #f7931a !important;
         transform: translateX(5px) !important;
@@ -4477,10 +4543,235 @@ h3 {
         margin-top: 20px !important;
         width: 80% !important;
     }
-    
+
     .nav-cta-mobile .btn {
-         width: 100% !important;
-         justify-content: center !important;
-         font-size: 1.1rem !important;
+        width: 100% !important;
+        justify-content: center !important;
+        font-size: 1.1rem !important;
     }
+}
+
+/* ========================================
+   100% CSS MOBILE MENU (CHECKBOX HACK)
+   ======================================== */
+.nav-toggle {
+    display: none;
+    /* Hide checkbox but keep logic */
+}
+
+/* Ensure label acts as button */
+.mobile-menu-toggle {
+    cursor: pointer !important;
+    display: none;
+}
+
+@media (max-width: 1200px) {
+    .mobile-menu-toggle {
+        display: flex !important;
+    }
+
+    /* When Checkbox is CHECKED -> OPEN MENU */
+    #nav-toggle:checked~.nav-links {
+        left: 0 !important;
+        right: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8) !important;
+    }
+
+    /* Animate Burger to X */
+    #nav-toggle:checked~.mobile-menu-toggle span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px) !important;
+        background-color: #f7931a !important;
+    }
+
+    #nav-toggle:checked~.mobile-menu-toggle span:nth-child(2) {
+        opacity: 0 !important;
+    }
+
+    #nav-toggle:checked~.mobile-menu-toggle span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px) !important;
+        background-color: #f7931a !important;
+    }
+
+    /* Overlay Visibility */
+    #nav-toggle:checked~.mobile-menu-overlay {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8) !important;
+        z-index: 99990 !important;
+        /* Just below menu */
+    }
+
+    /* Fix Nav Links stacking context */
+    .nav-links {
+        z-index: 999999 !important;
+        /* Top most */
+    }
+
+    .mobile-menu-toggle {
+        z-index: 2000000 !important;
+        /* Above everything to be clickable to close */
+    }
+}
+
+/* ========================================
+   WALLET BUTTON - MOBILE VISIBILITY
+======================================== */
+
+/* Mobile Wallet Button - Always visible in header */
+@media (max-width: 968px) {
+
+    /* Keep wallet button visible on mobile */
+    .wallet-btn-mobile {
+        display: flex !important;
+        position: fixed !important;
+        top: 18px !important;
+        right: 70px !important;
+        z-index: 10010 !important;
+        padding: 8px 12px !important;
+        font-size: 0.75rem !important;
+        border-radius: 8px !important;
+        background: linear-gradient(135deg, #627EEA, #4a5fc7) !important;
+        border: none !important;
+        color: #fff !important;
+        cursor: pointer !important;
+        gap: 6px !important;
+        align-items: center !important;
+        box-shadow: 0 4px 15px rgba(98, 126, 234, 0.3) !important;
+    }
+
+    .wallet-btn-mobile.connected {
+        background: linear-gradient(135deg, #00ff88, #00cc6a) !important;
+    }
+
+    /* Disconnect button styling */
+    .wallet-disconnect-btn {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin-top: 4px;
+        padding: 8px 12px;
+        background: rgba(255, 71, 87, 0.9);
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .wallet-btn-container:hover .wallet-disconnect-btn,
+    .wallet-btn-container.show-disconnect .wallet-disconnect-btn {
+        display: block;
+    }
+
+    .wallet-btn-container {
+        position: relative;
+    }
+}
+
+/* Desktop wallet disconnect dropdown */
+@media (min-width: 969px) {
+    .wallet-btn-container {
+        position: relative;
+    }
+
+    .wallet-disconnect-btn {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin-top: 4px;
+        padding: 10px 16px;
+        background: rgba(255, 71, 87, 0.95);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        z-index: 10000;
+    }
+
+    .wallet-btn-container:hover .wallet-disconnect-btn,
+    .wallet-btn-container.show-disconnect .wallet-disconnect-btn {
+        display: block;
+    }
+
+    .wallet-disconnect-btn:hover {
+        background: rgba(255, 71, 87, 1);
+    }
+}
+
+/* ========================================
+   AGE RESTRICTION (+18) NOTICES
+======================================== */
+
+/* Hero age notice */
+.age-notice {
+    margin-top: var(--space-md);
+    padding: 12px 20px;
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: var(--radius-md);
+    color: #ff8a94;
+    font-size: 0.9rem;
+    display: inline-block;
+}
+
+.age-notice strong {
+    color: #ff4757;
+}
+
+/* Footer age restriction */
+.age-restriction {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ff8a94;
+    font-size: 0.85rem;
+}
+
+.age-restriction strong {
+    color: #ff4757;
+}
+
+/* Age notice in offers section */
+.age-notice-offers {
+    display: inline-block;
+    margin-top: var(--space-md);
+    margin-bottom: 70px;
+    /* Increased from 40px to separate from pricing cards */
+    /* Increased spacing */
+    padding: 10px 20px;
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: var(--radius-md);
+    color: #ff8a94;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 50;
+}
+
+/* FORCE VISIBILITY of Wallet Connect Action Button AND Claim Button */
+.wallet-connect-action,
+#connect-wallet-generic,
+#claim-reward-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 60px !important;
 }

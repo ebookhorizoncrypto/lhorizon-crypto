@@ -4,11 +4,19 @@
 ======================================== */
 
 // Configuration des Stripe Payment Links
+// ====== LIENS LIVE (PRODUCTION) - Ne pas supprimer ======
+// solo: 'https://buy.stripe.com/bJe9AS1BK4ov9jqa6s6wE02',
+// pro: 'https://buy.stripe.com/6oUcN4a8gaMTcvC1zW6wE05',
+// vip: 'https://buy.stripe.com/aFaaEW1BKaMT1QY2E06wE04',
+// discord: 'https://buy.stripe.com/eVqaEW0xG9IP67eemI6wE03'
+// =========================================================
+
+// ====== LIENS TEST (pour tester avant déploiement) ======
 const STRIPE_PAYMENT_LINKS = {
-    solo: 'https://buy.stripe.com/bJe9AS1BK4ov9jqa6s6wE02',
-    pro: 'https://buy.stripe.com/6oUcN4a8gaMTcvC1zW6wE05',
-    vip: 'https://buy.stripe.com/aFaaEW1BKaMT1QY2E06wE04',
-    discord: 'https://buy.stripe.com/eVqaEW0xG9IP67eemI6wE03'
+    solo: 'https://buy.stripe.com/test_eVq7sNe9T6ZN3v318U2wU00',
+    pro: 'https://buy.stripe.com/test_28E7sN3vf2Jx9TrdVG2wU01',
+    vip: 'https://buy.stripe.com/test_7sY00l4zjfwj7Lj6te2wU02',
+    discord: 'https://buy.stripe.com/eVqaEW0xG9IP67eemI6wE03' // Pas de lien test fourni, garde le live
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,6 +31,12 @@ function handleStripeClick(e) {
     const button = e.target.closest('.btn-pack');
 
     if (!button) return; // Not a pack button
+
+    // Check if this button has a custom upsell handler (local override)
+    if (button.dataset.upsell === 'true') {
+        console.log('↩️ Skipping global Stripe handler for Upsell button');
+        return;
+    }
 
     // Stop other handlers (optional, but safer)
     e.preventDefault();

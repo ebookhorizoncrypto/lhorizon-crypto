@@ -1,13 +1,16 @@
+// Load environment variables FIRST
+import 'dotenv/config';
+
 import http from 'http';
 import { join } from 'path';
 import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-// Import handlers
+// Import handlers (after dotenv is loaded)
 import signClaimHandler from './api/sign-claim.js';
 import leadMagnetHandler from './api/lead-magnet.js';
 import contactHandler from './api/contact.js';
-import 'dotenv/config';
+import adminMockHandler from './api/admin-mock.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,7 +40,7 @@ const server = http.createServer(async (req, res) => {
     // Default CORS for all requests (redundant protection)
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization');
 
     // Handle Preflight Globally at Server Level
     if (req.method === 'OPTIONS') {
@@ -47,13 +50,18 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Router
+    // Router
     const routes = {
         '/api/sign-claim': signClaimHandler,
         '/api/lead-magnet': leadMagnetHandler,
-        '/api/contact': contactHandler
+        '/api/contact': contactHandler,
+        '/api/verify-email': (await import('./api/verify-email.js')).default,
+        '/api/admin/stats': adminMockHandler,
+        '/api/admin/customers': adminMockHandler
     };
 
-    if (routes[req.url] && req.method === 'POST') {
+    const isGetRoute = req.url.startsWith('/api/admin/');
+    if (routes[req.url] && (req.method === 'POST' || (isGetRoute && req.method === 'GET'))) {
         const handler = routes[req.url];
 
         // Adapt standard req/res to Vercel-like handler signature

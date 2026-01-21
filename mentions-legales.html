@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Critical CSS: Prevent white flash on load -->
+    <style>html,body{background:#0a0a0f;}</style>
     <meta name="description" content="Mentions Légales - L'Horizon Crypto">
     <meta name="robots" content="noindex, follow">
     <title>Mentions Légales - L'Horizon Crypto</title>
@@ -125,6 +127,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" style="position: absolute; left: -9999px;">
             <a href="index.html" class="logo">
                 <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
             </a>
@@ -136,7 +139,6 @@
                 <a href="faq.html">FAQ</a>
                 <a href="index.html#avis">Avis</a>
                 <a href="contact.html">Contact</a>
-                <!-- Mobile CTA at bottom of menu -->
                 <div class="nav-cta-mobile">
                     <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
                 </div>
@@ -149,16 +151,15 @@
                 </button>
                 <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
             </div>
-            <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" aria-label="Menu">
+            <label for="nav-toggle" class="mobile-menu-toggle" aria-label="Menu"
+                style="z-index: 2147483647; position: relative;">
                 <span></span>
                 <span></span>
                 <span></span>
-            </button>
+            </label>
+            <div class="mobile-menu-overlay"></div>
         </div>
     </nav>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay"></div>
 
     <!-- Legal Page -->
     <main class="legal-page">
@@ -245,7 +246,8 @@
                     <h3>4.2 Récompense Pédagogique (jusqu'à 100$ USDC)</h3>
                     <div class="highlight-box">
                         <p>
-                            Le mécanisme "Proof of Learning" offrant <strong>jusqu'à 100$ USDC</strong> aux lecteurs ayant
+                            Le mécanisme "Proof of Learning" offrant <strong>jusqu'à 100$ USDC</strong> aux lecteurs
+                            ayant
                             complété le guide est :
                         </p>
                         <ul>
@@ -387,11 +389,16 @@
                         La récompense de jusqu'à 100$ USDC est un bonus pédagogique, non un rendement garanti.
                         <a href="mentions-legales.html">Mentions légales</a>
                     </p>
+                    <p class="age-restriction">
+                        <strong>🔞 Contenu réservé aux personnes majeures (+18 ans).</strong> 
+                        Ce guide est destiné aux personnes majeures désireuses d'apprendre les bases de l'investissement en crypto-actifs.
+                    </p>
                 </div>
             </div>
         </div>
     </footer>
-<script src="js/main.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/rgpd-consent.js"></script>
 </body>
 
 </html>

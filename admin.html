@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Critical CSS: Prevent white flash on load -->
+    <style>
+        html,
+        body {
+            background: #0a0a0f;
+        }
+    </style>
     <meta name="robots" content="noindex, nofollow">
     <title>Admin Dashboard - L'Horizon Crypto</title>
 
@@ -193,6 +200,24 @@
             margin-bottom: 32px;
         }
 
+        .stats-grid-5 {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
         .stat-card {
             background: var(--bg-card);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -239,6 +264,10 @@
 
         .stat-card.rate {
             border-top: 3px solid #9b59b6;
+        }
+
+        .stat-card.visitors {
+            border-top: 3px solid #00ff88;
         }
 
         /* Tables */
@@ -323,26 +352,323 @@
         }
 
         /* Responsive */
+        @media (max-width: 1400px) {
+            .stats-grid-5 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         @media (max-width: 1200px) {
             .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid-5 {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 768px) {
+
+            /* Sidebar - slide from left */
             .sidebar {
+                position: fixed;
+                left: -280px;
+                width: 280px;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                padding-top: 20px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            /* Main content - full width with padding for hamburger */
+            .main-content {
+                margin-left: 0;
+                padding: 80px 16px 20px 16px;
+                min-height: 100vh;
+            }
+
+            /* Header - stack vertically */
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+                margin-top: 0;
+            }
+
+            .header>div {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 10px !important;
+                width: 100%;
+            }
+
+            #live-visitors {
+                padding: 8px 14px !important;
+                font-size: 0.85rem !important;
+                width: fit-content;
+            }
+
+            .header-date {
+                font-size: 0.85rem;
+            }
+
+            /* Stats cards - full width, better spacing */
+            .stats-grid,
+            .stats-grid-5 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .stat-card h3 {
+                font-size: 0.85rem;
+                margin-bottom: 0;
+            }
+
+            .stat-card .value {
+                font-size: 1.75rem;
+                margin: 0;
+            }
+
+            .stat-card .change {
                 display: none;
             }
 
-            .main-content {
-                margin-left: 0;
+            /* Charts - stacked */
+            .charts-grid {
+                grid-template-columns: 1fr !important;
             }
 
-            .stats-grid {
+            .chart-card {
+                padding: 16px;
+            }
+
+            .chart-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .chart-header h3 {
+                font-size: 1rem;
+            }
+
+            .chart-tabs {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+            }
+
+            .chart-tabs button {
+                padding: 10px 8px;
+                font-size: 0.75rem;
+                text-align: center;
+            }
+
+            .chart-container {
+                height: 180px !important;
+            }
+
+            /* Tables - horizontal scroll with better styling */
+            .card {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            .card h2 {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
+            }
+
+            .card table {
+                min-width: 600px;
+            }
+
+            th,
+            td {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+
+            /* Mobile Menu Toggle */
+            .mobile-admin-toggle {
+                display: flex !important;
+                position: fixed;
+                top: 20px;
+                left: 16px;
+                z-index: 1001;
+                width: 48px;
+                height: 48px;
+                background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+                border: 1px solid rgba(247, 147, 26, 0.3);
+                border-radius: 12px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 1.5rem;
+                color: var(--accent-gold);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .mobile-admin-toggle:active {
+                transform: scale(0.95);
+            }
+
+            /* Overlay */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                z-index: 999;
+                backdrop-filter: blur(2px);
+            }
+
+            .sidebar-overlay.open {
+                display: block;
+            }
+
+            /* Login card - responsive */
+            .login-card {
+                padding: 32px 24px;
+                max-width: 90%;
+            }
+
+            .login-card h1 {
+                font-size: 1.5rem;
+            }
+
+            .login-card input {
+                padding: 14px;
+            }
+
+            .login-card button {
+                padding: 14px;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 400px) {
+            .main-content {
+                padding: 70px 12px 16px 12px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-card .value {
+                font-size: 1.5rem;
+            }
+
+            .chart-tabs button {
+                padding: 8px 4px;
+                font-size: 0.7rem;
+            }
+
+            .mobile-admin-toggle {
+                width: 44px;
+                height: 44px;
+                top: 12px;
+                left: 12px;
+            }
+        }
+
+        .mobile-admin-toggle {
+            display: none;
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
                 grid-template-columns: 1fr;
             }
         }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .chart-header h3 {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-tabs {
+            display: flex;
+            gap: 6px;
+        }
+
+        .chart-tabs button {
+            padding: 8px 14px;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chart-tabs button:hover {
+            border-color: var(--accent-gold);
+            color: var(--text-primary);
+        }
+
+        .chart-tabs button.active {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+        }
+
+        .chart-container {
+            height: 250px;
+            position: relative;
+        }
     </style>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -358,127 +684,246 @@
 
     <!-- Dashboard -->
     <div class="dashboard" id="dashboard">
-        <!-- Sidebar -->
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-admin-toggle" id="mobile-admin-toggle" onclick="toggleAdminSidebar()">☰</button>
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleAdminSidebar()"></div>
+
+        <!-- Sidebar (Admin Only) -->
         <aside class="sidebar">
             <div class="sidebar-logo">
                 <img src="assets/logo-horizon-crypto.png" alt="Logo">
-                <span>L'Horizon</span>
+                <span>Admin</span>
             </div>
-            <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="logo-img logo-transparent">
-            </a>
-            <div class="nav-links">
-                <a href="index.html#concept">Concept</a>
-                <a href="offres.html">Nos Offres</a>
-                <a href="liens-utiles.html">Liens Utiles</a>
-                <a href="claim.html" style="color: var(--accent-green);">Réclamer Cashback</a>
-                <a href="faq.html">FAQ</a>
-                <a href="index.html#avis">Avis</a>
-                <a href="contact.html">Contact</a>
-                <!-- Mobile CTA at bottom of menu -->
-                <div class="nav-cta-mobile">
-                    <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
-                </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="active" data-section="dashboard" onclick="switchSection('dashboard', this)">📊
+                    Dashboard</a>
+                <a href="#" data-section="clients" onclick="switchSection('clients', this)">👥 Clients</a>
+                <a href="#" data-section="claims" onclick="switchSection('claims', this)">🎁 Claims</a>
+                <a href="#" data-section="revenus" onclick="switchSection('revenus', this)">💰 Revenus</a>
+                <a href="#" data-section="emails" onclick="switchSection('emails', this)">📧 Emails</a>
+            </nav>
+            <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <a href="index.html"
+                    style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; padding: 12px 16px; border-radius: 8px;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.05)'"
+                    onmouseout="this.style.background='transparent'">
+                    ← Retour au site
+                </a>
             </div>
-            <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
-                <button id="header-wallet-btn" class="wallet-btn"
-                    style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: linear-gradient(135deg, #627EEA, #4a5fc7); border: none; border-radius: 8px; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                    <span>🦊</span>
-                    <span id="wallet-btn-text">Connecter Wallet</span>
-                </button>
-                <a href="index.html#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
-            </div>
-            <!-- Mobile Hamburger Button -->
-            <button class="mobile-menu-toggle" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay"></div>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="header">
-                <h1>📊 Vue d'ensemble</h1>
-                <span class="header-date" id="current-date"></span>
+
+            <!-- SECTION: DASHBOARD -->
+            <div id="section-dashboard" class="admin-section active">
+                <div class="header">
+                    <h1>📊 Vue d'ensemble</h1>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div id="live-visitors"
+                            style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 20px;">
+                            <span
+                                style="width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: pulse 2s infinite;"></span>
+                            <span style="color: #00ff88; font-weight: 600;"><span id="visitors-count">0</span> visiteurs
+                                en
+                                ligne</span>
+                        </div>
+                        <span class="header-date" id="current-date"></span>
+                    </div>
+                </div>
+
+                <!-- Stats (5 cards) -->
+                <div class="stats-grid stats-grid-5">
+                    <div class="stat-card visitors">
+                        <h3>👁️ Visiteurs en Ligne</h3>
+                        <div class="value" id="visitors-display">0</div>
+                        <div class="change positive">En temps réel</div>
+                    </div>
+                    <div class="stat-card revenue">
+                        <h3>💰 Revenu Total</h3>
+                        <div class="value" id="total-revenue">0€</div>
+                        <div class="change positive">+12% vs mois dernier</div>
+                    </div>
+                    <div class="stat-card sales">
+                        <h3>📦 Ventes Totales</h3>
+                        <div class="value" id="total-sales">0</div>
+                        <div class="change positive">+8 aujourd'hui</div>
+                    </div>
+                    <div class="stat-card claims">
+                        <h3>🎁 Claims Effectués</h3>
+                        <div class="value" id="total-claims">0</div>
+                        <div class="change">jusqu'à 100$ USDC chacun</div>
+                    </div>
+                    <div class="stat-card rate">
+                        <h3>📈 Taux de Claim</h3>
+                        <div class="value" id="claim-rate">0%</div>
+                        <div class="change">des acheteurs</div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>💰 Ventes</h3>
+                            <div class="chart-tabs" data-chart="sales">
+                                <button class="active" data-period="1h">1h</button>
+                                <button data-period="24h">24h</button>
+                                <button data-period="1m">1 mois</button>
+                                <button data-period="1y">1 an</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>👁️ Visites</h3>
+                            <div class="chart-tabs" data-chart="visitors">
+                                <button class="active" data-period="1h">1h</button>
+                                <button data-period="24h">24h</button>
+                                <button data-period="1m">1 mois</button>
+                                <button data-period="1y">1 an</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="visitorsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Customers & Claims Simplified for Dashboard -->
+                <div class="card">
+                    <h2>👥 Activité Récente</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">Retrouvez le détail dans les onglets
+                        dédiés.</p>
+                </div>
             </div>
 
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card revenue">
-                    <h3>💰 Revenu Total</h3>
-                    <div class="value" id="total-revenue">0€</div>
-                    <div class="change positive">+12% vs mois dernier</div>
+            <!-- SECTION: CLIENTS -->
+            <div id="section-clients" class="admin-section" style="display: none;">
+                <div class="header">
+                    <h1>👥 Gestion Clients</h1>
                 </div>
-                <div class="stat-card sales">
-                    <h3>📦 Ventes Totales</h3>
-                    <div class="value" id="total-sales">0</div>
-                    <div class="change positive">+8 aujourd'hui</div>
-                </div>
-                <div class="stat-card claims">
-                    <h3>🎁 Claims Effectués</h3>
-                    <div class="value" id="total-claims">0</div>
-                    <div class="change">jusqu'à 100$ USDC chacun</div>
-                </div>
-                <div class="stat-card rate">
-                    <h3>📈 Taux de Claim</h3>
-                    <div class="value" id="claim-rate">0%</div>
-                    <div class="change">des acheteurs</div>
+                <div class="card">
+                    <h2>Liste des Clients</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Pack</th>
+                                <th>Montant</th>
+                                <th>Date</th>
+                                <th>Status Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customers-table">
+                            <tr>
+                                <td colspan="5" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Recent Customers -->
-            <div class="card">
-                <h2>👥 Derniers Clients</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Pack</th>
-                            <th>Montant</th>
-                            <th>Date</th>
-                            <th>Claim</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customers-table">
-                        <tr>
-                            <td colspan="5" class="loading">Chargement...</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- SECTION: CLAIMS -->
+            <div id="section-claims" class="admin-section" style="display: none;">
+                <div class="header">
+                    <h1>🎁 Gestion Claims</h1>
+                </div>
+                <div class="card">
+                    <h2>Historique des Claims</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Wallet</th>
+                                <th>Date</th>
+                                <th>Transaction</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claims-table">
+                            <tr>
+                                <td colspan="4" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- Recent Claims -->
-            <div class="card">
-                <h2>🎁 Derniers Claims</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Wallet</th>
-                            <th>Date</th>
-                            <th>Transaction</th>
-                        </tr>
-                    </thead>
-                    <tbody id="claims-table">
-                        <tr>
-                            <td colspan="4" class="loading">Chargement...</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- SECTION: REVENUS -->
+            <div id="section-revenus" class="admin-section" style="display: none;">
+                <div class="header">
+                    <h1>💰 Revenus Détaillés</h1>
+                </div>
+                <div class="card">
+                    <h2>Historique des Transactions</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Pack</th>
+                                <th>Montant</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody id="revenue-table">
+                            <tr>
+                                <td colspan="5" class="loading">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+            <!-- SECTION: EMAILS -->
+            <div id="section-emails" class="admin-section" style="display: none;">
+                <div class="header">
+                    <h1>📧 Campagnes Email (Resend)</h1>
+                </div>
+                <div class="card">
+                    <h2>Envoyer une Campagne</h2>
+                    <div style="display: grid; gap: 15px; max-width: 600px;">
+                        <div>
+                            <label
+                                style="display: block; margin-bottom: 5px; color: var(--text-secondary);">Destinataire(s)</label>
+                            <select
+                                style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 6px;">
+                                <option value="all">Tous les utilisateurs (Newsletter)</option>
+                                <option value="buyers">Acheteurs uniquement</option>
+                                <option value="leads">Prospects (Lead Magnet)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                style="display: block; margin-bottom: 5px; color: var(--text-secondary);">Sujet</label>
+                            <input type="text" placeholder="Sujet de l'email"
+                                style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label
+                                style="display: block; margin-bottom: 5px; color: var(--text-secondary);">Message</label>
+                            <textarea rows="6" placeholder="Contenu de l'email..."
+                                style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 6px;"></textarea>
+                        </div>
+                        <button onclick="alert('Simulation: Email envoyé via Resend API ✅')" class="btn-primary"
+                            style="padding: 12px; border:none; border-radius: 6px; cursor: pointer; background: #0070f3; color: white; font-weight: 600;">
+                            Envoyer la Campagne
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <script>
         let apiKey = '';
-        const API_BASE = '';
+        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:3001'
+            : '';
 
         // Set current date
         document.getElementById('current-date').textContent = new Date().toLocaleDateString('fr-FR', {
@@ -487,6 +932,24 @@
             month: 'long',
             day: 'numeric'
         });
+
+        function switchSection(sectionId, element) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(el => el.style.display = 'none');
+            // Show target section
+            document.getElementById('section-' + sectionId).style.display = 'block';
+
+            // Update active state in sidebar
+            if (element) {
+                document.querySelectorAll('.sidebar-nav a').forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+            }
+
+            // Refresh data if needed
+            if (sectionId === 'clients' || sectionId === 'claims' || sectionId === 'revenus') {
+                fetchCustomers();
+            }
+        }
 
         function login() {
             apiKey = document.getElementById('api-key-input').value;
@@ -535,7 +998,7 @@
                     return;
                 }
 
-                tbody.innerHTML = customers.slice(0, 10).map(c => `
+                tbody.innerHTML = customers.map(c => `
                     <tr>
                         <td>${maskEmail(c.email)}</td>
                         <td><span class="badge badge-${c.pack}">${c.pack.toUpperCase()}</span></td>
@@ -547,6 +1010,9 @@
                     </tr>
                 `).join('');
 
+                // Render Revenue Table using the same data
+                renderRevenueTable(customers);
+
                 // Claims table
                 const claimedCustomers = customers.filter(c => c.claimed);
                 const claimsTable = document.getElementById('claims-table');
@@ -554,7 +1020,7 @@
                 if (claimedCustomers.length === 0) {
                     claimsTable.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-secondary);">Aucun claim pour le moment</td></tr>';
                 } else {
-                    claimsTable.innerHTML = claimedCustomers.slice(0, 10).map(c => `
+                    claimsTable.innerHTML = claimedCustomers.map(c => `
                         <tr>
                             <td>${maskEmail(c.email)}</td>
                             <td>${shortenAddress(c.claimWallet || '0x...')}</td>
@@ -567,6 +1033,26 @@
             } catch (error) {
                 console.error('Error fetching customers:', error);
             }
+        }
+
+        function renderRevenueTable(customers) {
+            const tbody = document.getElementById('revenue-table');
+            if (customers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Aucune transaction</td></tr>';
+                return;
+            }
+            // Sort by date desc
+            const sorted = [...customers].sort((a, b) => new Date(b.purchasedAt) - new Date(a.purchasedAt));
+
+            tbody.innerHTML = sorted.map(c => `
+                <tr>
+                    <td>${new Date(c.purchasedAt).toLocaleDateString('fr-FR')}</td>
+                    <td>${maskEmail(c.email)}</td>
+                    <td><span class="badge badge-${c.pack}">${c.pack ? c.pack.toUpperCase() : 'N/A'}</span></td>
+                    <td style="color: #00ff88; font-weight: bold;">+${c.amount}€</td>
+                    <td><span class="badge badge-claimed" style="background: rgba(0, 255, 136, 0.1); color: #00ff88;">Payé</span></td>
+                </tr>
+            `).join('');
         }
 
         function maskEmail(email) {
@@ -592,63 +1078,198 @@
         document.getElementById('api-key-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') login();
         });
+
+        // ========================================
+        // LIVE VISITORS SIMULATION
+        // ========================================
+        let currentVisitors = Math.floor(Math.random() * 10) + 5; // Start between 5-15
+
+        function updateVisitorsDisplay() {
+            document.getElementById('visitors-count').textContent = currentVisitors;
+            document.getElementById('visitors-display').textContent = currentVisitors;
+        }
+
+        function simulateVisitors() {
+            // Random change: -2 to +3
+            const change = Math.floor(Math.random() * 6) - 2;
+            currentVisitors = Math.max(3, Math.min(25, currentVisitors + change));
+            updateVisitorsDisplay();
+
+            // Update Chart if '1h' view is active
+            if (visitorsChart && document.querySelector('.chart-tabs[data-chart="visitors"] .active').dataset.period === '1h') {
+                const lastIdx = visitorsChart.data.datasets[0].data.length - 1;
+                visitorsChart.data.datasets[0].data[lastIdx] = currentVisitors;
+                visitorsChart.update('none');
+            }
+
+            // Next update in 3-8 seconds
+            const nextUpdate = Math.floor(Math.random() * 5000) + 3000;
+            setTimeout(simulateVisitors, nextUpdate);
+        }
+
+        // Start simulation after login
+        const originalLogin = login;
+        login = function () {
+            originalLogin();
+            setTimeout(() => {
+                updateVisitorsDisplay();
+                simulateVisitors();
+                initCharts(); // Initialize charts after login
+            }, 1000);
+        };
+
+        // ========================================
+        // MOBILE SIDEBAR TOGGLE
+        // ========================================
+        function toggleAdminSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.getElementById('sidebar-overlay').classList.toggle('open');
+        }
+
+        // ========================================
+        // CHARTS - Sales & Visitors
+        // ========================================
+        let salesChart, visitorsChart;
+
+        const chartData = {
+            sales: {
+                '1h': { labels: ['00', '10', '20', '30', '40', '50', '60'], data: [0, 1, 0, 2, 1, 0, 1] },
+                '24h': { labels: ['00h', '04h', '08h', '12h', '16h', '20h', '24h'], data: [2, 1, 4, 8, 12, 6, 3] },
+                '1m': { labels: ['S1', 'S2', 'S3', 'S4'], data: [45, 52, 68, 74] },
+                '1y': { labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'], data: [120, 145, 180, 210, 250, 320, 380, 420, 390, 450, 520, 580] }
+            },
+            visitors: {
+                '1h': { labels: ['00', '10', '20', '30', '40', '50', '60'], data: [12, 18, 15, 22, 19, 25, 21] },
+                '24h': { labels: ['00h', '04h', '08h', '12h', '16h', '20h', '24h'], data: [45, 23, 67, 120, 180, 95, 58] },
+                '1m': { labels: ['S1', 'S2', 'S3', 'S4'], data: [1200, 1450, 1680, 1920] },
+                '1y': { labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'], data: [4500, 5200, 6100, 7400, 8900, 11200, 13500, 15800, 14200, 16500, 18900, 21500] }
+            }
+        };
+
+        function initCharts() {
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#a0a0b0' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#a0a0b0' },
+                        beginAtZero: true
+                    }
+                }
+            };
+
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: chartData.sales['1h'].labels,
+                    datasets: [{
+                        label: 'Ventes',
+                        data: chartData.sales['1h'].data,
+                        borderColor: '#f7931a',
+                        backgroundColor: 'rgba(247, 147, 26, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#f7931a'
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Visitors Chart
+            const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+            visitorsChart = new Chart(visitorsCtx, {
+                type: 'line',
+                data: {
+                    labels: chartData.visitors['1h'].labels,
+                    datasets: [{
+                        label: 'Visites',
+                        data: chartData.visitors['1h'].data,
+                        borderColor: '#00ff88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#00ff88'
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Tab click handlers
+            document.querySelectorAll('.chart-tabs').forEach(tabs => {
+                tabs.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const chartType = tabs.dataset.chart;
+                        const period = btn.dataset.period;
+
+                        // Update active tab
+                        tabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        // Update chart data
+                        const data = chartData[chartType][period];
+                        const chart = chartType === 'sales' ? salesChart : visitorsChart;
+
+                        chart.data.labels = data.labels;
+                        chart.data.datasets[0].data = data.data;
+                        chart.update('none');
+                    });
+                });
+            });
+        }
     </script>
-<footer class="footer footer-clean">
-        <div class="container">
-            <div class="footer-main">
-                <!-- Logo -->
-                <div class="footer-brand">
-                    <img src="assets/logo-horizon-crypto.png" alt="L'Horizon Crypto" class="footer-logo-img">
-                    <p class="footer-tagline">Le Guide de l'Apprentissage Crypto</p>
-                </div>
 
-                <!-- Navigation -->
-                <div class="footer-nav">
-                    <div class="footer-nav-col">
-                        <h4>Navigation</h4>
-                        <a href="index.html#concept">Concept</a>
-                        <a href="offres.html">Nos Offres</a>
-                        <a href="index.html#avis">Témoignages</a>
-                        <a href="index.html#pricing">Tarifs</a>
-                    </div>
-                    <div class="footer-nav-col">
-                        <h4>Support</h4>
-                        <a href="contact.html">Contact</a>
-                        <a href="mailto:contact@ebook-horizoncrypto.com">Email</a>
-                        <a href="faq.html">FAQ</a>
-                    </div>
-                    <div class="footer-nav-col">
-                        <h4>Légal</h4>
-                        <a href="mentions-legales.html">Mentions Légales</a>
-                        <a href="cgv.html">CGV</a>
-                        <a href="confidentialite.html">Politique de Confidentialité</a>
-                        <a href="remboursement.html">Remboursement</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bottom Bar -->
-            <div class="footer-bottom">
-                <p class="footer-copyright">© 2026 L'Horizon Crypto. Tous droits réservés.</p>
-                <div class="footer-badges">
-                    <span class="footer-badge">🔐 Pas de KYC</span>
-                    <span class="footer-badge">💰 Bonus jusqu'à 100$ USDC</span>
-                </div>
-                <div class="footer-legal-disclaimer">
-                    <p>
-                        <strong>⚠️ Avertissement :</strong> Ce site propose des contenus éducatifs sur les
-                        crypto-actifs.
-                        <strong>Il ne constitue pas un conseil en investissement</strong> au sens de la réglementation
-                        AMF.
-                        L'investissement en crypto-actifs comporte des risques de perte en capital.
-                        La récompense de jusqu'à 100$ USDC est un bonus pédagogique, non un rendement garanti.
-                        <a href="mentions-legales.html">Mentions légales</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+    <!-- Minimal Admin Footer -->
+    <footer class="admin-footer">
+        <p>© 2026 L'Horizon Crypto - Dashboard Admin</p>
+        <a href="index.html">← Retour au site</a>
     </footer>
-<script src="js/main.js"></script>
+
+    <style>
+        .admin-footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 40px;
+        }
+
+        .admin-footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .admin-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .admin-footer {
+                padding: 16px;
+                font-size: 0.8rem;
+            }
+
+            .admin-footer a {
+                display: block;
+                margin: 10px 0 0 0;
+            }
+        }
+    </style>
 </body>
 
 </html>
