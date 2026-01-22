@@ -4874,3 +4874,124 @@ h3 {
     opacity: 1 !important;
     min-height: 60px !important;
 }
+/* ================================
+   ADDITIONAL MOBILE FIXES (Pricing, Menu, Offers)
+   ================================ */
+@media (max-width: 768px) {
+    /* Offers Title Fix */
+    .offers-compact-header {
+        padding-top: 140px !important;
+    }
+
+    /* Menu Fix */
+    .nav-links {
+        max-height: 100vh !important;
+        height: auto !important;
+        overflow-y: auto !important;
+        padding-bottom: 100px !important;
+    }
+    .nav-links a:last-child {
+        margin-bottom: 80px !important;
+    }
+    .nav-links.active {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: var(--space-sm);
+        padding-bottom: 120px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Pricing Fix */
+    .pricing-grid-3 {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        padding: 0 var(--space-xs);
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .pricing-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: unset !important;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+    
+    .pricing-card .pricing-header,
+    .pricing-card .pricing-content {
+        padding-left: var(--space-sm) !important;
+        padding-right: var(--space-sm) !important;
+    }
+    
+    .pricing-card .price-amount {
+        font-size: 2rem !important;
+    }
+    
+    .pricing-card .price-old {
+        font-size: 1rem !important;
+    }
+    
+    .pricing-features li {
+        font-size: 0.85rem !important;
+        padding: var(--space-xs) 0 !important;
+    }
+    
+    .pricing-card .btn-pack {
+        width: 100% !important;
+        justify-content: center;
+    }
+    
+    .discord-subscription-card {
+        max-width: 100% !important;
+        margin: 0 var(--space-xs);
+    }
+    
+    .discord-card-content {
+        flex-direction: column !important;
+        gap: var(--space-sm) !important;
+        padding: var(--space-md) var(--space-sm) !important;
+    }
+    
+    .guarantee-box {
+        margin: var(--space-md) var(--space-xs) !important;
+        padding: var(--space-sm) !important;
+    }
+    
+    .payment-logos {
+        padding: 0 var(--space-xs);
+    }
+}
+
+/* === PETIT ÉCRAN === */
+@media (max-width: 380px) {
+    .pricing-card .pricing-header,
+    .pricing-card .pricing-content {
+        padding-left: var(--space-xs) !important;
+        padding-right: var(--space-xs) !important;
+    }
+    
+    .pricing-card .price-amount {
+        font-size: 1.75rem !important;
+    }
+    
+    .pricing-features li {
+        font-size: 0.8rem !important;
+    }
+    
+    .promo-badge {
+        font-size: 0.7rem !important;
+        padding: 4px 8px !important;
+    }
+
+    .nav-links a {
+        padding: 12px 16px !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .nav-links {
+        padding-bottom: 140px !important;
+    }
+}
