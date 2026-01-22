@@ -5094,3 +5094,24 @@ h3 {
         display: none !important;
     }
 }
+
+/* ================================
+   DESKTOP ONLY: SPACING REDUCTION (30%)
+   ================================ */
+@media (min-width: 769px) {
+    .story-section, 
+    .program-section, 
+    .treasure-section, 
+    .comparison-section, 
+    .pricing-section, 
+    .faq-section,
+    .cta-section,
+    .reassurance-section,
+    .free-extract-section,
+    .no-kyc-section,
+    .author-section {
+        /* Reduced from 4xl (6rem) to 3xl (4rem) = ~33% reduction */
+        padding-top: var(--space-3xl) !important;
+        padding-bottom: var(--space-3xl) !important;
+    }
+}
