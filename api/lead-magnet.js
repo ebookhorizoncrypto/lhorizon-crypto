@@ -128,7 +128,7 @@ function generateEmailHTML(domain) {
                     <!-- Header -->
                     <tr>
                         <td align="center" style="background-color: #1a1a2e; padding: 30px; color: #ffffff;">
-                            <div style="font-size: 32px; margin-bottom: 5px;">🌅</div>
+                            <img src="${domain}/assets/logo-email.jpg" alt="L'Horizon Crypto" width="120" style="display: block; margin: 0 auto 15px auto; border-radius: 50%;" />
                             <h1 style="margin: 0; color: #f7931a; font-size: 24px; font-weight: bold; font-family: Arial, sans-serif;">L'Horizon Crypto</h1>
                             <p style="margin: 5px 0 0; color: #a0a0b0; font-size: 14px;">Minez Votre Savoir, Récoltez Vos Récompenses</p>
                         </td>
@@ -205,7 +205,7 @@ function generateEmailHTML(domain) {
                             <!-- Footer CTA -->
                             <div style="text-align: center; margin-top: 30px; padding: 20px; background-color: #fff8f0; border: 1px dashed #f7931a; border-radius: 8px;">
                                 <p style="color: #000000 !important; margin: 0 0 10px 0; font-weight: bold;">Prêt pour la suite ?</p>
-                                <a href="${domain}/#pricing" style="color: #f7931a !important; font-weight: bold; font-size: 18px; text-decoration: none;">Voir les Offres →</a>
+                                <a href="${domain}/offres" style="color: #f7931a !important; font-weight: bold; font-size: 18px; text-decoration: none;">Voir les Offres →</a>
                             </div>
 
                         </td>

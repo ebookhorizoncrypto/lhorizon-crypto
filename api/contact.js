@@ -132,7 +132,7 @@ export default async function handler(req, res) {
                     <!-- Header -->
                     <tr>
                         <td align="center" style="background-color: #1a1a2e; padding: 30px;">
-                            <div style="font-size: 32px; margin-bottom: 5px;">🌅</div>
+                            <img src="https://ebook-horizoncrypto.com/assets/logo-email.jpg" alt="L'Horizon Crypto" width="120" style="display: block; margin: 0 auto 15px auto; border-radius: 50%;" />
                             <h1 style="margin: 0; color: #f7931a; font-size: 24px; font-weight: bold; font-family: Arial, sans-serif;">L'Horizon Crypto</h1>
                         </td>
                     </tr>
