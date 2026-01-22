@@ -4995,3 +4995,28 @@ h3 {
         padding-bottom: 140px !important;
     }
 }
+
+/* === VALUE PROPS - TAILLE RÉDUITE MOBILE === */
+@media (max-width: 768px) {
+    .value-props .value-prop span {
+        font-size: 0.85rem !important; /* Réduction de ~1px */
+    }
+    
+    .value-props .value-prop span strong {
+        font-size: 0.85rem !important;
+    }
+    
+    .value-props .value-prop .prop-icon {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .value-props .value-prop span {
+        font-size: 0.8rem !important;
+    }
+    
+    .value-props .value-prop span strong {
+        font-size: 0.8rem !important;
+    }
+}
