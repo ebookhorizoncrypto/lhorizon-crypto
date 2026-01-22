@@ -5020,3 +5020,77 @@ h3 {
         font-size: 0.8rem !important;
     }
 }
+
+/* ================================
+   MOBILE FIXES PHASE 3: See More & Spacing
+   ================================ */
+@media (max-width: 768px) {
+    /* Offers Title - Adjusted to 80px */
+    .offers-compact-header {
+        padding-top: 80px !important;
+    }
+
+    /* Warning Message - Reduce spacing */
+    .age-notice-offers {
+        margin-top: 20px !important; /* Reduced gap */
+        margin-bottom: 40px !important;
+    }
+
+    /* === TRUST ITEMS - SYSTÈME "VOIR PLUS" MOBILE === */
+    /* Pour .pricing-trust sur page offres */
+    .pricing-trust .pricing-trust-item:nth-child(n+3) {
+        display: none;
+    }
+    
+    .pricing-trust.expanded .pricing-trust-item:nth-child(n+3) {
+        display: flex;
+    }
+    
+    /* Pour .trust-badges sur landing page */
+    .trust-badges .trust-badge:nth-child(n+3) {
+        display: none;
+    }
+    
+    .trust-badges.expanded .trust-badge:nth-child(n+3) {
+        display: flex;
+    }
+    
+    /* Bouton Voir plus */
+    .voir-plus-trust-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        color: var(--accent-green, #00ff88);
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .voir-plus-trust-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .voir-plus-trust-btn .arrow {
+        transition: transform 0.3s ease;
+        font-size: 0.7rem;
+    }
+    
+    .expanded + .voir-plus-trust-btn .arrow {
+        transform: rotate(180deg);
+    }
+}
+
+/* Cacher sur desktop */
+@media (min-width: 769px) {
+    .voir-plus-trust-btn {
+        display: none !important;
+    }
+}

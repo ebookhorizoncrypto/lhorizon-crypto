@@ -826,3 +826,41 @@ function initPackAccordion() {
         });
     });
 }
+
+// [NEW] Système "Voir plus" pour trust items sur mobile
+document.addEventListener('DOMContentLoaded', function() {
+    // Sélectionner les containers
+    const trustContainers = document.querySelectorAll('.pricing-trust, .trust-badges');
+    
+    trustContainers.forEach(function(container) {
+        // Éviter les doublons si déjà initialisé
+        if (container.classList.contains('has-see-more')) return;
+        container.classList.add('has-see-more');
+
+        // Créer le bouton
+        const voirPlusBtn = document.createElement('button');
+        voirPlusBtn.className = 'voir-plus-trust-btn';
+        voirPlusBtn.innerHTML = '<span class="btn-text">Voir plus</span><span class="arrow">▼</span>';
+        
+        // Ajouter après le container
+        container.parentNode.insertBefore(voirPlusBtn, container.nextSibling);
+        
+        // Gérer le clic
+        voirPlusBtn.addEventListener('click', function() {
+            container.classList.toggle('expanded');
+            
+            const btnText = voirPlusBtn.querySelector('.btn-text');
+            const arrow = voirPlusBtn.querySelector('.arrow');
+            
+            if (container.classList.contains('expanded')) {
+                btnText.textContent = 'Voir moins';
+                arrow.style.transform = 'rotate(180deg)';
+                // Optionnel : Scroll vers le haut du conteneur lors de la fermeture ? Non demandé.
+            } else {
+                btnText.textContent = 'Voir plus';
+                arrow.style.transform = 'rotate(0deg)';
+                // Scroll smooth vers le haut si on ferme (optionnel)
+            }
+        });
+    });
+});
