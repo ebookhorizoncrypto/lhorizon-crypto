@@ -590,10 +590,66 @@ h3 {
     border-radius: var(--radius-md);
 }
 
-@media (max-width: 480px) {
-    .trust-badge {
-        flex: 0 0 100%;
+/* ================================
+   CORRECTIONS MOBILE UNIQUEMENT
+   ================================ */
+@media (max-width: 768px) {
+
+    /* 1. Empêcher le scroll horizontal sur mobile */
+    html,
+    body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+
+    /* 2. Value props - réduire de 1px sur mobile */
+    .value-props {
+        max-width: calc(100% - 1px);
+        box-sizing: border-box;
+    }
+
+    .value-prop {
         max-width: 100%;
+        overflow-wrap: break-word;
+    }
+
+    /* 3. Trust badges - 2 par ligne avec bordure verte sur mobile */
+    .trust-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        max-width: 100%;
+    }
+
+    .trust-badge,
+    .trust-badge.highlight-badge {
+        flex: 0 0 calc(50% - 4px);
+        max-width: calc(50% - 4px);
+        border: 1px solid #00FF88;
+        border-radius: 8px;
+        padding: 8px 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(0, 255, 136, 0.05);
+        box-sizing: border-box;
+        font-size: 0.85rem;
+    }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 400px) {
+
+    .trust-badge,
+    .trust-badge.highlight-badge {
+        padding: 6px 8px;
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+
+    .badge-icon {
+        font-size: 0.9rem;
     }
 }
 
