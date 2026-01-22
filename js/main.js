@@ -235,7 +235,7 @@ function initLeadMagnetForm() {
 
 // Add to DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-    initLeadMagnetForm();
+    // initLeadMagnetForm(); // REMOVED: Already initialized in the main DOMContentLoaded block above
 
     // Load Crypto Ticker
     const script = document.createElement('script');

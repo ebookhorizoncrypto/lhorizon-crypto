@@ -10,7 +10,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = process.env.FROM_EMAIL || "L'Horizon Crypto <contact@ebook-horizoncrypto.com>";
-const domain = process.env.DOMAIN || 'https://lhorizoncrypto.com';
+const domain = process.env.DOMAIN || 'https://ebook-horizoncrypto.com';
 
 // Simple in-memory rate limiting (resets on cold start)
 const rateLimiter = new Map();
@@ -145,7 +145,7 @@ function generateEmailHTML(domain) {
 
                             <!-- Button -->
                             <div style="text-align: center; margin: 30px 0;">
-                                <a href="${domain}/assets/extrait-horizon-crypto.pdf" style="display: inline-block; padding: 16px 32px; background-color: #f7931a; color: #000000 !important; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;">📥 Télécharger l'Extrait PDF</a>
+                                <a href="${domain}/assets/extrait-ebook-horizon-crypto.pdf" style="display: inline-block; padding: 16px 32px; background-color: #f7931a; color: #000000 !important; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;">📥 Télécharger l'Extrait PDF</a>
                             </div>
 
                             <!-- Summary -->

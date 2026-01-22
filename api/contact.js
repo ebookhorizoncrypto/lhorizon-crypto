@@ -157,7 +157,7 @@ export default async function handler(req, res) {
                             <p style="color: #000000 !important; border-top: 1px solid #eeeeee; padding-top: 20px; font-size: 14px;">
                                 En attendant, avez-vous consulté notre FAQ ?
                                 <br>
-                                <a href="https://lhorizoncrypto.com/faq.html" style="color: #f7931a; font-weight: bold; text-decoration: none;">Voir la FAQ →</a>
+                                <a href="https://ebook-horizoncrypto.com/faq" style="color: #f7931a; font-weight: bold; text-decoration: none;">Voir la FAQ →</a>
                             </p>
                             
                             <p style="color: #000000 !important; margin-top: 20px; font-size: 14px;">

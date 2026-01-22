@@ -14,6 +14,7 @@ class CleanUrlHandler(http.server.SimpleHTTPRequestHandler):
 
 Handler = CleanUrlHandler
 
+socketserver.TCPServer.allow_reuse_address = True
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
     print(f"Serving at port {PORT} with Clean URLs support (auto .html)")
     httpd.serve_forever()
