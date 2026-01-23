@@ -522,6 +522,8 @@ h3 {
     .hero {
         padding-top: 50px !important;
         /* Reduced from 100px */
+        padding-bottom: 30px !important;
+        /* Reduced from var(--space-3xl) */
     }
 
     .hero .container {
@@ -5164,4 +5166,14 @@ h3 {
 
 .see-more-btn {
     display: none;
+}
+
+/* Remove Stats Bar Spacing on Desktop */
+@media (min-width: 769px) {
+    .stats-bar {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
 }
