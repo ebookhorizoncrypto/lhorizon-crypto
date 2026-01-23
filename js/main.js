@@ -864,3 +864,49 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+// [NEW] Système "Voir plus" pour Pricing Features (Mobile)
+function initPricingSeeMore() {
+    const featuresLists = document.querySelectorAll('.pricing-features');
+
+    featuresLists.forEach(list => {
+        // Check if list has hidden items
+        const hiddenItems = list.querySelectorAll('.mobile-hidden');
+        if (hiddenItems.length === 0) return;
+
+        // Check if button already exists
+        if (list.nextElementSibling && list.nextElementSibling.classList.contains('see-more-btn')) return;
+
+        // Create button
+        const btn = document.createElement('button');
+        btn.className = 'see-more-btn mobile-only';
+        btn.innerHTML = '<span class="see-more-text">Voir plus</span><span class="see-more-icon">▼</span>';
+
+        // Insert after list
+        list.insertAdjacentElement('afterend', btn);
+
+        // Add click handler
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            list.classList.toggle('expanded');
+            btn.classList.toggle('expanded');
+
+            const textSpan = btn.querySelector('.see-more-text');
+            const iconSpan = btn.querySelector('.see-more-icon');
+
+            if (list.classList.contains('expanded')) {
+                textSpan.textContent = 'Voir moins';
+                iconSpan.style.transform = 'rotate(180deg)';
+            } else {
+                textSpan.textContent = 'Voir plus';
+                iconSpan.style.transform = 'rotate(0deg)';
+            }
+        });
+    });
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', initPricingSeeMore);
+

@@ -517,6 +517,20 @@ h3 {
     }
 }
 
+/* Fix Hero Desktop Spacing */
+@media (min-width: 769px) {
+    .hero {
+        padding-top: 50px !important;
+        /* Reduced from 100px */
+    }
+
+    .hero .container {
+        padding-top: 60px !important;
+        /* Reduced from 120px */
+    }
+}
+
+
 @keyframes pulse {
 
     0%,
@@ -635,6 +649,38 @@ h3 {
         background: rgba(0, 255, 136, 0.05);
         box-sizing: border-box;
         font-size: 0.85rem;
+    }
+
+    /* 4. See More Functionality for Pricing */
+    .pricing-features li.mobile-hidden {
+        display: none;
+    }
+
+    .pricing-features.expanded li.mobile-hidden {
+        display: flex;
+        /* Assuming flex is used in li, otherwise block */
+        animation: fadeIn 0.3s ease;
+    }
+
+    .see-more-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: var(--accent-green);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .see-more-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
     }
 }
 
@@ -5114,4 +5160,8 @@ h3 {
         padding-top: var(--space-3xl) !important;
         padding-bottom: var(--space-3xl) !important;
     }
+}
+
+.see-more-btn {
+    display: none;
 }
