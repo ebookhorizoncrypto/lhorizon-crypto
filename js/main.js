@@ -910,3 +910,28 @@ function initPricingSeeMore() {
 // Init on load
 document.addEventListener('DOMContentLoaded', initPricingSeeMore);
 
+
+// ===== VOIR PLUS - PRICING FEATURES (Landing Page) =====
+document.addEventListener('DOMContentLoaded', function () {
+    const seeMoreBtns = document.querySelectorAll('.see-more-features-btn');
+
+    seeMoreBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const pricingContent = this.closest('.pricing-content');
+            const featuresList = pricingContent.querySelector('.pricing-features');
+            const textSpan = this.querySelector('.see-more-text');
+
+            // Toggle classes
+            featuresList.classList.toggle('expanded');
+            this.classList.toggle('expanded');
+
+            // Changer le texte
+            if (featuresList.classList.contains('expanded')) {
+                textSpan.textContent = 'Voir moins';
+            } else {
+                textSpan.textContent = 'Voir plus';
+            }
+        });
+    });
+});
+
