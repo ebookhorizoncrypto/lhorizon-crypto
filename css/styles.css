@@ -5177,3 +5177,57 @@ h3 {
         padding-bottom: 0 !important;
     }
 }
+
+/* Remove Spacing for Specific Sections on Desktop */
+@media (min-width: 769px) {
+
+    /* Free Extract / Lead Magnet */
+    .lead-magnet-section,
+    .free-extract-section,
+    /* Added alias based on index.html ID/Class usage */
+    #extrait-gratuit {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .lead-magnet-section .container,
+    .lead-magnet-section .lead-magnet-box,
+    .free-extract-section .container,
+    .free-extract-section .free-extract-card {
+        /* Added alias */
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Story Section */
+    .story-section {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .story-section .container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Program / Keys Section */
+    .keys-section,
+    .program-section,
+    /* Added alias */
+    #programme {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .keys-section .container,
+    .program-section .container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
