@@ -138,12 +138,19 @@ async function sendPurchaseEmail(email, pack, amount) {
             </div>
         `;
     } else {
-        // SOLOD
+        // SOLO (Ebook + Discord 30j)
         emailTitle = "🥉 Confirmation Pack Solo - L'Horizon Crypto";
         specificContent = `
-            <p style="margin-bottom: 20px;">Vous ne regretterez pas cet investissement en vous-même. Ce guide contient tout ce qu'il faut pour passer de débutant à initié.</p>
-            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee;">
-                <strong>Inclus :</strong> Guide PDF Complet + Accès aux mises à jour à vie.
+            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #f7931a; margin-bottom: 25px;">
+                <h3 style="margin-top: 0; color: #f7931a;">Votre Commande est Validée !</h3>
+                <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
+                    <li><strong>Guide PDF Complet :</strong> Téléchargement immédiat ci-dessus.</li>
+                    <li><strong>Accès Discord (30 jours) :</strong> Rejoignez la communauté pour 1 mois.</li>
+                </ul>
+            </div>
+            <p><strong>Indispensable :</strong> Reliez votre compte Discord maintenant pour démarrer vos 30 jours.</p>
+            <div style="text-align: center; margin-bottom: 20px;">
+                 <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord (30j)</a>
             </div>
         `;
     }
