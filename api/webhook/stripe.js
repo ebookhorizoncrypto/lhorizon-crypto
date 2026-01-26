@@ -86,9 +86,23 @@ async function handleSuccessfulPayment(session) {
 
     // Calculate Expiration
     const expiresAt = new Date();
-    if (pack === 'solo') expiresAt.setDate(expiresAt.getDate() + 30); // 30 days
-    else if (pack === 'pro') expiresAt.setMonth(expiresAt.getMonth() + 3); // 3 months
-    else expiresAt.setFullYear(expiresAt.getFullYear() + 100); // Lifetime (VIP)
+
+    if (pack === 'vip') {
+        expiresAt.setDate(expiresAt.getDate() + 180); // VIP: 180 days (6 months)
+    } else if (pack === 'pro') {
+        expiresAt.setDate(expiresAt.getDate() + 90);  // PRO: 90 days (3 months)
+    } else if (pack === 'solo') {
+        // Distinguish Solo Base (99€) vs Solo + Discord (128€)
+        if (amount > 110) {
+            expiresAt.setDate(expiresAt.getDate() + 30); // Solo + Upsell: 30 days
+        } else {
+            // Solo Base: No Discord Access (Expires immediately)
+            // We set it to now, so they can't claim the role.
+        }
+    } else {
+        // Fallback or Discord Only
+        expiresAt.setDate(expiresAt.getDate() + 30);
+    }
 
     // Insert into Supabase
     const { error } = await supabase.from('customers').upsert({
