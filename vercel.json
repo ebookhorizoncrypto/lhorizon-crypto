@@ -7,6 +7,13 @@
   "framework": null,
   "buildCommand": null,
   "outputDirectory": null,
+  "outputDirectory": null,
+  "crons": [
+    {
+      "path": "/api/cron/check-expired",
+      "schedule": "0 0 * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

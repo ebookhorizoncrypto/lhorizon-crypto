@@ -94,7 +94,6 @@ async function handleSuccessfulPayment(session) {
     const { error } = await supabase.from('customers').upsert({
         email: email,
         stripe_customer_id: session.customer,
-        pack: pack,
         access_level: pack.toUpperCase(),
         amount_paid: amount,
         expires_at: expiresAt.toISOString(),
