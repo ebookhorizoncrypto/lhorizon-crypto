@@ -5571,4 +5571,22 @@ h3 {
         margin-top: 5px !important;
         /* Almost touching */
     }
+}/* FIX: Force Wallet Icon Visibility on Mobile */
+#wallet-icon {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-right: 4px;
+}
+
+@media (max-width: 768px) {
+    #header-wallet-btn {
+        gap: 6px !important;
+        /* Ensure gap between icon and text if text is visible */
+    }
+
+    #wallet-icon {
+        font-size: 1.25rem !important;
+        /* Make it slightly bigger on mobile to be seen */
+    }
 }
