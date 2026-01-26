@@ -5593,3 +5593,37 @@ h3 {
         white-space: nowrap;
     }
 }
+/* ========================================
+   FIX: MOBILE TESTIMONIALS SCROLL
+   ======================================== */
+@media (max-width: 968px) {
+    /* Stop the infinite animation */
+    .testimonials-carousel {
+        animation: none !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 15px !important;
+        width: max-content; /* Allow it to take necessary width */
+        transform: none !important; /* Reset any translation */
+    }
+
+    /* Make the wrapper scrollable */
+    .testimonials-carousel-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        width: 100%;
+        padding-bottom: 20px !important; /* Space for scrollbar */
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+
+    /* Cards snap */
+    .testimonial-card {
+        flex: 0 0 85% !important; /* Show most of card */
+        width: 85% !important;
+        min-width: 280px !important;
+        scroll-snap-align: center;
+        margin-right: 0 !important; /* Reset if any */
+    }
+}
