@@ -1,0 +1,19 @@
+{
+    "id": "evt_test_webhook",
+    "object": "event",
+    "type": "checkout.session.completed",
+    "data": {
+        "object": {
+            "id": "cs_test_123",
+            "object": "checkout.session",
+            "amount_total": 4700,
+            "customer_details": {
+                "email": "test-webhook@example.com"
+            },
+            "metadata": {
+                "pack": "solo"
+            },
+            "payment_status": "paid"
+        }
+    }
+}

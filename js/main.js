@@ -626,37 +626,53 @@ console.log('🌅 L\'Horizon Crypto - Landing Page Loaded');
    WALLET CONNECTION (Reown AppKit Integration)
 ======================================== */
 function initWalletConnection() {
+    // Desktop Elements
     const walletBtn = document.getElementById('header-wallet-btn');
     const walletBtnText = document.getElementById('wallet-btn-text');
     const walletIcon = document.getElementById('wallet-icon');
     const disconnectBtn = document.getElementById('wallet-disconnect-btn');
     const container = walletBtn?.closest('.wallet-btn-container');
 
-    if (!walletBtn || !walletBtnText) {
-        console.warn('[Wallet] Button elements not found');
+    // Mobile Elements
+    const mobileBtn = document.getElementById('mobile-wallet-btn');
+    const mobileText = document.getElementById('mobile-wallet-text');
+    const mobileIcon = document.getElementById('mobile-wallet-icon');
+
+    if (!walletBtn && !mobileBtn) {
+        console.warn('[Wallet] No wallet buttons found');
         return;
     }
 
     let connectedAddress = null;
+    let isConnecting = false;
 
     // Update UI to connected state
     function updateUIConnected(address) {
+        // Prevent duplicate updates
+        if (connectedAddress === address) return;
+
         connectedAddress = address;
         const shortAddr = `${address.slice(0, 6)}...${address.slice(-4)}`;
 
-        // Update button appearance
-        walletBtn.classList.add('connected');
-        walletBtn.style.background = 'linear-gradient(135deg, #00ff88, #00cc6a)';
-        walletBtn.style.boxShadow = '0 4px 15px rgba(0, 255, 136, 0.3)';
+        // Update Desktop Button
+        if (walletBtn) {
+            walletBtn.classList.add('connected');
+            walletBtn.style.background = 'linear-gradient(135deg, #00ff88, #00cc6a)';
+            walletBtn.style.boxShadow = '0 4px 15px rgba(0, 255, 136, 0.3)';
+            if (walletBtnText) walletBtnText.innerHTML = `<span class="wallet-address">${shortAddr}</span>`;
+            if (walletIcon) walletIcon.textContent = '✓';
+            if (disconnectBtn) disconnectBtn.style.display = '';
+        }
 
-        // Update text with monospace address
-        walletBtnText.innerHTML = `<span class="wallet-address">${shortAddr}</span>`;
-
-        // Update icon to checkmark
-        if (walletIcon) walletIcon.textContent = '✓';
-
-        // Show disconnect button
-        if (disconnectBtn) disconnectBtn.style.display = '';
+        // Update Mobile Button
+        if (mobileBtn) {
+            mobileBtn.classList.add('connected');
+            mobileBtn.style.background = 'linear-gradient(135deg, #00ff88, #00cc6a)';
+            mobileBtn.style.boxShadow = '0 4px 15px rgba(0, 255, 136, 0.3)';
+            // Mobile formatting
+            if (mobileText) mobileText.textContent = shortAddr;
+            if (mobileIcon) mobileIcon.textContent = '✓';
+        }
 
         console.log('[Wallet] UI updated - Connected:', shortAddr);
     }
@@ -665,20 +681,24 @@ function initWalletConnection() {
     function updateUIDisconnected() {
         connectedAddress = null;
 
-        // Reset button appearance
-        walletBtn.classList.remove('connected');
-        walletBtn.style.background = 'linear-gradient(135deg, #627EEA, #4a5fc7)';
-        walletBtn.style.boxShadow = '0 4px 15px rgba(98, 126, 234, 0.3)';
+        // Reset Desktop Button
+        if (walletBtn) {
+            walletBtn.classList.remove('connected');
+            walletBtn.style.background = 'linear-gradient(135deg, #627EEA, #4a5fc7)';
+            walletBtn.style.boxShadow = '0 4px 15px rgba(98, 126, 234, 0.3)';
+            if (walletBtnText) walletBtnText.textContent = 'Connecter';
+            if (walletIcon) walletIcon.textContent = '💎';
+            if (disconnectBtn) disconnectBtn.style.display = 'none';
+            if (container) container.classList.remove('show-disconnect');
+        }
 
-        // Reset text
-        walletBtnText.textContent = 'Connecter';
-
-        // Reset icon
-        if (walletIcon) walletIcon.textContent = '💎';
-
-        // Hide disconnect button and dropdown
-        if (disconnectBtn) disconnectBtn.style.display = 'none';
-        if (container) container.classList.remove('show-disconnect');
+        // Reset Mobile Button
+        if (mobileBtn) {
+            mobileBtn.classList.remove('connected');
+            mobileBtn.style.background = ''; // Revert to class style
+            if (mobileText) mobileText.textContent = 'Connecter Wallet';
+            if (mobileIcon) mobileIcon.textContent = '💎';
+        }
 
         console.log('[Wallet] UI updated - Disconnected');
     }
@@ -689,28 +709,31 @@ function initWalletConnection() {
 
     // Connect wallet via AppKit modal
     async function connectWallet() {
+        if (isConnecting || connectedAddress) {
+            console.log('[Wallet] Connection already in progress or connected');
+            return;
+        }
+
+        isConnecting = true;
         console.log('[Wallet] Connect triggered');
 
-        if (window.openWalletModal) {
-            try {
+        try {
+            if (window.openWalletModal) {
                 await window.openWalletModal();
-            } catch (e) {
-                console.error('[Wallet] Modal error:', e);
-            }
-        } else {
-            console.warn('[Wallet] AppKit not loaded');
-
-            // Fallback: Direct MetaMask connection
-            if (typeof window.ethereum !== 'undefined') {
-                try {
+            } else {
+                console.warn('[Wallet] AppKit not loaded');
+                // Fallback: Direct MetaMask connection
+                if (typeof window.ethereum !== 'undefined') {
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                     if (accounts.length > 0) updateUIConnected(accounts[0]);
-                } catch (e) {
-                    console.error('[Wallet] MetaMask fallback error:', e);
+                } else {
+                    alert('Veuillez installer MetaMask ou un wallet compatible.');
                 }
-            } else {
-                alert('Veuillez installer MetaMask ou un wallet compatible.');
             }
+        } catch (e) {
+            console.error('[Wallet] Connection error:', e);
+        } finally {
+            isConnecting = false;
         }
     }
 
@@ -728,20 +751,39 @@ function initWalletConnection() {
         updateUIDisconnected();
     }
 
-    // Main button click handler
-    walletBtn.addEventListener('click', (e) => {
+    // Handlers
+    function handleWalletClick(e, isMobile = false) {
         e.stopPropagation();
-
         if (connectedAddress) {
-            // Toggle disconnect dropdown
-            if (container) container.classList.toggle('show-disconnect');
+            if (isMobile) {
+                // Mobile: Ask to disconnect directly
+                if (confirm('Voulez-vous déconnecter votre wallet ?')) {
+                    disconnectWallet();
+                }
+            } else {
+                // Desktop: Toggle dropdown
+                if (container) container.classList.toggle('show-disconnect');
+            }
         } else {
-            // Open connect modal
             connectWallet();
         }
-    });
+    }
 
-    // Disconnect button click handler
+    // Desktop Listeners
+    if (walletBtn) {
+        walletBtn.addEventListener('click', (e) => handleWalletClick(e, false));
+    }
+
+    // Mobile Listeners
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', (e) => handleWalletClick(e, true));
+        // Add touchstart for better mobile responsiveness
+        mobileBtn.addEventListener('touchstart', (e) => {
+            // e.preventDefault(); // allow default touch behavior
+        }, { passive: true });
+    }
+
+    // Disconnect button click handler (Desktop dropdown)
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -759,15 +801,28 @@ function initWalletConnection() {
     // Listen for MetaMask account changes (as backup)
     if (typeof window.ethereum !== 'undefined') {
         window.ethereum.on('accountsChanged', (accounts) => {
+            console.log("Account changed detected:", accounts);
             if (accounts.length === 0) {
                 updateUIDisconnected();
             } else if (!connectedAddress) {
                 updateUIConnected(accounts[0]);
             }
         });
+
+        // Check if already connected on page load (silent check)
+        window.ethereum.request({ method: 'eth_accounts' })
+            .then((accounts) => {
+                if (accounts.length > 0 && !connectedAddress) {
+                    console.log('[Wallet] Already connected on load:', accounts[0]);
+                    updateUIConnected(accounts[0]);
+                }
+            })
+            .catch((err) => {
+                console.warn('[Wallet] Initial account check failed:', err);
+            });
     }
 
-    console.log('[Wallet] Connection module initialized');
+    console.log('[Wallet] Connection module initialized (Desktop + Mobile)');
 }
 
 /* ========================================

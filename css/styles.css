@@ -4862,6 +4862,7 @@ h3 {
         opacity: 0;
         transform: translateX(-50%) translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
@@ -5481,7 +5482,9 @@ h3 {
     .pricing-trust .pricing-trust-item .trust-icon {
         font-size: 0.9rem !important;
     }
-}/* ========================================
+}
+
+/* ========================================
    SPACING FIXES (User Request)
 ======================================== */
 
@@ -5519,7 +5522,9 @@ h3 {
     .contact-page {
         padding-top: 0 !important;
     }
-}/* FIX: Liens Utiles - Remove gap between Hero and Warning */
+}
+
+/* FIX: Liens Utiles - Remove gap between Hero and Warning */
 .links-hero {
     padding-bottom: 10px !important;
 }
@@ -5535,7 +5540,9 @@ h3 {
         /* Increased from 160px */
         margin-top: 0 !important;
     }
-}/* FIX: Liens Utiles - ULTRA COMPACT (Round 3) */
+}
+
+/* FIX: Liens Utiles - ULTRA COMPACT (Round 3) */
 @media (min-width: 769px) {
     .links-hero {
         padding-bottom: 0 !important;
@@ -5593,18 +5600,22 @@ h3 {
         white-space: nowrap;
     }
 }
+
 /* ========================================
    FIX: MOBILE TESTIMONIALS SCROLL
    ======================================== */
 @media (max-width: 968px) {
+
     /* Stop the infinite animation */
     .testimonials-carousel {
         animation: none !important;
         display: flex !important;
         flex-wrap: nowrap !important;
         gap: 15px !important;
-        width: max-content; /* Allow it to take necessary width */
-        transform: none !important; /* Reset any translation */
+        width: max-content;
+        /* Allow it to take necessary width */
+        transform: none !important;
+        /* Reset any translation */
     }
 
     /* Make the wrapper scrollable */
@@ -5613,17 +5624,18 @@ h3 {
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: x mandatory;
         width: 100%;
-        padding-bottom: 20px !important; /* Space for scrollbar */
-        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        padding-bottom: 20px !important;
+        /* Space for scrollbar */
     }
 
     /* Cards snap */
     .testimonial-card {
-        flex: 0 0 85% !important; /* Show most of card */
+        flex: 0 0 85% !important;
+        /* Show most of card */
         width: 85% !important;
         min-width: 280px !important;
         scroll-snap-align: center;
-        margin-right: 0 !important; /* Reset if any */
+        margin-right: 0 !important;
+        /* Reset if any */
     }
 }

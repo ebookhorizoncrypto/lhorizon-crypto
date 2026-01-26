@@ -39,7 +39,7 @@
         /* Mobile hero - adjust for header */
         @media (max-width: 968px) {
             .links-hero {
-                padding: 100px 0 40px;
+                padding: 180px 0 40px;
             }
         }
 
@@ -558,86 +558,7 @@
     <script src="js/main.js"></script>
     <script src="js/rgpd-consent.js"></script>
     <script>
-        // Wallet Connection Logic for Header Button
-        const walletBtn = document.getElementById('header-wallet-btn');
-        const walletBtnText = document.getElementById('wallet-btn-text');
-
-        let connectedAddress = null;
-
-        // Check if already connected
-        async function checkConnection() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-                    if (accounts.length > 0) {
-                        handleConnected(accounts[0]);
-                    }
-                } catch (err) {
-                    console.log('Not connected');
-                }
-            }
-        }
-
-        // Connect wallet
-        async function connectWallet() {
-            if (typeof window.ethereum === 'undefined') {
-                alert('Veuillez installer MetaMask ou un autre wallet compatible.');
-                window.open('https://metamask.io/download/', '_blank');
-                return;
-            }
-
-            try {
-                walletBtn.disabled = true;
-                walletBtnText.textContent = 'Connexion...';
-
-                const accounts = await window.ethereum.request({
-                    method: 'eth_requestAccounts'
-                });
-
-                if (accounts.length > 0) {
-                    handleConnected(accounts[0]);
-                }
-            } catch (err) {
-                console.error('Connection error:', err);
-                alert('Connexion annulée.');
-            } finally {
-                walletBtn.disabled = false;
-                if (!connectedAddress) {
-                    walletBtnText.textContent = 'Connecter Wallet';
-                }
-            }
-        }
-
-        function handleConnected(address) {
-            connectedAddress = address;
-            const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
-
-            walletBtn.classList.add('connected');
-            walletBtnText.innerHTML = `<span class="wallet-address-short">${shortAddress}</span>`;
-
-            // Store in localStorage
-            localStorage.setItem('connectedWallet', address);
-        }
-
-        // Disconnect on account change
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length === 0) {
-                    connectedAddress = null;
-                    walletBtn.classList.remove('connected');
-                    walletBtnText.textContent = 'Connecter Wallet';
-                    localStorage.removeItem('connectedWallet');
-                } else {
-                    handleConnected(accounts[0]);
-                }
-            });
-        }
-
-        // Event listener
-        walletBtn.addEventListener('click', connectWallet);
-
-        // Check on load
-        checkConnection();
+        // Inline wallet logic removed in favor of main.js centralized handler
     </script>
 </body>
 

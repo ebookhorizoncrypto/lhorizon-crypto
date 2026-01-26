@@ -1,0 +1,8 @@
+/* Reduction 50% espace au dessus de Final CTA (qui est en dessous de Legal) */
+@media (min-width: 769px) {
+    .legal-section {
+        padding-bottom: 40px !important;
+        /* Standard is likely 80px-100px */
+        margin-bottom: 0 !important;
+    }
+}

@@ -66,12 +66,46 @@ export default async function handler(req, res) {
     res.status(200).json({ received: true });
 }
 
+// Init Supabase
+import { createClient } from '@supabase/supabase-js';
+const supabase = createClient(
+    process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || 'placeholder'
+);
+
 async function handleSuccessfulPayment(session) {
     const email = session.customer_email || session.customer_details?.email;
-    const pack = session.metadata?.pack || 'solo';
+    let pack = session.metadata?.pack || 'solo';
     const amount = (session.amount_total || 0) / 100;
 
+    // Robust pack detection
+    if (Math.round(amount) >= 290 && Math.round(amount) < 500) pack = 'pro';
+    if (Math.round(amount) >= 540) pack = 'vip';
+
     console.log(`✅ New purchase: ${email} - ${pack} - ${amount}€`);
+
+    // Calculate Expiration
+    const expiresAt = new Date();
+    if (pack === 'solo') expiresAt.setDate(expiresAt.getDate() + 30); // 30 days
+    else if (pack === 'pro') expiresAt.setMonth(expiresAt.getMonth() + 3); // 3 months
+    else expiresAt.setFullYear(expiresAt.getFullYear() + 100); // Lifetime (VIP)
+
+    // Insert into Supabase
+    const { error } = await supabase.from('customers').upsert({
+        email: email,
+        stripe_customer_id: session.customer,
+        pack: pack,
+        access_level: pack.toUpperCase(),
+        amount_paid: amount,
+        expires_at: expiresAt.toISOString(),
+        created_at: new Date().toISOString()
+    }, { onConflict: 'email' });
+
+    if (error) {
+        console.error('❌ Supabase Insert Error:', error);
+    } else {
+        console.log('✅ Customer saved to Supabase');
+    }
 
     // Send confirmation email
     await sendPurchaseEmail(email, pack, amount);

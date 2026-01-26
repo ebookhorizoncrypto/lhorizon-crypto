@@ -287,6 +287,14 @@ function triggerEvent(event, data) {
             }
         });
     }
+
+    // Also notify global handlers from main.js
+    if (event === 'onConnect' && data.address && typeof window.handleWalletConnected === 'function') {
+        window.handleWalletConnected(data.address);
+    }
+    if (event === 'onDisconnect' && typeof window.handleWalletDisconnected === 'function') {
+        window.handleWalletDisconnected();
+    }
 }
 
 /**

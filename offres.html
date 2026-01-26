@@ -109,7 +109,13 @@
                 <a href="/faq">FAQ</a>
                 <a href="/#avis">Avis</a>
                 <a href="/contact">Contact</a>
-
+                <div class="nav-cta-mobile">
+                    <button id="mobile-wallet-btn" class="btn btn-primary"
+                        style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span id="mobile-wallet-icon">💎</span>
+                        <span id="mobile-wallet-text">Connecter Wallet</span>
+                    </button>
+                </div>
             </div>
             <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
                 <div class="wallet-btn-container">
@@ -134,235 +140,222 @@
     </nav>
 
     <main>
-        <!-- Compact Header -->
-        <section class="offers-compact-header container">
-            <div class="solution-badge">✨ Inclus : jusqu'à 100$ USDC offerts</div>
-            <h1>Choisissez votre <span class="gradient-text">avenir dans les cryptomonaies</span></h1>
-            <p class="subtitle">Paiement sécurisé • Sans KYC • Accès immédiat</p>
-            <p class="age-notice-offers" style="margin-top: 20px;">🔞 <strong>Contenu réservé aux personnes majeures
-                    (+18 ans)</strong> désireuses
-                d'apprendre l'investissement crypto.</p>
-        </section>
-
-        <!-- Pricing Section - IMMEDIATE -->
-        <section id="pricing" class="pricing-section pricing-section-compact">
-            <div class="container">
-                <!-- Pricing Grid - 3 Packs -->
-                <div class="pricing-grid-3">
-                    <!-- Pack Solo -->
-                    <div class="pricing-card" data-pack="solo">
-                        <div class="card-medal">🥉</div>
-                        <div class="pricing-header">
-                            <h3>Pack Solo</h3>
-                            <div class="promo-badge">🔥 -50% OFFRE LANCEMENT</div>
-                            <div class="price">
-                                <span class="price-old">198€</span>
-                                <span class="price-amount">99€</span>
-                            </div>
-                            <div class="price-net-badge">
-                                <span>~81€ net</span> après cashback de 20$ (~19€)
-                            </div>
-                        </div>
-                        <div class="pricing-content">
-                            <ul class="pricing-features">
-                                <li><span class="check">✓</span> Guide PDF Premium (100+ pages)</li>
-                                <li><span class="check">✓</span> 12 mots-clés cachés à découvrir</li>
-                                <li><span class="check">✓</span> Contenu 2008-2026 actualisé</li>
-                                <li class="mobile-hidden"><span class="check">✓</span> Guide Airdrops 2026</li>
-                                <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Cashback jusqu'à
-                                        100$ USDC sur
-                                        Base</strong></li>
-                                <li class="mobile-hidden disabled"><span class="cross">✗</span> Support prioritaire</li>
-                                <li class="mobile-hidden disabled"><span class="cross">✗</span> Accès Discord VIP</li>
-                            </ul>
-                            <button class="see-more-features-btn">
-                                <span class="see-more-text">Voir plus</span>
-                                <span class="see-more-icon">▼</span>
-                            </button>
-                            <button class="btn btn-secondary btn-pack" data-price="99" data-upsell="true">
-                                <span class="btn-icon">🔓</span>
-                                CHOISIR SOLO
-                            </button>
-                        </div>
+        u
+        <!-- Pricing Grid - 3 Packs -->
+        <div class="pricing-grid-3">
+            <!-- Pack Solo -->
+            <div class="pricing-card" data-pack="solo">
+                <div class="card-medal">🥉</div>
+                <div class="pricing-header">
+                    <h3>Pack Solo</h3>
+                    <div class="promo-badge">🔥 -50% OFFRE LANCEMENT</div>
+                    <div class="price">
+                        <span class="price-old">198€</span>
+                        <span class="price-amount">99€</span>
                     </div>
-
-                    <!-- Pack Pro - Featured -->
-                    <div class="pricing-card featured" data-pack="pro">
-                        <div class="card-ribbon">⭐ POPULAIRE</div>
-                        <div class="card-medal">🥈</div>
-                        <div class="pricing-header">
-                            <h3>Pack Pro</h3>
-                            <div class="promo-badge">🔥 -50% OFFRE LANCEMENT</div>
-                            <div class="price">
-                                <span class="price-old">598€</span>
-                                <span class="price-amount">299€</span>
-                            </div>
-                            <div class="price-net-badge">
-                                <span>~256€ net</span> après cashback de 50$ (~43€)
-                            </div>
-                        </div>
-                        <div class="pricing-content">
-                            <ul class="pricing-features">
-                                <li><span class="check">✓</span> <strong>Tout le Pack Solo +</strong></li>
-                                <li><span class="check gold">🎁</span> <strong>Masterclass Mensuelle (Discord)</strong>
-                                </li>
-                                <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>3 mois d'accès
-                                        Discord (87€
-                                        offerts)</strong></li>
-                                <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Support email
-                                        prioritaire (90
-                                        jours)</strong></li>
-                                <li class="mobile-hidden"><span class="check">✓</span> Base de connaissances IA (24/7)
-                                </li>
-                                <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Cashback jusqu'à
-                                        100$ USDC sur
-                                        Base</strong></li>
-                            </ul>
-                            <button class="see-more-features-btn">
-                                <span class="see-more-text">Voir plus</span>
-                                <span class="see-more-icon">▼</span>
-                            </button>
-                            <button class="btn btn-primary btn-pack" data-price="299">
-                                <span class="btn-icon">🚀</span>
-                                CHOISIR PRO
-                            </button>
-                            <p class="subscription-note">90 jours d'accès VIP offerts, puis 29 €/mois (résiliable en 1
-                                clic)</p>
-                        </div>
-                    </div>
-
-                    <!-- Pack VIP -->
-                    <div class="pricing-card vip" data-pack="vip">
-                        <div class="card-medal">🥇</div>
-                        <div class="pricing-header">
-                            <h3>Pack VIP</h3>
-                            <div class="promo-badge">🔥 -50% OFFRE LANCEMENT</div>
-                            <div class="price">
-                                <span class="price-old">1098€</span>
-                                <span class="price-amount">549€</span>
-                            </div>
-                            <div class="price-net-badge">
-                                <span>~464€ net</span> après cashback 100$ (~85€)
-                            </div>
-                        </div>
-                        <div class="pricing-content">
-                            <ul class="pricing-features">
-                                <li><span class="check">✓</span> <strong>Tout le Pack Pro +</strong></li>
-                                <li><span class="check gold">🎁</span> <strong>1h de coaching crypto privé</strong></li>
-                                <li class="mobile-hidden"><span class="check gold">🎁</span> Analyse portefeuille
-                                    sur-mesure</li>
-                                <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>6 mois d'accès
-                                        Groupe VIP (174€
-                                        offerts)</strong></li>
-                                <li class="mobile-hidden"><span class="check">✓</span> Alertes Airdrops & Mises à jour
-                                    2026</li>
-                                <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Cashback 100$ USDC
-                                        sur Base</strong></li>
-                            </ul>
-                            <button class="see-more-features-btn">
-                                <span class="see-more-text">Voir plus</span>
-                                <span class="see-more-icon">▼</span>
-                            </button>
-                            <button class="btn btn-gold btn-pack" data-price="549">
-                                <span class="btn-icon">👑</span>
-                                CHOISIR VIP
-                            </button>
-                            <p class="subscription-note">180 jours d'accès Elite offerts, puis 29 €/mois (résiliable en
-                                1 clic)</p>
-                        </div>
+                    <div class="price-net-badge">
+                        <span>~81€ net</span> après cashback de 20$ (~19€)
                     </div>
                 </div>
-
-                <!-- Discord Only Subscription -->
-                <div class="discord-subscription-card">
-                    <div class="discord-card-content">
-                        <div class="discord-icon">💬</div>
-                        <div class="discord-info">
-                            <h4>Accès Discord Uniquement</h4>
-                            <p>Rejoignez la communauté sans acheter la formation. Masterclass, alertes, et échanges avec
-                                les membres.</p>
-                        </div>
-                        <div class="discord-price">
-                            <span class="discord-amount">29€</span>
-                            <span class="discord-period">/mois</span>
-                        </div>
-                        <button class="btn btn-discord btn-pack" data-pack="discord" data-price="29">
-                            <span class="btn-icon">🎮</span>
-                            REJOINDRE LE DISCORD
-                        </button>
-                        <p class="subscription-note">Sans engagement • Résiliable en 1 clic</p>
-                    </div>
-                </div>
-
-                <!-- Discord Upsell Popup -->
-                <div id="discord-upsell-modal" class="modal">
-                    <div class="modal-content"
-                        style="max-width: 500px; text-align: center; border: 1px solid var(--accent-gold);">
-                        <span class="modal-close" onclick="closeUpsellModal()">&times;</span>
-                        <div class="modal-icon">⚠️</div>
-                        <h3 style="color: var(--accent-gold);">Attendez une seconde !</h3>
-                        <p style="font-size: 1.1rem; margin-bottom: 20px;">
-                            Ne manquez pas l'opportunité de rejoindre la communauté privée.
-                        </p>
-                        <div class="upsell-offer"
-                            style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                            <h4 style="margin-bottom: 10px;">Ajouter l'accès Discord VIP ?</h4>
-                            <p style="font-size: 0.9rem; color: var(--text-tertiary);">
-                                Accédez aux signaux, aux masterclass en direct et au réseau d'entraide pour seulement
-                                <strong style="color:white">+29€/mois</strong> (sans engagement).
-                            </p>
-                        </div>
-                        <div class="upsell-actions" style="display: flex; flex-direction: column; gap: 10px;">
-                            <button id="upsell-yes-btn" class="btn btn-primary"
-                                style="width: 100%; justify-content: center;">
-                                <span class="btn-icon">✅</span> OUI, je veux maximiser mes gains
-                            </button>
-                            <button id="upsell-no-btn" class="btn btn-outline"
-                                style="width: 100%; justify-content: center; background: transparent; border: 1px solid rgba(255,255,255,0.2); color:white; cursor:pointer;">
-                                Non merci, je continue sans l'aide de la communauté
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Guarantee -->
-                <div class="guarantee-box">
-                    <div class="guarantee-icon">🛡️</div>
-                    <div class="guarantee-content">
-                        <h4>Triple Garantie</h4>
-                        <p>
-                            <strong>1.</strong> Récompense jusqu'à 100$ USDC sur Base si vous trouvez les 12 clés<br>
-                            <strong>2.</strong> Remboursement intégral sous 30 jours si non satisfait<br>
-                            <strong>3.</strong> Paiement 100% sécurisé via Stripe - Aucune donnée stockée chez nous
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Secure Payment Logos -->
-                <div class="payment-logos">
-                    <p class="payment-logos-title">🔒 Paiement 100% sécurisé</p>
-                    <div class="payment-logos-grid">
-                        <div class="payment-logo" title="Stripe">
-                            <img src="assets/payment/stripe.png" alt="Stripe" style="height: 25px;">
-                        </div>
-                        <div class="payment-logo" title="Visa">
-                            <img src="assets/payment/visa.png" alt="Visa" style="height: 25px;">
-                        </div>
-                        <div class="payment-logo" title="Mastercard">
-                            <img src="assets/payment/mastercard.png" alt="Mastercard" style="height: 35px;">
-                        </div>
-                        <div class="payment-logo" title="Apple Pay">
-                            <img src="assets/payment/apple-pay.png" alt="Apple Pay" style="height: 30px;">
-                        </div>
-                        <div class="payment-logo" title="Google Pay">
-                            <img src="assets/payment/google-pay.png" alt="Google Pay" style="height: 30px;">
-                        </div>
-                        <div class="payment-logo" title="PayPal">
-                            <img src="assets/payment/paypal.png" alt="PayPal" style="height: 30px;">
-                        </div>
-                    </div>
+                <div class="pricing-content">
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Guide PDF Premium (100+ pages)</li>
+                        <li><span class="check">✓</span> 12 mots-clés cachés à découvrir</li>
+                        <li><span class="check">✓</span> Contenu 2008-2026 actualisé</li>
+                        <li class="mobile-hidden"><span class="check">✓</span> Guide Airdrops 2026</li>
+                        <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Cashback jusqu'à
+                                100$ USDC sur
+                                Base</strong></li>
+                        <li class="mobile-hidden disabled"><span class="cross">✗</span> Support prioritaire</li>
+                        <li class="mobile-hidden disabled"><span class="cross">✗</span> Accès Discord VIP</li>
+                    </ul>
+                    <button class="see-more-features-btn">
+                        <span class="see-more-text">Voir plus</span>
+                        <span class="see-more-icon">▼</span>
+                    </button>
+                    <button class="btn btn-secondary btn-pack" data-price="99" data-upsell="true">
+                        <span class="btn-icon">🔓</span>
+                        CHOISIR SOLO
+                    </button>
                 </div>
             </div>
+
+            <!-- Pack Pro - Featured -->
+            <div class="pricing-card featured" data-pack="pro">
+                <div class="card-ribbon">⭐ POPULAIRE</div>
+                <div class="card-medal">🥈</div>
+                <div class="pricing-header">
+                    <h3>Pack Pro</h3>
+                    <div class="promo-badge">🔥 -50% OFFRE LANCEMENT</div>
+                    <div class="price">
+                        <span class="price-old">598€</span>
+                        <span class="price-amount">299€</span>
+                    </div>
+                    <div class="price-net-badge">
+                        <span>~256€ net</span> après cashback de 50$ (~43€)
+                    </div>
+                </div>
+                <div class="pricing-content">
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> <strong>Tout le Pack Solo +</strong></li>
+                        <li><span class="check gold">🎁</span> <strong>Masterclass Mensuelle (Discord)</strong>
+                        </li>
+                        <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>3 mois d'accès
+                                Discord (87€
+                                offerts)</strong></li>
+                        <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Support email
+                                prioritaire (90
+                                jours)</strong></li>
+                        <li class="mobile-hidden"><span class="check">✓</span> Base de connaissances IA (24/7)
+                        </li>
+                        <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Cashback jusqu'à
+                                100$ USDC sur
+                                Base</strong></li>
+                    </ul>
+                    <button class="see-more-features-btn">
+                        <span class="see-more-text">Voir plus</span>
+                        <span class="see-more-icon">▼</span>
+                    </button>
+                    <button class="btn btn-primary btn-pack" data-price="299">
+                        <span class="btn-icon">🚀</span>
+                        CHOISIR PRO
+                    </button>
+                    <p class="subscription-note">90 jours d'accès VIP offerts, puis 29 €/mois (résiliable en 1
+                        clic)</p>
+                </div>
+            </div>
+
+            <!-- Pack VIP -->
+            <div class="pricing-card vip" data-pack="vip">
+                <div class="card-medal">🥇</div>
+                <div class="pricing-header">
+                    <h3>Pack VIP</h3>
+                    <div class="promo-badge">🔥 -50% OFFRE LANCEMENT</div>
+                    <div class="price">
+                        <span class="price-old">1098€</span>
+                        <span class="price-amount">549€</span>
+                    </div>
+                    <div class="price-net-badge">
+                        <span>~464€ net</span> après cashback 100$ (~85€)
+                    </div>
+                </div>
+                <div class="pricing-content">
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> <strong>Tout le Pack Pro +</strong></li>
+                        <li><span class="check gold">🎁</span> <strong>1h de coaching crypto privé</strong></li>
+                        <li class="mobile-hidden"><span class="check gold">🎁</span> Analyse portefeuille
+                            sur-mesure</li>
+                        <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>6 mois d'accès
+                                Groupe VIP (174€
+                                offerts)</strong></li>
+                        <li class="mobile-hidden"><span class="check">✓</span> Alertes Airdrops & Mises à jour
+                            2026</li>
+                        <li class="mobile-hidden"><span class="check gold">🎁</span> <strong>Cashback 100$ USDC
+                                sur Base</strong></li>
+                    </ul>
+                    <button class="see-more-features-btn">
+                        <span class="see-more-text">Voir plus</span>
+                        <span class="see-more-icon">▼</span>
+                    </button>
+                    <button class="btn btn-gold btn-pack" data-price="549">
+                        <span class="btn-icon">👑</span>
+                        CHOISIR VIP
+                    </button>
+                    <p class="subscription-note">180 jours d'accès Elite offerts, puis 29 €/mois (résiliable en
+                        1 clic)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discord Only Subscription -->
+        <div class="discord-subscription-card">
+            <div class="discord-card-content">
+                <div class="discord-icon">💬</div>
+                <div class="discord-info">
+                    <h4>Accès Discord Uniquement</h4>
+                    <p>Rejoignez la communauté sans acheter la formation. Masterclass, alertes, et échanges avec
+                        les membres.</p>
+                </div>
+                <div class="discord-price">
+                    <span class="discord-amount">29€</span>
+                    <span class="discord-period">/mois</span>
+                </div>
+                <button class="btn btn-discord btn-pack" data-pack="discord" data-price="29">
+                    <span class="btn-icon">🎮</span>
+                    REJOINDRE LE DISCORD
+                </button>
+                <p class="subscription-note">Sans engagement • Résiliable en 1 clic</p>
+            </div>
+        </div>
+
+        <!-- Discord Upsell Popup -->
+        <div id="discord-upsell-modal" class="modal">
+            <div class="modal-content"
+                style="max-width: 500px; text-align: center; border: 1px solid var(--accent-gold);">
+                <span class="modal-close" onclick="closeUpsellModal()">&times;</span>
+                <div class="modal-icon">⚠️</div>
+                <h3 style="color: var(--accent-gold);">Attendez une seconde !</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                    Ne manquez pas l'opportunité de rejoindre la communauté privée.
+                </p>
+                <div class="upsell-offer"
+                    style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">Ajouter l'accès Discord VIP ?</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-tertiary);">
+                        Accédez aux signaux, aux masterclass en direct et au réseau d'entraide pour seulement
+                        <strong style="color:white">+29€/mois</strong> (sans engagement).
+                    </p>
+                </div>
+                <div class="upsell-actions" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button id="upsell-yes-btn" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <span class="btn-icon">✅</span> OUI, je veux maximiser mes gains
+                    </button>
+                    <button id="upsell-no-btn" class="btn btn-outline"
+                        style="width: 100%; justify-content: center; background: transparent; border: 1px solid rgba(255,255,255,0.2); color:white; cursor:pointer;">
+                        Non merci, je continue sans l'aide de la communauté
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guarantee -->
+        <div class="guarantee-box">
+            <div class="guarantee-icon">🛡️</div>
+            <div class="guarantee-content">
+                <h4>Triple Garantie</h4>
+                <p>
+                    <strong>1.</strong> Récompense jusqu'à 100$ USDC sur Base si vous trouvez les 12 clés<br>
+                    <strong>2.</strong> Remboursement intégral sous 30 jours si non satisfait<br>
+                    <strong>3.</strong> Paiement 100% sécurisé via Stripe - Aucune donnée stockée chez nous
+                </p>
+            </div>
+        </div>
+
+        <!-- Secure Payment Logos -->
+        <div class="payment-logos">
+            <p class="payment-logos-title">🔒 Paiement 100% sécurisé</p>
+            <div class="payment-logos-grid">
+                <div class="payment-logo" title="Stripe">
+                    <img src="assets/payment/stripe.png" alt="Stripe" style="height: 25px;">
+                </div>
+                <div class="payment-logo" title="Visa">
+                    <img src="assets/payment/visa.png" alt="Visa" style="height: 25px;">
+                </div>
+                <div class="payment-logo" title="Mastercard">
+                    <img src="assets/payment/mastercard.png" alt="Mastercard" style="height: 35px;">
+                </div>
+                <div class="payment-logo" title="Apple Pay">
+                    <img src="assets/payment/apple-pay.png" alt="Apple Pay" style="height: 30px;">
+                </div>
+                <div class="payment-logo" title="Google Pay">
+                    <img src="assets/payment/google-pay.png" alt="Google Pay" style="height: 30px;">
+                </div>
+                <div class="payment-logo" title="PayPal">
+                    <img src="assets/payment/paypal.png" alt="PayPal" style="height: 30px;">
+                </div>
+            </div>
+        </div>
+        </div>
         </section>
 
         <!-- Free Extract Section -->

@@ -192,7 +192,14 @@
                 <a href="/faq">FAQ</a>
                 <a href="#avis">Avis</a>
                 <a href="/contact">Contact</a>
-                <!-- Mobile CTA at bottom of menu REMOVED -->
+                <!-- Mobile CTA at bottom of menu -->
+                <div class="nav-cta-mobile">
+                    <button id="mobile-wallet-btn" class="btn btn-primary"
+                        style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span id="mobile-wallet-icon">💎</span>
+                        <span id="mobile-wallet-text">Connecter Wallet</span>
+                    </button>
+                </div>
             </div>
             <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
                 <div class="wallet-btn-container">
@@ -1231,78 +1238,7 @@
     <script src="js/stripe.js"></script>
     <script src="js/rgpd-consent.js"></script>
 
-    <!-- WalletConnect - Simple Direct Integration -->
-    <script>
-        // Simple wallet connection without heavy dependencies
-        window.openWalletModal = async function() {
-            console.log('[Wallet] Opening connection modal...');
-
-            // Check for injected wallet (MetaMask, etc.)
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({
-                        method: 'eth_requestAccounts'
-                    });
-                    if (accounts && accounts[0]) {
-                        console.log('[Wallet] Connected via injected:', accounts[0]);
-                        if (window.handleWalletConnected) {
-                            window.handleWalletConnected(accounts[0]);
-                        }
-                        return;
-                    }
-                } catch (err) {
-                    console.warn('[Wallet] Injected wallet error:', err);
-                }
-            }
-
-            // No injected wallet - show install prompt
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-            if (isMobile) {
-                // On mobile, deep link to MetaMask
-                const dappUrl = encodeURIComponent(window.location.href);
-                window.location.href = `https://metamask.app.link/dapp/${window.location.host}`;
-            } else {
-                // On desktop, prompt to install
-                if (confirm('MetaMask non détecté.\n\nVoulez-vous l\'installer ?')) {
-                    window.open('https://metamask.io/download/', '_blank');
-                }
-            }
-        };
-
-        window.disconnectWalletModal = function() {
-            console.log('[Wallet] Disconnecting...');
-            localStorage.removeItem('connectedWallet');
-            if (window.handleWalletDisconnected) {
-                window.handleWalletDisconnected();
-            }
-        };
-
-        // Listen for account changes
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum.on('accountsChanged', function(accounts) {
-                if (accounts.length === 0) {
-                    window.disconnectWalletModal();
-                } else {
-                    if (window.handleWalletConnected) {
-                        window.handleWalletConnected(accounts[0]);
-                    }
-                }
-            });
-
-            // Check if already connected on page load
-            window.ethereum.request({ method: 'eth_accounts' })
-                .then(function(accounts) {
-                    if (accounts && accounts[0] && window.handleWalletConnected) {
-                        console.log('[Wallet] Already connected:', accounts[0]);
-                        window.handleWalletConnected(accounts[0]);
-                    }
-                })
-                .catch(function() {});
-        }
-
-        console.log('[Wallet] Simple integration ready');
-    </script>
+    <!-- WalletConnect - Inline script removed in favor of main.js centralized logic -->
 
     <!-- Mobile Menu Handler moved to main.js -->
 
