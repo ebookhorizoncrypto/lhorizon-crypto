@@ -865,30 +865,50 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// [NEW] Système "Voir plus" pour Pricing Features (Mobile)
 // [FIXED] Système "Voir plus" pour Pricing Features (Mobile)
+// Crée dynamiquement les boutons et gère les éléments .mobile-hidden
 function initPricingSeeMore() {
-    const seeMoreBtns = document.querySelectorAll('.see-more-features-btn');
+    // Seulement sur mobile
+    if (window.innerWidth > 768) return;
 
-    seeMoreBtns.forEach(btn => {
-        // Clone to remove old listeners
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
+    // Trouver toutes les listes de features avec des éléments cachés
+    const featureLists = document.querySelectorAll('.pricing-features');
 
-        newBtn.addEventListener('click', function (e) {
+    featureLists.forEach(featuresList => {
+        // Vérifier s'il y a des éléments mobile-hidden
+        const hiddenItems = featuresList.querySelectorAll('.mobile-hidden');
+        if (hiddenItems.length === 0) return;
+
+        // Éviter les doublons - chercher dans le parent
+        const pricingContent = featuresList.closest('.pricing-content');
+        if (!pricingContent) return;
+
+        // Vérifier si un bouton existe déjà
+        if (pricingContent.querySelector('.see-more-features-btn')) return;
+
+        // Créer le bouton
+        const seeMoreBtn = document.createElement('button');
+        seeMoreBtn.type = 'button';
+        seeMoreBtn.className = 'see-more-features-btn';
+        seeMoreBtn.innerHTML = '<span class="see-more-text">Voir plus</span> <span class="see-more-icon">▼</span>';
+
+        // Insérer après la liste des features
+        featuresList.insertAdjacentElement('afterend', seeMoreBtn);
+
+        // Gérer le clic
+        seeMoreBtn.addEventListener('click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
-            const pricingContent = this.closest('.pricing-content');
-            const featuresList = pricingContent.querySelector('.pricing-features');
+            // Toggle la classe expanded sur la liste (le CSS gère l'affichage)
+            const isExpanded = featuresList.classList.toggle('expanded');
+            this.classList.toggle('expanded', isExpanded);
+
+            // Mettre à jour le texte et l'icône
             const textSpan = this.querySelector('.see-more-text');
             const iconSpan = this.querySelector('.see-more-icon');
 
-            // Toggle classes
-            featuresList.classList.toggle('expanded');
-            this.classList.toggle('expanded');
-
-            // Changer le texte
-            if (featuresList.classList.contains('expanded')) {
+            if (isExpanded) {
                 textSpan.textContent = 'Voir moins';
                 if (iconSpan) iconSpan.style.transform = 'rotate(180deg)';
             } else {
@@ -901,5 +921,26 @@ function initPricingSeeMore() {
 
 // Init on load
 document.addEventListener('DOMContentLoaded', initPricingSeeMore);
+
+// Réinitialiser au redimensionnement (pour gérer desktop/mobile)
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+        if (window.innerWidth > 768) {
+            // Desktop: supprimer les boutons et réinitialiser
+            document.querySelectorAll('.see-more-features-btn').forEach(btn => btn.remove());
+            document.querySelectorAll('.pricing-features').forEach(list => {
+                list.classList.remove('expanded');
+            });
+        } else {
+            // Mobile: vérifier si les boutons existent, sinon les créer
+            const hasButtons = document.querySelector('.see-more-features-btn');
+            if (!hasButtons) {
+                initPricingSeeMore();
+            }
+        }
+    }, 250);
+});
 
 

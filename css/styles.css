@@ -5232,11 +5232,12 @@ h3 {
     }
 }
 
-/* ===== VOIR PLUS - PRICING CARDS MOBILE (Landing Page) ===== */
+/* ===== VOIR PLUS - PRICING CARDS MOBILE (Landing Page & Offres) ===== */
 
 /* Desktop : tout visible, pas de bouton */
 @media (min-width: 769px) {
-    .pricing-features li {
+    .pricing-features li,
+    .pricing-features li.mobile-hidden {
         display: flex !important;
         opacity: 1 !important;
         max-height: none !important;
@@ -5248,25 +5249,26 @@ h3 {
     }
 }
 
-/* Mobile : système voir plus */
+/* Mobile : système voir plus avec .mobile-hidden */
 @media (max-width: 768px) {
     .pricing-features li {
         transition: all 0.3s ease;
     }
 
-    /* Cacher les éléments après le 3ème */
-    .pricing-features li:nth-child(n+4) {
-        display: none;
+    /* Cacher les éléments avec classe .mobile-hidden */
+    .pricing-features li.mobile-hidden {
+        display: none !important;
         opacity: 0;
         max-height: 0;
         overflow: hidden;
     }
 
-    /* Quand expanded, tout montrer */
-    .pricing-features.expanded li:nth-child(n+4) {
-        display: flex;
+    /* Quand expanded, montrer les éléments .mobile-hidden */
+    .pricing-features.expanded li.mobile-hidden {
+        display: flex !important;
         opacity: 1;
-        max-height: 100px;
+        max-height: 200px;
+        animation: fadeIn 0.3s ease;
     }
 
     /* Bouton Voir plus */
