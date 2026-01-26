@@ -5556,4 +5556,19 @@ h3 {
         /* Increased from 160px */
         margin-top: 0 !important;
     }
+}/* FIX: Liens Utiles - ULTRA COMPACT (Round 3) */
+@media (min-width: 769px) {
+    .links-hero {
+        padding-bottom: 0 !important;
+    }
+
+    .links-hero p {
+        margin-bottom: 10px !important;
+        /* Tighten paragraph margin */
+    }
+
+    .warning-banner {
+        margin-top: 5px !important;
+        /* Almost touching */
+    }
 }
