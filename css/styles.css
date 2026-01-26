@@ -5364,3 +5364,21 @@ h3 {
         /* 50% reduction */
     }
 }
+
+/* Desktop uniquement - Final CTA & Keys Section Spacing */
+@media (min-width: 769px) {
+
+    /* Supprimer le padding au-dessus de final-cta */
+    .final-cta {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* Augmenter le padding de 15% pour keys-section */
+    /* Base était ~4rem (64px) -> +15% ≈ 74px (4.6rem) */
+    .keys-section,
+    #programme {
+        padding-top: 4.6rem !important;
+        padding-bottom: 4.6rem !important;
+    }
+}
