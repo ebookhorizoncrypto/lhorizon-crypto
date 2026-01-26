@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
     reactStrictMode: true,
-    // Ensure we don't have issues with the root lockfile confusion
-    distDir: '.next',
+    experimental: {
+        // Silence workspace root warning
+        turbopack: {
+            root: path.join(__dirname, '../../'),
+        },
+    },
 }
 
 module.exports = nextConfig
