@@ -4256,22 +4256,17 @@ h3 {
         /* Space for the badge */
     }
 
-    /* Show first 3 features, hide rest */
+    /* Show first 3 features, hide rest - USING .mobile-hidden class */
     .pricing-features li {
-        display: block !important;
+        display: flex !important;
     }
 
-    .pricing-features li:nth-child(n+4) {
-        display: none !important;
-    }
+    /* Les éléments .mobile-hidden sont gérés par les règles plus bas */
+    /* NE PAS utiliser :nth-child car le HTML utilise .mobile-hidden */
 
-    .pricing-card.expanded .pricing-features li:nth-child(n+4) {
-        display: block !important;
-    }
-
-    /* Toggle button */
+    /* Toggle button - pour l'ancien système */
     .pack-toggle {
-        display: block !important;
+        display: none !important;
         width: 100%;
         padding: 10px;
         margin-top: 10px;
@@ -5234,8 +5229,9 @@ h3 {
 
 /* ===== VOIR PLUS - PRICING CARDS MOBILE (Landing Page & Offres) ===== */
 
-/* Desktop : tout visible, pas de bouton */
+/* Desktop : tout visible, bouton caché */
 @media (min-width: 769px) {
+
     .pricing-features li,
     .pricing-features li.mobile-hidden {
         display: flex !important;
@@ -5273,10 +5269,13 @@ h3 {
 
     /* Bouton Voir plus */
     .see-more-features-btn {
-        display: flex;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
         align-items: center;
         justify-content: center;
         gap: 8px;
+
         width: 100%;
         padding: 12px 16px;
         margin-top: 12px;
