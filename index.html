@@ -1231,107 +1231,77 @@
     <script src="js/stripe.js"></script>
     <script src="js/rgpd-consent.js"></script>
 
-    <!-- Reown AppKit v2 - Modern WalletConnect Integration -->
-    <script type="module">
-        // Import Reown AppKit from CDN (latest stable)
-        import { createAppKit } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.8/+esm'
-        import { EthersAdapter } from 'https://cdn.jsdelivr.net/npm/@reown/appkit-adapter-ethers@1.6.8/+esm'
-        import { base, mainnet, arbitrum } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.8/networks/+esm'
+    <!-- WalletConnect - Simple Direct Integration -->
+    <script>
+        // Simple wallet connection without heavy dependencies
+        window.openWalletModal = async function() {
+            console.log('[Wallet] Opening connection modal...');
 
-        // Expose to window for wallet.js
-        window.createAppKit = createAppKit;
-        window.EthersAdapter = EthersAdapter;
-        window.appKitNetworks = { base, mainnet, arbitrum };
-
-        // Configuration
-        const projectId = 'ab69881fb47e7ca4ae5636c982bc6d34';
-
-        const metadata = {
-            name: "L'Horizon Crypto",
-            description: 'Guide Crypto Proof of Learning - Gagnez des USDC',
-            url: 'https://ebook-horizoncrypto.com',
-            icons: ['https://ebook-horizoncrypto.com/assets/logo-horizon-crypto.png']
-        };
-
-        // Create AppKit instance
-        const modal = createAppKit({
-            adapters: [new EthersAdapter()],
-            networks: [base, mainnet],
-            metadata,
-            projectId,
-            themeMode: 'dark',
-            themeVariables: {
-                '--w3m-accent': '#627EEA',
-                '--w3m-border-radius-master': '8px'
-            },
-            features: {
-                analytics: true,
-                email: false,
-                socials: false
-            },
-            // Critical for wallet detection
-            enableInjected: true,
-            enableEIP6963: true,
-            enableCoinbase: true,
-            enableWalletConnect: true,
-            // Featured wallets (MetaMask, Trust, Rainbow, Coinbase)
-            featuredWalletIds: [
-                'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
-                '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0',
-                '1ae92b26df02f0abca6304df07debccd18262fdf5fe82daa81593582dac9a369',
-                'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa'
-            ]
-        });
-
-        // Global functions for button handlers
-        window.openWalletModal = () => modal.open();
-        window.disconnectWalletModal = async () => {
-            try {
-                await modal.disconnect();
-            } catch (e) {
-                console.warn('Disconnect error:', e);
-            }
-        };
-        window.getWalletAddress = () => modal.getAddress();
-        window.getWalletChainId = () => modal.getChainId?.();
-
-        // Subscribe to events and update UI
-        modal.subscribeEvents(event => {
-            const eventName = event?.data?.event;
-            console.log('[AppKit] Event:', eventName);
-
-            if (eventName === 'CONNECT_SUCCESS') {
-                const address = modal.getAddress();
-                if (address) {
-                    console.log('[AppKit] Connected:', address);
-                    if (window.handleWalletConnected) {
-                        window.handleWalletConnected(address);
+            // Check for injected wallet (MetaMask, etc.)
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    if (accounts && accounts[0]) {
+                        console.log('[Wallet] Connected via injected:', accounts[0]);
+                        if (window.handleWalletConnected) {
+                            window.handleWalletConnected(accounts[0]);
+                        }
+                        return;
                     }
-                    localStorage.setItem('walletConnected', 'true');
-                    localStorage.setItem('connectedWallet', address);
+                } catch (err) {
+                    console.warn('[Wallet] Injected wallet error:', err);
                 }
             }
 
-            if (eventName === 'DISCONNECT_SUCCESS') {
-                console.log('[AppKit] Disconnected');
-                if (window.handleWalletDisconnected) {
-                    window.handleWalletDisconnected();
+            // No injected wallet - show install prompt
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // On mobile, deep link to MetaMask
+                const dappUrl = encodeURIComponent(window.location.href);
+                window.location.href = `https://metamask.app.link/dapp/${window.location.host}`;
+            } else {
+                // On desktop, prompt to install
+                if (confirm('MetaMask non détecté.\n\nVoulez-vous l\'installer ?')) {
+                    window.open('https://metamask.io/download/', '_blank');
                 }
-                localStorage.removeItem('walletConnected');
-                localStorage.removeItem('connectedWallet');
             }
-        });
+        };
 
-        // Restore connection on page load
-        setTimeout(async () => {
-            const address = modal.getAddress();
-            if (address && window.handleWalletConnected) {
-                console.log('[AppKit] Session restored:', address);
-                window.handleWalletConnected(address);
+        window.disconnectWalletModal = function() {
+            console.log('[Wallet] Disconnecting...');
+            localStorage.removeItem('connectedWallet');
+            if (window.handleWalletDisconnected) {
+                window.handleWalletDisconnected();
             }
-        }, 800);
+        };
 
-        console.log('[AppKit] Initialized with project:', projectId.slice(0, 8) + '...');
+        // Listen for account changes
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function(accounts) {
+                if (accounts.length === 0) {
+                    window.disconnectWalletModal();
+                } else {
+                    if (window.handleWalletConnected) {
+                        window.handleWalletConnected(accounts[0]);
+                    }
+                }
+            });
+
+            // Check if already connected on page load
+            window.ethereum.request({ method: 'eth_accounts' })
+                .then(function(accounts) {
+                    if (accounts && accounts[0] && window.handleWalletConnected) {
+                        console.log('[Wallet] Already connected:', accounts[0]);
+                        window.handleWalletConnected(accounts[0]);
+                    }
+                })
+                .catch(function() {});
+        }
+
+        console.log('[Wallet] Simple integration ready');
     </script>
 
     <!-- Mobile Menu Handler moved to main.js -->
