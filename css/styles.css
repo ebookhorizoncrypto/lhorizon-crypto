@@ -5502,4 +5502,42 @@ h3 {
     .pricing-trust .pricing-trust-item .trust-icon {
         font-size: 0.9rem !important;
     }
+}/* ========================================
+   SPACING FIXES (User Request)
+======================================== */
+
+@media (min-width: 769px) {
+
+    /* 1. Remove Footer Top Margin (Global) */
+    footer {
+        margin-top: 0 !important;
+        padding-top: 40px !important;
+        /* Adjust if needed */
+    }
+
+    /* 2. Fix "Nos Offres" Title hidden behind header */
+    /* Add space above title in offers page */
+    .offers-compact-header {
+        padding-top: 160px !important;
+        /* Clears fixed header */
+    }
+
+    /* 3. Reduce FAQ Page padding by 60% */
+    /* Base was ~120px, target ~50px */
+    .faq-page .container,
+    .faq-hero {
+        padding-top: 50px !important;
+    }
+
+    /* 4. Reduce Contact Page padding by 60% */
+    .contact-page .container,
+    .contact-page .section-header {
+        padding-top: 50px !important;
+        margin-top: 0 !important;
+    }
+
+    /* Ensure no double padding on Contact */
+    .contact-page {
+        padding-top: 0 !important;
+    }
 }
