@@ -5540,4 +5540,20 @@ h3 {
     .contact-page {
         padding-top: 0 !important;
     }
+}/* FIX: Liens Utiles - Remove gap between Hero and Warning */
+.links-hero {
+    padding-bottom: 10px !important;
+}
+
+.warning-banner {
+    margin-top: 10px !important;
+}
+
+/* FIX: Nos Offres - Force even more spacing on Desktop */
+@media (min-width: 769px) {
+    .offers-compact-header {
+        padding-top: 200px !important;
+        /* Increased from 160px */
+        margin-top: 0 !important;
+    }
 }
