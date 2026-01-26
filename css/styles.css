@@ -5303,3 +5303,64 @@ h3 {
         transform: rotate(180deg);
     }
 }
+
+/* Desktop uniquement - Réduire de 60% margin/padding pour USPS Section */
+@media (min-width: 769px) {
+    .usps-section {
+        /* Based on user request: 100px -> 40px, 80px -> 32px */
+        margin-top: 40px !important;
+        margin-bottom: 40px !important;
+        padding-top: 32px !important;
+        padding-bottom: 32px !important;
+    }
+
+    .usps-section .container {
+        padding-top: 32px !important;
+        padding-bottom: 32px !important;
+    }
+}
+
+/* Desktop uniquement - Modifications Spacing (Testimonials, FAQ, Concept) */
+@media (min-width: 769px) {
+
+    /* Section Témoignages - Suppression espace */
+    .testimonials-section,
+    #avis {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .testimonials-section .container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Section FAQ - Suppression espace */
+    .faq-section,
+    #faq {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .faq-section .container {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Section Concept - Réduction 50% (Base container 120px -> 60px) */
+    .concept-section,
+    #concept {
+        margin-top: 0 !important;
+        /* Ensure no external margin adds up */
+        padding-top: 0 !important;
+    }
+
+    .concept-section .container {
+        padding-top: 60px !important;
+        /* 50% reduction */
+    }
+}
