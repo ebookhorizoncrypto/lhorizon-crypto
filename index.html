@@ -688,7 +688,8 @@
                 <div class="why-content">
                     <h4>Pourquoi ça fonctionne ?</h4>
                     <p>
-                        La crypto récompense les <strong>early adopters</strong> et les <strong>utilisateurs
+                        La crypto récompense les <strong>early adopters (premiers utilisateurs)</strong> et les
+                        <strong>utilisateurs
                             actifs</strong>.
                         En vous forçant à lire attentivement chaque section, vous retenez réellement les concepts
                         qui vous éviteront de perdre des milliers d'euros. <em>C'est un investissement, pas une
@@ -1224,6 +1225,48 @@
     <script src="js/main.js"></script>
     <script src="js/stripe.js"></script>
     <script src="js/rgpd-consent.js"></script>
+
+    <!-- WalletConnect / Reown AppKit via CDN -->
+    <script type="module">
+        import { createAppKit } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.5/+esm'
+        import { EthersAdapter } from 'https://cdn.jsdelivr.net/npm/@reown/appkit-adapter-ethers@1.6.5/+esm'
+        import { base, mainnet } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.5/networks/+esm'
+
+        // 1. Configuration
+        const projectId = 'b56e18d47c72e20f66d2105e46830707'; // Using a public/demo ID or user provided
+
+        const networks = [base, mainnet];
+
+        const metadata = {
+            name: 'L\'Horizon Crypto',
+            description: 'Guide Crypto Proof of Learning',
+            url: 'https://ebook-horizoncrypto.com',
+            icons: ['https://ebook-horizoncrypto.com/assets/logo-horizon-crypto.png']
+        }
+
+        // 2. Initialization
+        const modal = createAppKit({
+            adapters: [new EthersAdapter()],
+            networks,
+            metadata,
+            projectId,
+            themeMode: 'dark',
+            features: {
+                analytics: true
+            }
+        });
+
+        // 3. Hook into our existing button
+        window.openWalletModal = () => modal.open();
+
+        // Update UI on connection
+        modal.subscribeEvents(event => {
+            if (event.data.event === 'CONNECT_SUCCESS') {
+                const btn = document.getElementById('header-wallet-btn');
+                if (btn) btn.innerHTML = '<span>✅</span> Connecté';
+            }
+        });
+    </script>
 
     <!-- Mobile Menu Handler moved to main.js -->
 

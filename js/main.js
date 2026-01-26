@@ -652,28 +652,19 @@ function initWalletConnection() {
     }
 
     async function connectWallet() {
-        if (typeof window.ethereum === 'undefined') {
-            alert('Veuillez installer MetaMask ou un wallet compatible.');
-            window.open('https://metamask.io/download/', '_blank');
-            return;
-        }
-        try {
-            walletBtn.disabled = true;
-            mobileWalletBtn.disabled = true;
-            walletBtnText.textContent = 'Connexion...';
-            if (mobileWalletText) mobileWalletText.textContent = '...';
-
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            if (accounts.length > 0) handleConnected(accounts[0]);
-        } catch (err) {
-            alert('Connexion annulée.');
-        } finally {
-            walletBtn.disabled = false;
-            mobileWalletBtn.disabled = false;
-            if (!connectedAddress) {
-                walletBtnText.textContent = 'Connecter Wallet';
-                if (mobileWalletText) mobileWalletText.textContent = 'Wallet';
+        if (window.openWalletModal) {
+            window.openWalletModal();
+        } else {
+            // Fallback if CDN fails
+            if (typeof window.ethereum === 'undefined') {
+                alert('Veuillez installer un wallet ou recharger la page.');
+                return;
             }
+            // ... legacy fallback ...
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                if (accounts.length > 0) handleConnected(accounts[0]);
+            } catch (e) { }
         }
     }
 
