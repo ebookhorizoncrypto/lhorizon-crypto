@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Critical CSS: Prevent white flash on load -->
     <style>html,body{background:#0a0a0f;}</style>
-    <meta name="description" content="Merci pour votre achat de L'Horizon Crypto - Votre guide est en route !">
+    <meta name="description" content="Remerciement pour votre achat de L'Horizon Crypto - Votre guide est en route !">
     <meta name="robots" content="noindex, nofollow">
-    <title>🌅 Merci ! - L'Horizon Crypto</title>
+    <title>Remerciement - L'Horizon Crypto</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/assets/logo-horizon-crypto.png">
@@ -322,12 +322,17 @@
                 </div>
             </div>
             <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
-                <button id="header-wallet-btn" class="wallet-btn"
-                    style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: linear-gradient(135deg, #627EEA, #4a5fc7); border: none; border-radius: 8px; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                    <span>🦊</span>
-                    <span id="wallet-btn-text">Connecter Wallet</span>
-                </button>
-                <a href="/#pricing" class="btn btn-nav btn-glow">🚀 DÉBLOQUER CASHBACK</a>
+                <div class="wallet-btn-container">
+                    <button id="header-wallet-btn" class="wallet-btn"
+                        style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: linear-gradient(135deg, #627EEA, #4a5fc7); border: none; border-radius: 12px; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(98, 126, 234, 0.3);">
+                        <span id="wallet-icon" style="font-size: 1.1rem;">🦊</span>
+                        <span id="wallet-btn-text">Connecter</span>
+                    </button>
+                    <button class="wallet-disconnect-btn" id="wallet-disconnect-btn" style="display: none;">
+                        🔌 Déconnecter
+                    </button>
+                </div>
+                <a href="/#pricing" class="btn btn-nav btn-glow">�� DÉBLOQUER CASHBACK</a>
             </div>
             <label for="nav-toggle" class="mobile-menu-toggle" aria-label="Menu"
                 style="z-index: 2147483647; position: relative;">

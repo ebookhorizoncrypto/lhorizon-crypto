@@ -61,7 +61,7 @@ Dans Vercel Dashboard → Settings → Environment Variables, ajoutez :
 ```
 lhorizon-crypto/
 ├── index.html              # Landing page principale
-├── merci.html              # Page de remerciement post-achat
+├── remerciement.html       # Page de remerciement post-achat
 ├── claim.html              # Page de claim des 20$ USDC
 ├── contact.html            # Page de contact
 ├── admin.html              # Dashboard admin (protégé)

@@ -109,7 +109,7 @@ export default async function handler(req, res) {
         });
 
         // Success Redirect
-        return res.redirect('/merci.html?activation=success');
+        return res.redirect('/remerciement?activation=success');
 
     } catch (error) {
         console.error(error);
