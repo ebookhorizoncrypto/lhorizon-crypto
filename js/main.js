@@ -140,38 +140,51 @@ function initTestimonialsCarousel() {
    LEAD MAGNET FORM - FREE EXTRACT
 ======================================== */
 function initLeadMagnetForm() {
-    const form = document.getElementById('lead-magnet-form');
+    // Landing Page Form
+    setupExtractForm('lead-magnet-form', 'lead-email', 'lead-success', 'lead-error');
+
+    // Offers Page Form
+    setupExtractForm('extract-form', 'extract-email', 'extract-success', null); // null error div (handled inside or alert)
+}
+
+function setupExtractForm(formId, emailId, successId, errorId) {
+    const form = document.getElementById(formId);
     if (!form) return;
 
-    const emailInput = document.getElementById('lead-email');
-    const btnText = form.querySelector('.btn-text');
-    const btnLoading = form.querySelector('.btn-loading');
-    const successDiv = document.getElementById('lead-success');
-    const errorDiv = document.getElementById('lead-error');
+    const emailInput = document.getElementById(emailId);
+    if (!emailInput) return;
 
-    /* Check if already subscribed (Disabled for testing)
-    if (localStorage.getItem('lhorizon_lead_subscribed')) {
-        form.style.display = 'none';
-        successDiv.style.display = 'block';
-        successDiv.querySelector('h3').textContent = 'Déjà inscrit !';
-        successDiv.querySelector('p').textContent = 'Vérifiez votre email pour l\'extrait.';
-        return;
-    } */
+    const btn = form.querySelector('button[type="submit"]');
+    const btnText = btn.querySelector('.btn-text') || btn; // Fallback if structure differs
+    const btnLoading = btn.querySelector('.btn-loading');
+
+    const successDiv = document.getElementById(successId);
+    const errorDiv = errorId ? document.getElementById(errorId) : null;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = emailInput.value.trim();
         if (!email || !email.includes('@')) {
-            errorDiv.style.display = 'block';
-            errorDiv.querySelector('p').textContent = '❌ Veuillez entrer un email valide.';
+            if (errorDiv) {
+                errorDiv.style.display = 'block';
+                errorDiv.querySelector('p').textContent = '❌ Veuillez entrer un email valide.';
+            } else {
+                alert('Veuillez entrer un email valide.');
+            }
             return;
         }
 
         // Show loading
-        btnText.style.display = 'none';
-        btnLoading.style.display = 'inline';
-        errorDiv.style.display = 'none';
+        if (btnLoading) {
+            if (btnText.style) btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+        } else {
+            btn.textContent = 'Envoi...';
+            btn.disabled = true;
+        }
+
+        if (errorDiv) errorDiv.style.display = 'none';
 
         try {
             // API call to send extract email
@@ -189,45 +202,45 @@ function initLeadMagnetForm() {
             if (response.ok) {
                 // Success
                 form.style.display = 'none';
-                successDiv.style.display = 'block';
-                localStorage.setItem('lhorizon_lead_subscribed', email);
+                if (successDiv) successDiv.style.display = 'block';
 
-                // Store email for later
+                localStorage.setItem('lhorizon_lead_subscribed', email);
                 localStorage.setItem('user_email', email);
 
                 // Track conversion
                 if (typeof gtag !== 'undefined') {
-                    gtag('event', 'generate_lead', {
-                        currency: 'EUR',
-                        value: 0
-                    });
+                    gtag('event', 'generate_lead', { currency: 'EUR', value: 0 });
                 }
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'Lead');
                 }
             } else {
-                throw new Error(`Erreur serveur ${response.status}: ${response.statusText}`);
+                throw new Error(`Erreur serveur ${response.status}`);
             }
         } catch (error) {
             console.error('Lead magnet error:', error);
 
-            // For demo mode (Network Error / Failed to Fetch), simulate success
-            // TypeError is thrown by fetch() only on network failure
             if (error.name === 'TypeError' || error.message.includes('fetch')) {
+                // Demo / Fallback
                 form.style.display = 'none';
-                successDiv.style.display = 'block';
-                localStorage.setItem('lhorizon_lead_subscribed', email);
-                localStorage.setItem('user_email', email);
+                if (successDiv) successDiv.style.display = 'block';
                 console.log('📧 Demo mode (Network Error): Email simulated for', email);
-
-                // Show a small toast to say it's simulation
-                showNotification("Mode Test: Email simulé (API inaccessible)", "info");
             } else {
-                errorDiv.style.display = 'block';
-                // Show the exact error for debugging
-                errorDiv.querySelector('p').textContent = `❌ Erreur: ${error.message}`;
-                btnText.style.display = 'inline';
-                btnLoading.style.display = 'none';
+                if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                    errorDiv.querySelector('p').textContent = `❌ Erreur: ${error.message}`;
+                } else {
+                    alert(`Erreur: ${error.message}`);
+                }
+
+                // Reset button
+                if (btnLoading) {
+                    if (btnText.style) btnText.style.display = 'inline';
+                    btnLoading.style.display = 'none';
+                } else {
+                    btn.textContent = 'RECEVOIR L\'EXTRAIT';
+                    btn.disabled = false;
+                }
             }
         }
     });
