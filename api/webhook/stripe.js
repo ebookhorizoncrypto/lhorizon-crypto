@@ -111,7 +111,8 @@ async function handleSuccessfulPayment(session) {
         access_level: pack.toUpperCase(),
         amount_paid: amount,
         expires_at: expiresAt.toISOString(),
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        reminder_sent: false // Reset reminder flag on renewal
     }, { onConflict: 'email' });
 
     if (error) {
