@@ -46,9 +46,15 @@ export default async function handler(req, res) {
             headers: { Authorization: `Bearer ${tokenData.access_token}` },
         });
         const discordUser = await userResponse.json();
+        console.log('Discord User Response:', JSON.stringify(discordUser, null, 2));
 
         if (!discordUser.email) {
-            return res.status(400).send("<h1>Erreur: Email manquant</h1><p>Votre compte Discord n'a pas d'email public.</p>");
+            return res.status(400).send(`
+                <h1>Erreur: Email manquant</h1>
+                <p>Votre compte Discord n'a pas renvoyé d'email public.</p>
+                <p>Réponse reçue: ${JSON.stringify(discordUser)}</p>
+                <a href="/activer.html">Réessayer</a>
+            `);
         }
 
         // 3. Find Customer
