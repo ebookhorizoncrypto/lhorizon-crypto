@@ -5382,3 +5382,60 @@ h3 {
         padding-bottom: 4.6rem !important;
     }
 }
+
+/* =================================================================
+   MOBILE OVERRIDES: PRICING TRUST BADGES (MATCH HERO BADGES)
+   ================================================================= */
+@media (max-width: 768px) {
+
+    /* 1. Remove "See More" Button */
+    .voir-plus-trust-btn {
+        display: none !important;
+    }
+
+    /* 2. Show all trust items (override previous hiding logic) */
+    .pricing-trust .pricing-trust-item:nth-child(n+3) {
+        display: flex !important;
+    }
+
+    /* 3. Style .pricing-trust like .trust-badges (Hero) */
+    .pricing-trust {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        justify-content: center !important;
+        margin-top: 15px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .pricing-trust .pricing-trust-item {
+        /* 2 items per row */
+        flex: 0 0 calc(50% - 4px) !important;
+        max-width: calc(50% - 4px) !important;
+
+        /* Green Border Styling (Match Hero) */
+        border: 1px solid #00FF88 !important;
+        background: rgba(0, 255, 136, 0.05) !important;
+        border-radius: 8px !important;
+        padding: 8px 10px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        /* Centered like hero badges if applicable, though hero uses gap */
+        gap: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pricing-trust .pricing-trust-item span {
+        font-size: 0.75rem !important;
+        line-height: 1.2 !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-align: left;
+        /* Keep text aligned left if icon is separate */
+    }
+
+    .pricing-trust .pricing-trust-item .trust-icon {
+        font-size: 0.9rem !important;
+    }
+}
