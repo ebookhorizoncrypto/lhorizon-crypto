@@ -3,7 +3,7 @@ import { EthersAdapter } from '@reown/appkit-adapter-ethers'
 import { mainnet, arbitrum, base } from '@reown/appkit/networks'
 
 // 1. Get projectId
-const projectId = 'b56e18d47c72e20f66d2105e46830707' // Provided by user or new one
+const projectId = 'ab69881fb47e7ca4ae5636c982bc6d34'
 
 // 2. Set the networks
 const networks = [base, mainnet, arbitrum]

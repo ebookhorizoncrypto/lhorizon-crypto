@@ -195,11 +195,16 @@
                 <!-- Mobile CTA at bottom of menu REMOVED -->
             </div>
             <div class="nav-cta" style="display: flex; gap: 12px; align-items: center;">
-                <button id="header-wallet-btn" class="wallet-btn"
-                    style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: linear-gradient(135deg, #627EEA, #4a5fc7); border: none; border-radius: 8px; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                    <span>🦊</span>
-                    <span id="wallet-btn-text">Connecter Wallet</span>
-                </button>
+                <div class="wallet-btn-container">
+                    <button id="header-wallet-btn" class="wallet-btn"
+                        style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: linear-gradient(135deg, #627EEA, #4a5fc7); border: none; border-radius: 12px; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(98, 126, 234, 0.3);">
+                        <span id="wallet-icon" style="font-size: 1.1rem;">💎</span>
+                        <span id="wallet-btn-text">Connecter</span>
+                    </button>
+                    <button class="wallet-disconnect-btn" id="wallet-disconnect-btn" style="display: none;">
+                        🔌 Déconnecter
+                    </button>
+                </div>
             </div>
 
 
@@ -1226,46 +1231,107 @@
     <script src="js/stripe.js"></script>
     <script src="js/rgpd-consent.js"></script>
 
-    <!-- WalletConnect / Reown AppKit via CDN -->
+    <!-- Reown AppKit v2 - Modern WalletConnect Integration -->
     <script type="module">
-        import { createAppKit } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.5/+esm'
-        import { EthersAdapter } from 'https://cdn.jsdelivr.net/npm/@reown/appkit-adapter-ethers@1.6.5/+esm'
-        import { base, mainnet } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.5/networks/+esm'
+        // Import Reown AppKit from CDN (latest stable)
+        import { createAppKit } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.8/+esm'
+        import { EthersAdapter } from 'https://cdn.jsdelivr.net/npm/@reown/appkit-adapter-ethers@1.6.8/+esm'
+        import { base, mainnet, arbitrum } from 'https://cdn.jsdelivr.net/npm/@reown/appkit@1.6.8/networks/+esm'
 
-        // 1. Configuration
-        const projectId = 'b56e18d47c72e20f66d2105e46830707'; // Using a public/demo ID or user provided
+        // Expose to window for wallet.js
+        window.createAppKit = createAppKit;
+        window.EthersAdapter = EthersAdapter;
+        window.appKitNetworks = { base, mainnet, arbitrum };
 
-        const networks = [base, mainnet];
+        // Configuration
+        const projectId = 'ab69881fb47e7ca4ae5636c982bc6d34';
 
         const metadata = {
-            name: 'L\'Horizon Crypto',
-            description: 'Guide Crypto Proof of Learning',
+            name: "L'Horizon Crypto",
+            description: 'Guide Crypto Proof of Learning - Gagnez des USDC',
             url: 'https://ebook-horizoncrypto.com',
             icons: ['https://ebook-horizoncrypto.com/assets/logo-horizon-crypto.png']
-        }
+        };
 
-        // 2. Initialization
+        // Create AppKit instance
         const modal = createAppKit({
             adapters: [new EthersAdapter()],
-            networks,
+            networks: [base, mainnet],
             metadata,
             projectId,
             themeMode: 'dark',
+            themeVariables: {
+                '--w3m-accent': '#627EEA',
+                '--w3m-border-radius-master': '8px'
+            },
             features: {
-                analytics: true
-            }
+                analytics: true,
+                email: false,
+                socials: false
+            },
+            // Critical for wallet detection
+            enableInjected: true,
+            enableEIP6963: true,
+            enableCoinbase: true,
+            enableWalletConnect: true,
+            // Featured wallets (MetaMask, Trust, Rainbow, Coinbase)
+            featuredWalletIds: [
+                'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
+                '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0',
+                '1ae92b26df02f0abca6304df07debccd18262fdf5fe82daa81593582dac9a369',
+                'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa'
+            ]
         });
 
-        // 3. Hook into our existing button
+        // Global functions for button handlers
         window.openWalletModal = () => modal.open();
+        window.disconnectWalletModal = async () => {
+            try {
+                await modal.disconnect();
+            } catch (e) {
+                console.warn('Disconnect error:', e);
+            }
+        };
+        window.getWalletAddress = () => modal.getAddress();
+        window.getWalletChainId = () => modal.getChainId?.();
 
-        // Update UI on connection
+        // Subscribe to events and update UI
         modal.subscribeEvents(event => {
-            if (event.data.event === 'CONNECT_SUCCESS') {
-                const btn = document.getElementById('header-wallet-btn');
-                if (btn) btn.innerHTML = '<span>✅</span> Connecté';
+            const eventName = event?.data?.event;
+            console.log('[AppKit] Event:', eventName);
+
+            if (eventName === 'CONNECT_SUCCESS') {
+                const address = modal.getAddress();
+                if (address) {
+                    console.log('[AppKit] Connected:', address);
+                    if (window.handleWalletConnected) {
+                        window.handleWalletConnected(address);
+                    }
+                    localStorage.setItem('walletConnected', 'true');
+                    localStorage.setItem('connectedWallet', address);
+                }
+            }
+
+            if (eventName === 'DISCONNECT_SUCCESS') {
+                console.log('[AppKit] Disconnected');
+                if (window.handleWalletDisconnected) {
+                    window.handleWalletDisconnected();
+                }
+                localStorage.removeItem('walletConnected');
+                localStorage.removeItem('connectedWallet');
             }
         });
+
+        // Restore connection on page load
+        setTimeout(async () => {
+            const address = modal.getAddress();
+            if (address && window.handleWalletConnected) {
+                console.log('[AppKit] Session restored:', address);
+                window.handleWalletConnected(address);
+            }
+        }, 800);
+
+        console.log('[AppKit] Initialized with project:', projectId.slice(0, 8) + '...');
     </script>
 
     <!-- Mobile Menu Handler moved to main.js -->
