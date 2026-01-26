@@ -652,14 +652,31 @@ function initWalletConnection() {
     }
 
     async function connectWallet() {
+        console.log("Connect Wallet Triggered");
+
         if (window.openWalletModal) {
-            window.openWalletModal();
+            console.log("Calling window.openWalletModal()");
+            try {
+                await window.openWalletModal();
+            } catch (e) {
+                console.error("Modal Error:", e);
+                alert("Erreur ouverture wallet: " + e.message);
+            }
         } else {
-            // Fallback if CDN fails
-            if (typeof window.ethereum === 'undefined') {
-                alert('Veuillez installer un wallet ou recharger la page.');
+            console.warn("window.openWalletModal is undefined.");
+
+            // Chech if it failed to load
+            if (window.appKitError) {
+                alert("Erreur de chargement WalletConnect: " + window.appKitError.message + "\nVérifiez votre connexion ou bloqueur de pub.");
                 return;
             }
+
+            // Fallback if CDN blocked/failed completely
+            if (typeof window.ethereum === 'undefined') {
+                alert('Le module de connexion ne s\'est pas chargé.\nEssayez de recharger la page.');
+                return;
+            }
+
             // ... legacy fallback ...
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
