@@ -866,60 +866,22 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // [NEW] Système "Voir plus" pour Pricing Features (Mobile)
+// [FIXED] Système "Voir plus" pour Pricing Features (Mobile)
 function initPricingSeeMore() {
-    const featuresLists = document.querySelectorAll('.pricing-features');
-
-    featuresLists.forEach(list => {
-        // Check if list has hidden items
-        const hiddenItems = list.querySelectorAll('.mobile-hidden');
-        if (hiddenItems.length === 0) return;
-
-        // Check if button already exists
-        if (list.nextElementSibling && list.nextElementSibling.classList.contains('see-more-btn')) return;
-
-        // Create button
-        const btn = document.createElement('button');
-        btn.className = 'see-more-btn mobile-only';
-        btn.innerHTML = '<span class="see-more-text">Voir plus</span><span class="see-more-icon">▼</span>';
-
-        // Insert after list
-        list.insertAdjacentElement('afterend', btn);
-
-        // Add click handler
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            list.classList.toggle('expanded');
-            btn.classList.toggle('expanded');
-
-            const textSpan = btn.querySelector('.see-more-text');
-            const iconSpan = btn.querySelector('.see-more-icon');
-
-            if (list.classList.contains('expanded')) {
-                textSpan.textContent = 'Voir moins';
-                iconSpan.style.transform = 'rotate(180deg)';
-            } else {
-                textSpan.textContent = 'Voir plus';
-                iconSpan.style.transform = 'rotate(0deg)';
-            }
-        });
-    });
-}
-
-// Init on load
-document.addEventListener('DOMContentLoaded', initPricingSeeMore);
-
-
-// ===== VOIR PLUS - PRICING FEATURES (Landing Page) =====
-document.addEventListener('DOMContentLoaded', function () {
     const seeMoreBtns = document.querySelectorAll('.see-more-features-btn');
 
     seeMoreBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
+        // Clone to remove old listeners
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+
+        newBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
             const pricingContent = this.closest('.pricing-content');
             const featuresList = pricingContent.querySelector('.pricing-features');
             const textSpan = this.querySelector('.see-more-text');
+            const iconSpan = this.querySelector('.see-more-icon');
 
             // Toggle classes
             featuresList.classList.toggle('expanded');
@@ -928,10 +890,16 @@ document.addEventListener('DOMContentLoaded', function () {
             // Changer le texte
             if (featuresList.classList.contains('expanded')) {
                 textSpan.textContent = 'Voir moins';
+                if (iconSpan) iconSpan.style.transform = 'rotate(180deg)';
             } else {
                 textSpan.textContent = 'Voir plus';
+                if (iconSpan) iconSpan.style.transform = 'rotate(0deg)';
             }
         });
     });
-});
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', initPricingSeeMore);
+
 
