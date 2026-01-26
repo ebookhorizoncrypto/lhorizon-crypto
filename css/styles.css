@@ -4230,18 +4230,6 @@ h3 {
         padding: 6px 10px !important;
         font-size: 0.75rem !important;
     }
-
-    #wallet-btn-text {
-        display: none;
-        /* Hide text, show only fox icon if very small */
-    }
-}
-
-@media (max-width: 768px) and (min-width: 380px) {
-    #wallet-btn-text {
-        display: inline;
-        /* Show text on slightly larger mobiles */
-    }
 }
 
 /* ========================================
@@ -4900,16 +4888,7 @@ h3 {
     }
 }
 
-/* Very small screens - icon only */
-@media (max-width: 380px) {
-    #wallet-btn-text {
-        display: none;
-    }
-
-    .wallet-btn {
-        padding: 10px 12px;
-    }
-}
+/* Very small screens - handled in fix section below */
 
 /* Legacy mobile button (hidden, kept for compatibility) */
 .wallet-btn-mobile {
@@ -5571,22 +5550,46 @@ h3 {
         margin-top: 5px !important;
         /* Almost touching */
     }
-}/* FIX: Force Wallet Icon Visibility on Mobile */
+}
+
+/* ========================================
+   FIX: Wallet Button Mobile Visibility
+======================================== */
 #wallet-icon {
     display: inline-block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    margin-right: 4px;
 }
 
-@media (max-width: 768px) {
+/* Mobile: show icon and short text */
+@media (max-width: 968px) {
     #header-wallet-btn {
         gap: 6px !important;
-        /* Ensure gap between icon and text if text is visible */
+        padding: 8px 12px !important;
     }
 
     #wallet-icon {
-        font-size: 1.25rem !important;
-        /* Make it slightly bigger on mobile to be seen */
+        font-size: 1.2rem !important;
+        display: inline-block !important;
+    }
+
+    #wallet-btn-text {
+        display: inline !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+/* Very small screens: icon + short text still visible */
+@media (max-width: 380px) {
+    #header-wallet-btn {
+        padding: 8px 10px !important;
+    }
+
+    #wallet-btn-text {
+        display: inline !important;
+        max-width: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }

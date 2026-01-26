@@ -32,14 +32,12 @@
     <link rel="stylesheet" href="css/threejs.css">
 
     <style>
-        /* Compact Header for Offers Page */
+        /* Compact Header for Offers Page - Reduced padding by 50% */
         .offers-compact-header {
-            padding-top: calc(80px + var(--space-lg));
-            padding-bottom: var(--space-md);
+            padding-top: calc(80px + var(--space-sm));
+            padding-bottom: var(--space-xs);
             text-align: center;
         }
-
-
 
         .offers-compact-header h1 {
             font-size: 1.75rem;
@@ -58,25 +56,29 @@
             padding: var(--space-xs) var(--space-md);
             border-radius: var(--radius-full);
             font-weight: 600;
-            margin-bottom: var(--space-sm);
+            margin-bottom: var(--space-xs);
             border: 1px solid rgba(0, 255, 136, 0.3);
             font-size: 0.85rem;
         }
 
         /* Pricing section spacing reset */
         .pricing-section-compact {
-            padding-top: var(--space-md);
+            padding-top: var(--space-xs);
         }
 
+        /* Mobile - reduced padding */
         @media (max-width: 768px) {
-            /* Banner restored with compact styling via styles.css */
+            .offers-compact-header {
+                padding-top: 90px;
+                padding-bottom: 8px;
+            }
         }
 
-        /* Ajustement de l'espace au-dessus de la section pricing sur desktop */
+        /* Desktop - reduced padding by 50% */
         @media (min-width: 1024px) {
             .offers-compact-header {
-                padding-top: 120px !important;
-                padding-bottom: 20px !important;
+                padding-top: 100px !important;
+                padding-bottom: 10px !important;
             }
 
             .pricing-section-compact {
