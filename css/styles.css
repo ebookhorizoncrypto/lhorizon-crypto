@@ -5375,6 +5375,11 @@ h3 {
         margin-top: 0 !important;
     }
 
+    .final-cta .container {
+        padding-top: 60px !important;
+        /* 50% of the default 120px */
+    }
+
     /* Augmenter le padding de 15% pour keys-section */
     /* Base était ~4rem (64px) -> +15% ≈ 74px (4.6rem) */
     .keys-section,
