@@ -27,17 +27,18 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
-                client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
-                client_secret: process.env.DISCORD_CLIENT_SECRET,
+                client_id: '1465251219218890895', // Hardcoded match
+                client_secret: process.env.DISCORD_CLIENT_SECRET, // Must be correct on Vercel
                 grant_type: 'authorization_code',
                 code,
-                redirect_uri: `${process.env.DOMAIN}/api/discord-callback`,
+                redirect_uri: 'https://ebook-horizoncrypto.com/api/discord-callback',
             }),
         });
 
         const tokenData = await tokenResponse.json();
+        console.log('Token Exchange Response:', JSON.stringify(tokenData));
 
-        if (tokenData.error) {
+        if (tokenData.error || !tokenData.access_token) {
             throw new Error(`Discord Token Error: ${JSON.stringify(tokenData)}`);
         }
 
