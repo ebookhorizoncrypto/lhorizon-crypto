@@ -132,13 +132,15 @@ async function handleSuccessfulPayment(session) {
 async function sendPurchaseEmail(email, pack, amount) {
     // Robust pack detection based on amount if metadata is missing
     // Default is 'solo' from handler
+    if (Math.round(amount) >= 25 && Math.round(amount) <= 35) pack = 'discord';
     if (Math.round(amount) >= 290 && Math.round(amount) < 500) pack = 'pro';
     if (Math.round(amount) >= 540) pack = 'vip';
 
     const packNames = {
         solo: 'Pack Solo 🥉',
         pro: 'Pack Pro 🥈',
-        vip: 'Pack VIP 🥇'
+        vip: 'Pack VIP 🥇',
+        discord: 'Abonnement Discord 👾'
     };
 
     const downloadLink = `${domain}/assets/Horizon-Crypto-Ebook.pdf`; // Direct link assuming assets
@@ -186,6 +188,36 @@ async function sendPurchaseEmail(email, pack, amount) {
         `;
     } else {
         // SOLO (Ebook + Discord 30j)
+        emailTitle = "🥉 Confirmation Pack Solo - L'Horizon Crypto";
+        specificContent = `
+            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #f7931a; margin-bottom: 25px;">
+                <h3 style="margin-top: 0; color: #f7931a;">Votre Commande est Validée !</h3>
+                <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
+                    <li><strong>Guide PDF Complet :</strong> Téléchargement immédiat ci-dessus.</li>
+                    <li><strong>Accès Discord (30 jours) :</strong> Rejoignez la communauté pour 1 mois.</li>
+                </ul>
+            </div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                 <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord (30j)</a>
+            </div>
+        `;
+    } else if (pack === 'discord') {
+        emailTitle = "👾 Abonnement Discord Activé - L'Horizon Crypto";
+        specificContent = `
+            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #5865F2; margin-bottom: 25px;">
+                <h3 style="margin-top: 0; color: #5865F2;">Bienvenue dans la Communauté !</h3>
+                <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
+                    <li><strong>Accès Complet (30 jours) :</strong> Salons d'entraide, alertes, communauté.</li>
+                    <li><strong>Renouvellement :</strong> Mensuel (annulable à tout moment).</li>
+                </ul>
+            </div>
+            <p><strong>Action Requise :</strong> Reliez votre compte Discord maintenant pour accéder aux salons.</p>
+            <div style="text-align: center; margin-bottom: 20px;">
+                 <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord</a>
+            </div>
+        `;
+    } else {
+        // Fallback default
         emailTitle = "🥉 Confirmation Pack Solo - L'Horizon Crypto";
         specificContent = `
             <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #f7931a; margin-bottom: 25px;">
