@@ -2,8 +2,13 @@ import { createClient } from '@supabase/supabase-js';
 
 // Init Supabase
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY; // Support both
+
+if (!supabaseUrl || !supabaseServiceKey) {
+    console.error('CRITICAL: Supabase Env Vars missing');
+}
+
+const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', supabaseServiceKey || 'placeholder');
 
 export default async function handler(req, res) {
     if (req.method !== 'GET') {

@@ -111,6 +111,10 @@
     {
       "source": "/api/send-extract",
       "destination": "/api/send-extract"
+    },
+    {
+      "source": "/api/discord-callback",
+      "destination": "/api/discord-callback"
     }
   ]
 }
