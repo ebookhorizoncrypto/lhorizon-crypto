@@ -90,7 +90,7 @@ export default async function handler(req, res) {
             </div>
             
             <div style="text-align: center;">
-                <a href="${domain}/assets/extrait-ebook.docx" class="button">📥 TÉLÉCHARGER L'EXTRAIT GRATUIT</a>
+                <a href="${domain}/assets/extrait-ebook-horizon-crypto.pdf" class="button">📥 TÉLÉCHARGER L'EXTRAIT (PDF)</a>
             </div>
 
             <div style="text-align: center; margin-top: 20px;">

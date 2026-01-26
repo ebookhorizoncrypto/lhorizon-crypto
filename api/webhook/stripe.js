@@ -95,7 +95,7 @@ async function sendPurchaseEmail(email, pack, amount) {
     };
 
     const downloadLink = `${domain}/assets/Horizon-Crypto-Ebook.pdf`; // Direct link assuming assets
-    const discordLink = "https://discord.gg/votre-invite-pro"; // Example
+    const discordLink = `${domain}/activer.html`; // New Activation Flow
     const calendlyLink = "https://calendly.com/lhorizon-crypto/coaching-vip"; // Example
     const claimLink = `${domain}/claim.html`;
 
@@ -117,9 +117,9 @@ async function sendPurchaseEmail(email, pack, amount) {
                     <a href="${calendlyLink}" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">📅 Réserver mon Coaching</a>
                 </div>
             </div>
-            <p>N'oubliez pas de rejoindre le Discord pour échanger avec les autres membres VIP.</p>
+            <p><strong>Étape Cruciale :</strong> Reliez votre compte Discord pour accéder aux salons privés.</p>
             <div style="text-align: center; margin-bottom: 20px;">
-                 <a href="${discordLink}" style="color: #5865F2; font-weight: bold; text-decoration: none;">Rejoindre le Discord VIP →</a>
+                 <a href="${discordLink}" style="color: #5865F2; font-weight: bold; text-decoration: none; font-size: 16px;">👾 Activer mon accès Discord VIP →</a>
             </div>
         `;
     } else if (pack === 'pro') {
@@ -133,7 +133,7 @@ async function sendPurchaseEmail(email, pack, amount) {
                     <li><strong>Ebook Complet :</strong> Toutes les stratégies avancées.</li>
                 </ul>
                 <div style="text-align: center; margin-top: 20px;">
-                    <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">💬 Rejoindre le Discord Pro</a>
+                    <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord Pro</a>
                 </div>
             </div>
         `;
