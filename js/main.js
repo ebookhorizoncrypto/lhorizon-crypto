@@ -720,14 +720,20 @@ function initWalletConnection() {
         try {
             if (window.openWalletModal) {
                 await window.openWalletModal();
+            } else if (typeof window.ethereum !== 'undefined') {
+                // Direct injection available (desktop extension or in-app browser)
+                console.log('[Wallet] Using injected provider');
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                if (accounts.length > 0) updateUIConnected(accounts[0]);
             } else {
-                console.warn('[Wallet] AppKit not loaded');
-                // Fallback: Direct MetaMask connection
-                if (typeof window.ethereum !== 'undefined') {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    if (accounts.length > 0) updateUIConnected(accounts[0]);
+                // Mobile: no injected provider - deep link to MetaMask app
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                if (isMobile) {
+                    const dappUrl = window.location.href;
+                    const metamaskDeepLink = `https://metamask.app.link/dapp/${dappUrl.replace(/^https?:\/\//, '')}`;
+                    window.location.href = metamaskDeepLink;
                 } else {
-                    alert('Veuillez installer MetaMask ou un wallet compatible.');
+                    window.open('https://metamask.io/download/', '_blank');
                 }
             }
         } catch (e) {
