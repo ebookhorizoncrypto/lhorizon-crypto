@@ -12,6 +12,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
+    /* Mobile Safari fix */
     background: #000;
     z-index: 99999;
     display: flex;
@@ -5557,11 +5559,10 @@ h3 {
     margin-top: 10px !important;
 }
 
-/* FIX: Nos Offres - Force even more spacing on Desktop */
+/* FIX: Nos Offres - Desktop spacing */
 @media (min-width: 769px) {
     .offers-compact-header {
-        padding-top: 200px !important;
-        /* Increased from 160px */
+        padding-top: 120px !important;
         margin-top: 0 !important;
     }
 }
@@ -5648,6 +5649,7 @@ h3 {
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-50%);
     }
