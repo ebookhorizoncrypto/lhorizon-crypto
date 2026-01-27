@@ -11,7 +11,8 @@ import { Resend } from 'resend';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const fromEmail = process.env.FROM_EMAIL || "L'Horizon Crypto <contact@ebook-horizoncrypto.com>";
+const rawFrom = process.env.FROM_EMAIL || "L'Horizon Crypto <contact@ebook-horizoncrypto.com>";
+const fromEmail = rawFrom.includes('<') ? rawFrom : `L'Horizon Crypto <${rawFrom}>`;
 const domain = process.env.DOMAIN || 'https://ebook-horizoncrypto.com';
 
 // Required for Stripe webhooks - don't parse body
@@ -187,21 +188,6 @@ async function sendPurchaseEmail(email, pack, amount) {
                 </div>
             </div>
         `;
-    } else {
-        // SOLO (Ebook + Discord 30j)
-        emailTitle = "🥉 Confirmation Pack Solo - L'Horizon Crypto";
-        specificContent = `
-            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #f7931a; margin-bottom: 25px;">
-                <h3 style="margin-top: 0; color: #f7931a;">Votre Commande est Validée !</h3>
-                <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
-                    <li><strong>Guide PDF Complet :</strong> Téléchargement immédiat ci-dessus.</li>
-                    <li><strong>Accès Discord (30 jours) :</strong> Rejoignez la communauté pour 1 mois.</li>
-                </ul>
-            </div>
-            <div style="text-align: center; margin-bottom: 20px;">
-                 <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord (30j)</a>
-            </div>
-        `;
     } else if (pack === 'discord') {
         emailTitle = "👾 Abonnement Discord Activé - L'Horizon Crypto";
         specificContent = `
@@ -235,7 +221,8 @@ async function sendPurchaseEmail(email, pack, amount) {
         `;
     }
 
-    await resend.emails.send({
+    try {
+    const { data, error: resendError } = await resend.emails.send({
         from: fromEmail,
         to: email,
         subject: emailTitle,
@@ -319,7 +306,14 @@ async function sendPurchaseEmail(email, pack, amount) {
 </html>`
     });
 
-    console.log(`📧 Purchase email sent to ${email} (Pack: ${pack})`);
+    if (resendError) {
+        console.error('❌ Resend email error:', resendError);
+    } else {
+        console.log(`📧 Purchase email sent to ${email} (Pack: ${pack}, ID: ${data?.id})`);
+    }
+    } catch (emailErr) {
+        console.error('❌ Failed to send purchase email:', emailErr);
+    }
 }
 
 async function notifyDiscord(type, data) {

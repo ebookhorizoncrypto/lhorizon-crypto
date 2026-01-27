@@ -826,10 +826,13 @@
 
         const claimState = {
             email: '',
+            pack: 'solo',
             walletAddress: '',
             currentStep: 1,
             isAuthenticated: false
         };
+
+        const PACK_AMOUNTS = { solo: 20, pro: 50, vip: 100 };
 
         // --- AUTHENTICATION LOGIC (SIWE Mimic) ---
 
@@ -979,7 +982,7 @@ Issued At: ${isoDate}`;
 
             try {
                 // Call Backend API
-                const response = await fetch('http://localhost:3001/api/verify-email', {
+                const response = await fetch('/api/verify-email', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })
@@ -994,7 +997,8 @@ Issued At: ${isoDate}`;
                 if (data.success) {
                     // Success!
                     claimState.email = email;
-                    console.log(`Email verified. Pack: ${data.pack}`);
+                    claimState.pack = data.pack || 'solo';
+                    console.log(`Email verified. Pack: ${claimState.pack}`);
                     goToStep(2);
                 } else {
                     throw new Error("Cet email n'a pas été trouvé dans nos clients.");
@@ -1096,7 +1100,7 @@ Issued At: ${isoDate}`;
                 try {
                     await window.ethereum.request({
                         method: 'wallet_switchEthereumChain',
-                        params: [{ chainId: '0x14a34' }],
+                        params: [{ chainId: '0x2105' }],
                     });
                 } catch (switchError) {
                     if (switchError.code === 4902) {
@@ -1104,11 +1108,11 @@ Issued At: ${isoDate}`;
                             await window.ethereum.request({
                                 method: 'wallet_addEthereumChain',
                                 params: [{
-                                    chainId: '0x14a34',
-                                    chainName: 'Base Sepolia',
+                                    chainId: '0x2105',
+                                    chainName: 'Base',
                                     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-                                    rpcUrls: ['https://sepolia.base.org'],
-                                    blockExplorerUrls: ['https://sepolia.basescan.org']
+                                    rpcUrls: ['https://mainnet.base.org'],
+                                    blockExplorerUrls: ['https://basescan.org']
                                 }]
                             });
                         } catch (addError) {
@@ -1146,6 +1150,14 @@ Issued At: ${isoDate}`;
                 document.getElementById('wallet-address').textContent = claimState.walletAddress;
                 document.querySelector('.wallet-options').style.display = 'none';
                 document.getElementById('wallet-connected').style.display = 'block';
+
+                // Enable claim button and show pack amount
+                const claimBtn = document.getElementById('claim-reward-btn');
+                const amount = PACK_AMOUNTS[claimState.pack] || 20;
+                document.getElementById('claim-btn-text').textContent = `Réclamer mes ${amount}$ USDC`;
+                claimBtn.disabled = false;
+                claimBtn.style.cursor = 'pointer';
+                claimBtn.style.opacity = '1';
 
                 // Add Disconnect Button dynamic listener if not present
                 let discoBtn = document.getElementById('disconnect-btn-action');
@@ -1207,9 +1219,9 @@ Issued At: ${isoDate}`;
                 const signer = provider.getSigner();
                 const emailHash = ethers.utils.id(claimState.email);
 
-                // 1. Get Signature from Local API
+                // 1. Get Signature from API
                 console.log("Calling API...");
-                const apiResponse = await fetch('http://127.0.0.1:3001/api/sign-claim', {
+                const apiResponse = await fetch('/api/sign-claim', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1217,6 +1229,7 @@ Issued At: ${isoDate}`;
                     body: JSON.stringify({
                         userAddress: claimState.walletAddress,
                         emailHash: emailHash,
+                        pack: claimState.pack,
                         contractAddress: CONTRACT_ADDRESS
                     })
                 });
@@ -1246,7 +1259,7 @@ Issued At: ${isoDate}`;
 
                 loadingDiv.classList.remove('show');
                 goToStep(4);
-                document.getElementById('tx-link').href = `https://sepolia.basescan.org/tx/${tx.hash}`;
+                document.getElementById('tx-link').href = `https://basescan.org/tx/${tx.hash}`;
                 document.getElementById('tx-link').innerText = tx.hash.slice(0, 20) + '...';
 
             } catch (err) {
@@ -1300,16 +1313,12 @@ Issued At: ${isoDate}`;
 
 </html>
 <script>
-    // Dynamic Button Text based on Pack
+    // Dynamic Button Text based on Pack from URL
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const pack = urlParams.get('pack');
-        const claimBtnText = document.getElementById('claim-btn-text');
-
-        if (pack && claimBtnText) {
-            let amount = '100$';
-            // Unified reward amount
-            claimBtnText.textContent = `Réclamer mes ${amount} USDC`;
+        if (pack && PACK_AMOUNTS[pack]) {
+            claimState.pack = pack;
         }
     });
 </script>

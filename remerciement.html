@@ -29,6 +29,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/threejs.css">
     <style>
         /* Thank You Page Specific Styles */
         .thankyou-page {
@@ -299,13 +300,8 @@
 </head>
 
 <body>
-    <!-- Animated Background -->
-    <div class="bg-gradient"></div>
-    <div class="floating-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+    <!-- Three.js Canvas Background -->
+    <canvas id="threejs-canvas"></canvas>
 
     <!-- Navigation -->
     <nav class="navbar">
@@ -582,6 +578,8 @@
             alert('Le téléchargement va commencer... (En production, ceci déclencherait le téléchargement du PDF)');
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threejs-effects.js"></script>
     <script src="js/main.js"></script>
     <script src="js/rgpd-consent.js"></script>
 </body>
