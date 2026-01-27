@@ -8,9 +8,9 @@ const supabase = createClient(
 );
 
 // ABI for HorizonRewardsBase
-const CONTRACT_ABI = [
-    "function distributeReward(address recipient, uint256 amount, bytes32 emailHash) external"
-];
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const CONTRACT_ABI = require('../utils/HorizonABI.json');
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
