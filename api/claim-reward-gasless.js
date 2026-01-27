@@ -43,7 +43,7 @@ export default async function handler(req, res) {
         if (customer) {
             pack = customer.access_level.toLowerCase();
         } else if (email === 'adrien.orange@yahoo.fr') {
-            pack = 'vip'; // Admin Bypass
+            pack = 'solo'; // Admin Test Mode (20$)
         } else {
             return res.status(404).json({ error: "Client non trouvé." });
         }
