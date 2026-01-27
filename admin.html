@@ -1057,7 +1057,7 @@
             }
 
             // Try to fetch stats
-            fetchStats().then(() => {
+            updateData().then(() => {
                     document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').classList.add('active');
                 fetchCustomers();
@@ -1066,7 +1066,7 @@
             });
         }
 
-                async function fetchStats() {
+                async function updateData() {
             const response = await fetch(`${API_BASE}/api/admin?action=stats`, {
                     headers: {'Authorization': `Bearer ${apiKey}` }
             });
@@ -1167,7 +1167,7 @@
         // Auto-refresh every 30 seconds
         setInterval(() => {
             if (document.getElementById('dashboard').classList.contains('active')) {
-                fetchStats();
+                updateData();
                 fetchCustomers();
             }
         }, 30000);
@@ -1330,7 +1330,7 @@
         }
     </script>
 
-    <!--Minimal Admin Footer-- >
+    <!-- Minimal Admin Footer -->
     <footer class="admin-footer">
         <p>© 2026 L'Horizon Crypto - Dashboard Admin</p>
         <a href="/">← Retour au site</a>
@@ -1368,6 +1368,6 @@
             }
         }
     </style>
-</body >
+</body>
 
-</html >
+</html>
