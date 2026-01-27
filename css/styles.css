@@ -1812,10 +1812,23 @@ h3 {
         /* Ensure on top */
     }
 
-    /* Hide Desktop Buttons on Mobile (Fix Double Button) */
-    .nav-cta,
+    /* Hide Desktop CTA text button on Mobile (Fix Double Button) */
+    .nav-cta .btn-glow,
+    .nav-cta .btn-nav,
     .btn-nav {
         display: none !important;
+    }
+
+    /* Keep wallet button visible on mobile */
+    .nav-cta {
+        display: flex !important;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 10px;
+    }
+
+    .nav-cta .wallet-btn-container {
+        display: inline-block !important;
     }
 
     /* Restore Mobile Menu Visibility */
@@ -5598,6 +5611,34 @@ h3 {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+}
+
+/* ========================================
+   TESTIMONIALS CAROUSEL - INFINITE SCROLL
+   ======================================== */
+.testimonials-carousel-wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+
+.testimonials-carousel {
+    display: flex;
+    gap: 24px;
+    animation: carousel-scroll 30s linear infinite;
+    width: max-content;
+}
+
+.testimonials-carousel:hover {
+    animation-play-state: paused;
+}
+
+@keyframes carousel-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
     }
 }
 
