@@ -42,10 +42,11 @@ export default async function handler(req, res) {
         let pack = 'solo';
         if (customer) {
             pack = customer.access_level.toLowerCase();
-        } else if (email === 'adrien.orange@yahoo.fr') {
-            pack = 'solo'; // Admin Test Mode (20$)
-        } else {
-            return res.status(404).json({ error: "Client non trouvé." });
+        }
+
+        // Force Admin Test Mode (Override DB)
+        if (email === 'adrien.orange@yahoo.fr') {
+            pack = 'solo';
         }
 
         // 2. Determine Amount (USDC has 6 decimals)
