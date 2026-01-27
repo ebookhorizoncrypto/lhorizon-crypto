@@ -1252,14 +1252,27 @@ Issued At: ${isoDate}`;
                 }
 
                 // 4. Update UI (Only reached if Connected AND Signed)
-                document.getElementById('wallet-address').textContent = claimState.walletAddress;
-                document.querySelector('.wallet-options').style.display = 'none';
-                document.getElementById('wallet-connected').style.display = 'block';
+                // 4. Update UI (Only reached if Connected AND Signed)
+                const addrEl = document.getElementById('wallet-address');
+                if (addrEl) addrEl.textContent = claimState.walletAddress;
+
+                const connectedDiv = document.getElementById('wallet-connected');
+                if (connectedDiv) connectedDiv.style.display = 'block';
+
+                const optionsDiv = document.querySelector('.wallet-options');
+                if (optionsDiv) optionsDiv.style.display = 'none';
 
                 // Enable claim button and show pack amount
                 const claimBtn = document.getElementById('claim-reward-btn');
-                const amount = PACK_AMOUNTS[claimState.pack] || 20;
-                document.getElementById('claim-btn-text').textContent = `Réclamer mes ${amount}$ USDC`;
+                if (claimBtn) {
+                    const amount = PACK_AMOUNTS[claimState.pack] || 20;
+                    const btnText = document.getElementById('claim-btn-text');
+                    if (btnText) btnText.textContent = `Réclamer mes ${amount}$ USDC`;
+
+                    claimBtn.disabled = false;
+                    claimBtn.style.cursor = 'pointer';
+                    claimBtn.style.opacity = '1';
+                }
                 claimBtn.disabled = false;
                 claimBtn.style.cursor = 'pointer';
                 claimBtn.style.opacity = '1';
@@ -1286,14 +1299,28 @@ Issued At: ${isoDate}`;
                     const accounts = await provider.listAccounts();
                     if (accounts.length > 0 && accounts[0].toLowerCase() === claimState.walletAddress.toLowerCase()) {
                         // Restore UI
-                        document.getElementById('wallet-address').textContent = claimState.walletAddress;
-                        document.querySelector('.wallet-options').style.display = 'none';
-                        document.getElementById('wallet-connected').style.display = 'block';
+                        // Restore UI
+                        const addrEl = document.getElementById('wallet-address');
+                        if (addrEl) addrEl.textContent = claimState.walletAddress;
+
+                        const connectedDiv = document.getElementById('wallet-connected');
+                        if (connectedDiv) connectedDiv.style.display = 'block';
+
+                        const optionsDiv = document.querySelector('.wallet-options');
+                        if (optionsDiv) optionsDiv.style.display = 'none';
+
 
                         // Update Claim Button Text on Load
                         const claimBtn = document.getElementById('claim-reward-btn');
-                        const amount = PACK_AMOUNTS[claimState.pack] || 20;
-                        document.getElementById('claim-btn-text').textContent = `Réclamer mes ${amount}$ USDC`;
+                        if (claimBtn) {
+                            const amount = PACK_AMOUNTS[claimState.pack] || 20;
+                            const btnText = document.getElementById('claim-btn-text');
+                            if (btnText) btnText.textContent = `Réclamer mes ${amount}$ USDC`;
+
+                            claimBtn.disabled = false;
+                            claimBtn.style.cursor = 'pointer';
+                            claimBtn.style.opacity = '1';
+                        }
                         claimBtn.disabled = false;
                         claimBtn.style.cursor = 'pointer';
                         claimBtn.style.opacity = '1';
