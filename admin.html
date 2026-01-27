@@ -785,7 +785,8 @@
             if (!key) return alert('Veuillez entrer une clé');
 
             try {
-                const res = await fetch('/api/admin/login', {
+                // Modified: Use query param action=login
+                const res = await fetch('/api/admin?action=login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ key })
@@ -809,7 +810,8 @@
             if (!key) return;
 
             try {
-                const res = await fetch('/api/admin/stats', {
+                // Modified: Use query param action=stats
+                const res = await fetch('/api/admin?action=stats', {
                     headers: { 'x-admin-key': key }
                 });
                 const data = await res.json();
@@ -1065,7 +1067,7 @@
         }
 
                 async function fetchStats() {
-            const response = await fetch(`${API_BASE}/api/admin/stats`, {
+            const response = await fetch(`${API_BASE}/api/admin?action=stats`, {
                     headers: {'Authorization': `Bearer ${apiKey}` }
             });
 
@@ -1081,7 +1083,7 @@
 
                 async function fetchCustomers() {
             try {
-                const response = await fetch(`${API_BASE}/api/admin/customers`, {
+                const response = await fetch(`${API_BASE}/api/admin?action=customers`, {
                     headers: {'Authorization': `Bearer ${apiKey}` }
                 });
 
@@ -1328,7 +1330,7 @@
         }
     </script>
 
-    <!-- Minimal Admin Footer -->
+    <!--Minimal Admin Footer-- >
     <footer class="admin-footer">
         <p>© 2026 L'Horizon Crypto - Dashboard Admin</p>
         <a href="/">← Retour au site</a>
@@ -1366,6 +1368,6 @@
             }
         }
     </style>
-</body>
+</body >
 
-</html>
+</html >
