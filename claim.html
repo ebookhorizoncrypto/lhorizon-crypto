@@ -704,6 +704,10 @@
                                         <span id="wallet-address"
                                             style="font-weight: 700; font-family: monospace; font-size: 0.9rem; word-break: break-all; color: #fff;"></span>
                                     </p>
+                                    <button id="disconnect-wallet-btn"
+                                        style="margin-top: 12px; background: rgba(255, 255, 255, 0.1); border: none; color: #ccc; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem;">
+                                        ✕ Déconnecter
+                                    </button>
                                 </div>
 
                                 <!-- Claim Button Container -->
@@ -1353,6 +1357,13 @@ Issued At: ${isoDate}`;
                 btn.disabled = false;
                 btn.style.opacity = '1';
                 btn.textContent = "Réessayer";
+            }
+        });
+
+        // Disconnect Button Listener
+        document.getElementById('disconnect-wallet-btn')?.addEventListener('click', () => {
+            if (confirm('Voulez-vous vraiment déconnecter votre wallet ?')) {
+                handleDisconnect();
             }
         });
 
