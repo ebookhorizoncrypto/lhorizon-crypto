@@ -4238,10 +4238,10 @@ h3 {
         /* Smaller logo */
     }
 
-    /* Wallet Button Compact */
+    /* Wallet Button - keep readable on mobile */
     .wallet-btn {
-        padding: 6px 10px !important;
-        font-size: 0.75rem !important;
+        padding: 9px 14px !important;
+        font-size: 0.82rem !important;
     }
 }
 
@@ -4885,15 +4885,15 @@ h3 {
 /* Mobile responsive */
 @media (max-width: 968px) {
     .wallet-btn {
-        padding: 8px 12px;
-        font-size: 0.75rem;
-        border-radius: 10px;
+        padding: 10px 14px !important;
+        font-size: 0.85rem !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(98, 126, 234, 0.3) !important;
     }
 
     #wallet-btn-text {
-        max-width: 80px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: none;
+        overflow: visible;
     }
 
     .wallet-disconnect-btn {

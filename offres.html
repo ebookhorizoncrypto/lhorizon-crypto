@@ -32,16 +32,16 @@
     <link rel="stylesheet" href="css/threejs.css">
 
     <style>
-        /* Compact Header for Offers Page - Reduced padding by 50% */
+        /* Compact Header for Offers Page */
         .offers-compact-header {
-            padding-top: calc(80px + var(--space-sm));
-            padding-bottom: var(--space-xs);
+            padding-top: calc(80px + var(--space-2xl));
+            padding-bottom: var(--space-lg);
             text-align: center;
         }
 
         .offers-compact-header h1 {
-            font-size: 1.75rem;
-            margin-bottom: var(--space-xs);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: var(--space-sm);
         }
 
         .offers-compact-header .subtitle {
@@ -66,19 +66,19 @@
             padding-top: var(--space-xs);
         }
 
-        /* Mobile - reduced padding */
+        /* Mobile */
         @media (max-width: 768px) {
             .offers-compact-header {
-                padding-top: 90px;
-                padding-bottom: 8px;
+                padding-top: 120px;
+                padding-bottom: 16px;
             }
         }
 
-        /* Desktop - reduced padding by 50% */
+        /* Desktop */
         @media (min-width: 1024px) {
             .offers-compact-header {
-                padding-top: 100px !important;
-                padding-bottom: 10px !important;
+                padding-top: 130px !important;
+                padding-bottom: 20px !important;
             }
 
             .pricing-section-compact {
