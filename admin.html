@@ -781,122 +781,8 @@
         </main>
     </div>
 
-    <script>
-        // ADMIN LOGIC WITH REAL API
-        async function login() {
-            const key = document.getElementById('api-key-input').value;
-            if (!key) return alert('Veuillez entrer une clé');
 
-            try {
-                // Modified: Use query param action=login
-                const res = await fetch('/api/admin?action=login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ key })
-                });
 
-                if (res.ok) {
-                    // Success
-                    localStorage.setItem('admin_key', key);
-                    showDashboard();
-                } else {
-                    alert('Clé incorrecte');
-                }
-            } catch (e) {
-                alert('Erreur de connexion');
-                console.error(e);
-            }
-        }
-
-        async function updateData() {
-            const key = localStorage.getItem('admin_key');
-            if (!key) return;
-
-            try {
-                // Modified: Use query param action=stats
-                const res = await fetch('/api/admin?action=stats', {
-                    headers: { 'x-admin-key': key }
-                });
-                const data = await res.json();
-
-                if (data.customers !== undefined) {
-                    document.getElementById('total-sales').innerText = data.customers;
-                    document.getElementById('total-revenue').innerText = (data.revenue || 0).toLocaleString() + '€';
-                    document.getElementById('total-claims').innerText = data.claims;
-
-                    // Contract Balance
-                    document.getElementById('contract-balance').innerText = data.contractBalance + ' USDC';
-                    if(data.contractAddress) {
-                         document.getElementById('contract-address').innerText = data.contractAddress;
-                    }
-                    if (data.contractBalance == "Error") {
-                        document.getElementById('contract-balance').style.color = "red";
-                    } else if (parseFloat(data.contractBalance) < 20) {
-                        document.getElementById('contract-balance').style.color = "orange"; // Low balance warning
-                    } else {
-                        document.getElementById('contract-balance').style.color = "#00ff88";
-                    }
-                }
-
-            } catch (e) {
-                console.error("Stats update failed", e);
-            }
-        }
-
-        // Initialize
-        function showDashboard() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('dashboard').classList.add('active');
-            updateData();
-            // Start polling
-            setInterval(updateData, 30000);
-
-            // ... rest of chart init ...
-            setTimeout(() => {
-                updateVisitorsDisplay();
-                simulateVisitors();
-                initCharts();
-            }, 1000);
-        }
-
-        // Auto-login if key saved
-        if (localStorage.getItem('admin_key')) {
-            // Validate key silently? Or just show dashboard and let API fail if invalid?
-            // Simple approach: show dashboard
-            showDashboard();
-        }
-
-        // ... Existing visitors simulation code ...
-    </script>
-    <div class="chart-card">
-        <div class="chart-header">
-            <h3>💰 Ventes</h3>
-            <div class="chart-tabs" data-chart="sales">
-                <button class="active" data-period="1h">1h</button>
-                <button data-period="24h">24h</button>
-                <button data-period="1m">1 mois</button>
-                <button data-period="1y">1 an</button>
-            </div>
-        </div>
-        <div class="chart-container">
-            <canvas id="salesChart"></canvas>
-        </div>
-    </div>
-    <div class="chart-card">
-        <div class="chart-header">
-            <h3>👁️ Visites</h3>
-            <div class="chart-tabs" data-chart="visitors">
-                <button class="active" data-period="1h">1h</button>
-                <button data-period="24h">24h</button>
-                <button data-period="1m">1 mois</button>
-                <button data-period="1y">1 an</button>
-            </div>
-        </div>
-        <div class="chart-container">
-            <canvas id="visitorsChart"></canvas>
-        </div>
-    </div>
-    </div>
 
     <!-- Recent Customers & Claims Simplified for Dashboard -->
     <div class="card">
@@ -904,7 +790,38 @@
         <p style="color: var(--text-secondary); margin-bottom: 20px;">Retrouvez le détail dans les onglets
             dédiés.</p>
     </div>
+    <!-- CHARTS INSERTED HERE -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>💰 Ventes</h3>
+                <div class="chart-tabs" data-chart="sales">
+                    <button class="active" data-period="1h">1h</button>
+                    <button data-period="24h">24h</button>
+                    <button data-period="1m">1 mois</button>
+                    <button data-period="1y">1 an</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>👁️ Visites</h3>
+                <div class="chart-tabs" data-chart="visitors">
+                    <button class="active" data-period="1h">1h</button>
+                    <button data-period="24h">24h</button>
+                    <button data-period="1m">1 mois</button>
+                    <button data-period="1y">1 an</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="visitorsChart"></canvas>
+            </div>
+        </div>
     </div>
+    </div><!-- /section-dashboard -->
 
     < !--SECTION: CLIENTS-->
         <div id="section-clients" class="admin-section" style="display: none;">
@@ -1031,12 +948,48 @@
                 ? 'http://localhost:3001'
                 : '';
 
-                // Set current date
-                document.getElementById('current-date').textContent = new Date().toLocaleDateString('fr-FR', {
-                    weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+        // Show dashboard function
+        function showDashboard() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            updateData();
+            fetchCustomers();
+            
+            // Init charts and visitors
+            setTimeout(() => {
+                const cv = document.getElementById('visitors-count');
+                if(cv) updateVisitorsDisplay();
+                simulateVisitors();
+                initCharts();
+            }, 500);
+            
+            // Polling
+            setInterval(() => {
+                if (document.getElementById('dashboard').classList.contains('active')) {
+                   updateData();
+                   fetchCustomers();
+                }
+            }, 30000);
+        }
+
+        // Auto Login
+        if (apiKey) showDashboard();
+
+        function login() {
+            const key = document.getElementById('api-key-input').value;
+            if (!key) return alert('Veuillez entrer une clé');
+            
+            localStorage.setItem('admin_key', key);
+            apiKey = key;
+            showDashboard();
+        }
+
+        // Set current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
 
                 function switchSection(sectionId, element) {

@@ -71,6 +71,22 @@ export default async function handler(req, res) {
 
         console.log(`✅ Transaction sent: ${tx.hash}`);
 
+        // 6. Update Supabase
+        const { error: updateError } = await supabase
+            .from('customers')
+            .update({
+                wallet_address: walletAddress,
+                claim_tx_hash: tx.hash,
+                claimed_at: new Date().toISOString(),
+                claimed: true
+            })
+            .eq('email', email);
+
+        if (updateError) {
+            console.error("⚠️ Failed to update DB status:", updateError);
+            // We don't block the response because the money is sent
+        }
+
         res.status(200).json({
             success: true,
             txHash: tx.hash,
