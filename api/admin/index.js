@@ -35,7 +35,13 @@ export default async function handler(req, res) {
         // --- STATS ---
         if (action === 'stats') {
             const { count: customerCount } = await supabase.from('customers').select('*', { count: 'exact', head: true });
-            const { count: claimCount } = await supabase.from('customers').select('*', { count: 'exact', head: true }).not('wallet_address', 'is', null);
+            const { count: claimCount } = await supabase.from('customers').select('*', { count: 'exact', head: true }).eq('claimed', true);
+
+            // Fetch sales history for charts (lightweight: just dates)
+            const { data: salesHistory } = await supabase
+                .from('customers')
+                .select('created_at')
+                .order('created_at', { ascending: true });
 
             let contractBalance = "0";
             try {
@@ -56,6 +62,8 @@ export default async function handler(req, res) {
                 customers: customerCount || 0,
                 claims: claimCount || 0,
                 revenue: (customerCount || 0) * 99,
+                claimRate: customerCount ? ((claimCount / customerCount) * 100).toFixed(1) + '%' : '0%',
+                salesHistory: salesHistory || [],
                 contractBalance: contractBalance,
                 contractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "Non configuré"
             });

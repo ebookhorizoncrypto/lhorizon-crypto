@@ -166,9 +166,23 @@
             color: var(--text-primary);
         }
 
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 32px;
+        .sidebar-nav a.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
         }
 
         .header h1 {
@@ -372,11 +386,13 @@
                 left: 0;
             }
 
-            /* Main content - full width with padding for hamburger */
             .main-content {
-                margin-left: 0;
+                /* Remove sidebar margin on mobile */
+                margin-left: 0 !important;
                 padding: 80px 16px 20px 16px;
                 min-height: 100vh;
+                width: 100%;
+                overflow-x: hidden;
             }
 
             /* Header - stack vertically */
@@ -486,6 +502,10 @@
 
             .card table {
                 min-width: 600px;
+            }
+
+            .card {
+                overflow-x: auto;
             }
 
             th,
