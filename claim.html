@@ -1031,6 +1031,7 @@ Issued At: ${isoDate}`;
                     // Success!
                     claimState.email = email;
                     claimState.pack = data.pack || 'solo';
+                    localStorage.setItem('horizon_pack', claimState.pack); // Persist pack
                     console.log(`Email verified. Pack: ${claimState.pack}`);
                     goToStep(2);
                 } else {
@@ -1439,6 +1440,13 @@ Issued At: ${isoDate}`;
         const pack = urlParams.get('pack');
         if (pack && PACK_AMOUNTS[pack]) {
             claimState.pack = pack;
+            localStorage.setItem('horizon_pack', pack);
+        } else {
+            // Restore from storage if verify was already done
+            const stored = localStorage.getItem('horizon_pack');
+            if (stored && PACK_AMOUNTS[stored]) {
+                claimState.pack = stored;
+            }
         }
     });
 </script>
