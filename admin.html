@@ -861,71 +861,72 @@
         }
 
         // ... Existing visitors simulation code ...
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>💰 Ventes</h3>
-                            <div class="chart-tabs" data-chart="sales">
-                                <button class="active" data-period="1h">1h</button>
-                                <button data-period="24h">24h</button>
-                                <button data-period="1m">1 mois</button>
-                                <button data-period="1y">1 an</button>
-                            </div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="salesChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>👁️ Visites</h3>
-                            <div class="chart-tabs" data-chart="visitors">
-                                <button class="active" data-period="1h">1h</button>
-                                <button data-period="24h">24h</button>
-                                <button data-period="1m">1 mois</button>
-                                <button data-period="1y">1 an</button>
-                            </div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="visitorsChart"></canvas>
-                        </div>
-                    </div>
-                </div >
+    </script>
+    <div class="chart-card">
+        <div class="chart-header">
+            <h3>💰 Ventes</h3>
+            <div class="chart-tabs" data-chart="sales">
+                <button class="active" data-period="1h">1h</button>
+                <button data-period="24h">24h</button>
+                <button data-period="1m">1 mois</button>
+                <button data-period="1y">1 an</button>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-header">
+            <h3>👁️ Visites</h3>
+            <div class="chart-tabs" data-chart="visitors">
+                <button class="active" data-period="1h">1h</button>
+                <button data-period="24h">24h</button>
+                <button data-period="1m">1 mois</button>
+                <button data-period="1y">1 an</button>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="visitorsChart"></canvas>
+        </div>
+    </div>
+    </div>
 
-            <!-- Recent Customers & Claims Simplified for Dashboard -->
+    <!-- Recent Customers & Claims Simplified for Dashboard -->
+    <div class="card">
+        <h2>👥 Activité Récente</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Retrouvez le détail dans les onglets
+            dédiés.</p>
+    </div>
+    </div>
+
+    < !--SECTION: CLIENTS-->
+        <div id="section-clients" class="admin-section" style="display: none;">
+            <div class="header">
+                <h1>👥 Gestion Clients</h1>
+            </div>
             <div class="card">
-                <h2>👥 Activité Récente</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">Retrouvez le détail dans les onglets
-                    dédiés.</p>
+                <h2>Liste des Clients</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Pack</th>
+                            <th>Montant</th>
+                            <th>Date</th>
+                            <th>Status Claim</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-table">
+                        <tr>
+                            <td colspan="5" class="loading">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            </div >
+        </div>
 
-            < !--SECTION: CLIENTS-- >
-            <div id="section-clients" class="admin-section" style="display: none;">
-                <div class="header">
-                    <h1>👥 Gestion Clients</h1>
-                </div>
-                <div class="card">
-                    <h2>Liste des Clients</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Pack</th>
-                                <th>Montant</th>
-                                <th>Date</th>
-                                <th>Status Claim</th>
-                            </tr>
-                        </thead>
-                        <tbody id="customers-table">
-                            <tr>
-                                <td colspan="5" class="loading">Chargement...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!--SECTION: CLAIMS-- >
+        <!--SECTION: CLAIMS-- >
             <div id="section-claims" class="admin-section" style="display: none;">
                 <div class="header">
                     <h1>🎁 Gestion Claims</h1>
@@ -1017,8 +1018,9 @@
         </main >
     </div >
 
+
             <script>
-                let apiKey = '';
+                let apiKey = localStorage.getItem('admin_key') || '';
                 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
                 ? 'http://localhost:3001'
                 : '';
@@ -1049,26 +1051,11 @@
             }
         }
 
-                function login() {
-                    apiKey = document.getElementById('api-key-input').value;
-                if (!apiKey) {
-                    alert('Veuillez entrer une clé API');
-                return;
-            }
 
-            // Try to fetch stats
-            updateData().then(() => {
-                    document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('dashboard').classList.add('active');
-                fetchCustomers();
-            }).catch(() => {
-                    alert('Clé API invalide');
-            });
-        }
 
                 async function updateData() {
             const response = await fetch(`${API_BASE}/api/admin?action=stats`, {
-                    headers: {'Authorization': `Bearer ${apiKey}` }
+                    headers: {'x-admin-key': localStorage.getItem('admin_key') }
             });
 
                 if (!response.ok) throw new Error('Unauthorized');
@@ -1084,7 +1071,7 @@
                 async function fetchCustomers() {
             try {
                 const response = await fetch(`${API_BASE}/api/admin?action=customers`, {
-                    headers: {'Authorization': `Bearer ${apiKey}` }
+                    headers: {'x-admin-key': localStorage.getItem('admin_key') }
                 });
 
                 const customers = await response.json();
@@ -1331,43 +1318,43 @@
     </script>
 
     <!-- Minimal Admin Footer -->
-    <footer class="admin-footer">
-        <p>© 2026 L'Horizon Crypto - Dashboard Admin</p>
-        <a href="/">← Retour au site</a>
-    </footer>
+        <footer class="admin-footer">
+            <p>© 2026 L'Horizon Crypto - Dashboard Admin</p>
+            <a href="/">← Retour au site</a>
+        </footer>
 
-    <style>
-        .admin-footer {
-            text-align: center;
-            padding: 24px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            margin-top: 40px;
-        }
-
-        .admin-footer a {
-            color: var(--accent-gold);
-            text-decoration: none;
-            margin-left: 20px;
-        }
-
-        .admin-footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
+        <style>
             .admin-footer {
-                padding: 16px;
-                font-size: 0.8rem;
+                text-align: center;
+                padding: 24px;
+                color: var(--text-secondary);
+                font-size: 0.85rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                margin-top: 40px;
             }
 
             .admin-footer a {
-                display: block;
-                margin: 10px 0 0 0;
+                color: var(--accent-gold);
+                text-decoration: none;
+                margin-left: 20px;
             }
-        }
-    </style>
+
+            .admin-footer a:hover {
+                text-decoration: underline;
+            }
+
+            @media (max-width: 768px) {
+                .admin-footer {
+                    padding: 16px;
+                    font-size: 0.8rem;
+                }
+
+                .admin-footer a {
+                    display: block;
+                    margin: 10px 0 0 0;
+                }
+            }
+        </style>
 </body>
 
 </html>
