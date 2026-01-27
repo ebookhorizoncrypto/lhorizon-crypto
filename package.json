@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
+    "@supabase/supabase-js": "^2.48.1",
     "dotenv": "^17.2.3",
     "ethers": "^6.16.0",
     "resend": "^2.0.0",
-    "stripe": "^14.0.0",
-    "@supabase/supabase-js": "^2.48.1"
+    "stripe": "^14.0.0"
   },
   "scripts": {
     "local": "vercel dev"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1"
   }
 }

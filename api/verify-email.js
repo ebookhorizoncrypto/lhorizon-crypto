@@ -52,6 +52,12 @@ export default async function handler(req, res) {
             return res.status(200).json({ success: true, pack });
         }
 
+        // 1.5. MANUAL BYPASS FOR ADMIN/TESTING (No Stripe Key needed)
+        if (email === 'adrien.orange@yahoo.fr') {
+            console.log("🛡️ ADMIN BYPASS: adrien.orange@yahoo.fr -> VIP");
+            return res.status(200).json({ success: true, pack: 'vip' });
+        }
+
         console.log(`⚠️ Not in Supabase, checking Stripe for: ${email}`);
 
         // 2. Fallback: Check Stripe checkout sessions

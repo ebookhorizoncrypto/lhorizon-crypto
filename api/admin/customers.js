@@ -1,3 +1,24 @@
+/**
+ * L'Horizon Crypto - Admin Customers API
+ * Vercel Serverless Function
+ *
+ * GET /api/admin/customers
+ * Headers: Authorization: Bearer <ADMIN_API_KEY>
+ */
+
+import crypto from 'crypto';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+    process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || 'placeholder'
+);
+
+function shortenAddress(address) {
+    if (!address || address.length < 10) return address;
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
+
 export default async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,14 +29,60 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    // Mock customers
-    const customers = [
-        { email: "thomas.crypto@mgmail.com", pack: "vip", amount: 549, purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), claimed: true, claimWallet: "0x71C...92A1", claimedAt: new Date().toISOString(), claimTxHash: "0x1234" },
-        { email: "julie.bertrand@outlook.fr", pack: "solo", amount: 99, purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), claimed: false },
-        { email: "marc.invest@yahoo.com", pack: "pro", amount: 299, purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), claimed: true, claimWallet: "0xABC...DEF1", claimedAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), claimTxHash: "0x5678" },
-        { email: "sarah.d@gmail.com", pack: "solo", amount: 99, purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 50).toISOString(), claimed: false },
-        { email: "karim.trading@protonmail.com", pack: "pro", amount: 299, purchasedAt: new Date(Date.now() - 1000 * 60 * 60 * 120).toISOString(), claimed: true, claimWallet: "0x999...1111", claimedAt: new Date(Date.now() - 1000 * 60 * 60 * 100).toISOString(), claimTxHash: "0x9999" },
-    ];
+    if (req.method !== 'GET') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-    return res.status(200).json(customers);
+    // Verify admin API key
+    const authHeader = req.headers.authorization;
+    const expectedKey = process.env.ADMIN_API_KEY;
+
+    if (!authHeader || !expectedKey) {
+        return res.status(401).json({ error: 'Non autorisé' });
+    }
+
+    const providedKey = authHeader.replace('Bearer ', '');
+
+    // Constant-time comparison to prevent timing attacks
+    if (providedKey.length !== expectedKey.length ||
+        !crypto.timingSafeEqual(Buffer.from(providedKey), Buffer.from(expectedKey))) {
+        return res.status(401).json({ error: 'Clé API invalide' });
+    }
+
+    try {
+        // Fetch customers from Supabase, ordered by most recent first
+        const { data: customers, error } = await supabase
+            .from('customers')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(100);
+
+        if (error) {
+            console.error('Supabase error:', error);
+            throw error;
+        }
+
+        // Transform data for frontend
+        const transformedCustomers = (customers || []).map(c => ({
+            email: c.email,
+            pack: (c.access_level || 'solo').toLowerCase(),
+            amount: c.amount_paid || 0,
+            purchasedAt: c.created_at,
+            claimed: !!(c.claimed || c.claim_tx_hash),
+            claimWallet: c.claim_wallet ? shortenAddress(c.claim_wallet) : null,
+            claimedAt: c.claimed_at || null,
+            claimTxHash: c.claim_tx_hash || null,
+            discordId: c.discord_id || null,
+            expiresAt: c.expires_at || null
+        }));
+
+        return res.status(200).json(transformedCustomers);
+
+    } catch (error) {
+        console.error('Customers API Error:', error);
+        return res.status(500).json({
+            error: 'Erreur serveur',
+            details: error.message
+        });
+    }
 }
