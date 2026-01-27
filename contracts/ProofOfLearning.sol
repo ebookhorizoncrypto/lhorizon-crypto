@@ -1,48 +1,42 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-// NOUVEL IMPORT NÉCESSAIRE EN V5 :
-import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract ProofOfLearning is ERC2771Context {
-    using ECDSA for bytes32;
+contract HorizonRewardsBase is Ownable {
+    
+    IERC20 public usdc;
+    // On utilise bytes32 pour le hash de l'email (Confidentialité + Gaz)
+    mapping(bytes32 => bool) public claimedHashes; 
 
-    address public trustedSigner; 
-    IERC20 public usdc;           
+    event RewardDistributed(address indexed recipient, uint256 amount, bytes32 indexed emailHash);
 
-    mapping(bytes32 => bool) public claimedEmails;
-
-    constructor(address _trustedForwarder, address _usdcAddress, address _trustedSigner) 
-        ERC2771Context(_trustedForwarder) 
-    {
+    constructor(address _usdcAddress) Ownable(msg.sender) {
         usdc = IERC20(_usdcAddress);
-        trustedSigner = _trustedSigner;
     }
 
-    function claimReward(bytes32 emailHash, bytes memory signature) public {
-        require(!claimedEmails[emailHash], "Deja reclame");
+    // Le backend calcule le hash de l'email avant d'appeler cette fonction
+    function distributeReward(address recipient, uint256 amount, bytes32 emailHash) external onlyOwner {
+        require(!claimedHashes[emailHash], "Deja reclame");
+        require(amount > 0, "Montant invalide");
         
-        // Use _msgSender() for GSN/Meta-Tx compatibility
-        address recipient = _msgSender();
+        uint256 balance = usdc.balanceOf(address(this));
+        require(balance >= amount, "Contrat vide : contactez le support");
 
-        bytes32 messageHash = keccak256(abi.encodePacked(recipient, emailHash, address(this)));
-        require(_verifySignature(messageHash, signature), "Signature invalide");
+        claimedHashes[emailHash] = true;
+        
+        // Transfert direct
+        require(usdc.transfer(recipient, amount), "Echec transfert");
 
-        claimedEmails[emailHash] = true;
-        require(usdc.transfer(recipient, 20 * 10**6), "Echec transfert USDC");
+        emit RewardDistributed(recipient, amount, emailHash);
     }
 
-    function _verifySignature(bytes32 hash, bytes memory signature) internal view returns (bool) {
-        // EN V5, ON UTILISE MessageHashUtils POUR LE PRÉFIXE ETHEREUM
-        bytes32 ethSignedMessageHash = MessageHashUtils.toEthSignedMessageHash(hash);
-        return ECDSA.recover(ethSignedMessageHash, signature) == trustedSigner;
-    }
-
-    function withdrawUSDC(uint256 amount) public {
-        require(msg.sender == trustedSigner, "Non autorise");
+    function withdrawUSDC(uint256 amount) external onlyOwner {
         usdc.transfer(msg.sender, amount);
+    }
+
+    function setUSDC(address _usdc) external onlyOwner {
+        usdc = IERC20(_usdc);
     }
 }

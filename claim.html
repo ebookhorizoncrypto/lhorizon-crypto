@@ -1304,77 +1304,105 @@ Issued At: ${isoDate}`;
         document.getElementById('claim-reward-btn').addEventListener('click', async () => {
             const loadingDiv = document.getElementById('wallet-loading');
             loadingDiv.classList.add('show');
-            loadingDiv.querySelector('span').textContent = "Signature Backend en cours...";
+            loadingDiv.querySelector('span').textContent = "Envoi de votre récompense (Gasless)...";
+
+            // Disable button
+            const btn = document.getElementById('claim-reward-btn');
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
 
             try {
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                const signer = provider.getSigner();
-                const emailHash = ethers.utils.id(claimState.email);
-
-                // 1. Get Signature from API
-                console.log("Calling API...");
-                const apiResponse = await fetch('/api/sign-claim', {
+                // Call Gasless Backend API
+                console.log("🚀 Calling Gasless API...");
+                const response = await fetch('/api/claim-reward-gasless', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        userAddress: claimState.walletAddress,
-                        emailHash: emailHash,
-                        pack: claimState.pack,
-                        contractAddress: CONTRACT_ADDRESS
+                        email: claimState.email,
+                        walletAddress: claimState.walletAddress
                     })
                 });
 
-                if (!apiResponse.ok) {
-                    const errText = await apiResponse.text();
-                    throw new Error(`API Error ${apiResponse.status}: ${errText}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    // Success!
+                    loadingDiv.classList.remove('show');
+                    alert(`✅ Récompense envoyée ! \nTx: ${data.txHash}\nVous recevrez vos USDC sous peu.`);
+
+                    // Update UI to "Claimed" state
+                    btn.textContent = "Récompense Réclamée ✅";
+                    btn.style.background = "#00ff88";
+                    btn.style.color = "#000";
+
+                    // Confetti effect (simulated)
+                    // if (window.confetti) window.confetti();
+
+                } else {
+                    throw new Error(data.error || "Erreur inconnue");
                 }
-
-                const apiData = await apiResponse.json();
-                if (!apiData.signature) throw new Error(apiData.error || "Erreur API");
-
-                // 2. Submit transaction to Blockchain
-                loadingDiv.querySelector('span').textContent = "Validation Blockchain (MetaMask)...";
-
-                const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-                // GASLESS NOTE: Normally you send this to a Relayer. 
-                // But the user asked to submit via MetaMask with the signature to test the contract logic first.
-                // Or if using Biconomy/OZ, the flow is different.
-                // The user prompt said: "On envoie la signature au Smart Contract via MetaMask" 
-                // This implies the USER pays gas for now, but uses the AUTHORIZED signature.
-                // This is a valid first step to test the "Proof of Learning" security.
-
-                const tx = await contract.claimReward(emailHash, apiData.signature);
-                await tx.wait();
-
-                loadingDiv.classList.remove('show');
-                goToStep(4);
-                document.getElementById('tx-link').href = `https://basescan.org/tx/${tx.hash}`;
-                document.getElementById('tx-link').innerText = tx.hash.slice(0, 20) + '...';
 
             } catch (err) {
-                console.error(err);
+                console.error("Claim Error:", err);
                 loadingDiv.classList.remove('show');
+                alert("Erreur lors de la réclamation : " + err.message);
 
-                // SIMULATION MODE FOR DEVELOPMENT
-                // Since we are using a dummy contract address, the transaction WILL revert.
-                // If we get "execution reverted", it means the transaction reached the blockchain
-                // and the signature from our API was valid enough to attempt the call.
-                if (err.message.includes("execution reverted") || err.message.includes("revert")) {
-                    alert("⚠️ Mode Test : La transaction a été rejetée car l'adresse du contrat est fictive, MAIS le flux fonctionne (Signature API OK + Connexion MetaMask OK).\n\nJe vous affiche l'écran de succès pour valider l'interface.");
-
-                    // Simulate Success
-                    goToStep(4);
-                    document.querySelector('.success-card h2').textContent = 'Succès (Simulation)';
-                    document.querySelector('.success-card p').innerHTML = 'Le système fonctionne !<br>Pour activer les vrais paiements, déployez le contrat ProofOfLearning.';
-                    document.querySelector('.tx-hash').innerHTML = '<span style="color:orange">Hash simulé: 0x123...abc</span>';
-                    return;
-                }
-
-                alert("Erreur: " + (err.reason || err.message));
+                // Re-enable button
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.textContent = "Réessayer";
             }
+        });
+
+        if (!apiResponse.ok) {
+            const errText = await apiResponse.text();
+            throw new Error(`API Error ${apiResponse.status}: ${errText}`);
+        }
+
+        const apiData = await apiResponse.json();
+        if (!apiData.signature) throw new Error(apiData.error || "Erreur API");
+
+        // 2. Submit transaction to Blockchain
+        loadingDiv.querySelector('span').textContent = "Validation Blockchain (MetaMask)...";
+
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+        // GASLESS NOTE: Normally you send this to a Relayer. 
+        // But the user asked to submit via MetaMask with the signature to test the contract logic first.
+        // Or if using Biconomy/OZ, the flow is different.
+        // The user prompt said: "On envoie la signature au Smart Contract via MetaMask" 
+        // This implies the USER pays gas for now, but uses the AUTHORIZED signature.
+        // This is a valid first step to test the "Proof of Learning" security.
+
+        const tx = await contract.claimReward(emailHash, apiData.signature);
+        await tx.wait();
+
+        loadingDiv.classList.remove('show');
+        goToStep(4);
+        document.getElementById('tx-link').href = `https://basescan.org/tx/${tx.hash}`;
+        document.getElementById('tx-link').innerText = tx.hash.slice(0, 20) + '...';
+
+            } catch (err) {
+            console.error(err);
+            loadingDiv.classList.remove('show');
+
+            // SIMULATION MODE FOR DEVELOPMENT
+            // Since we are using a dummy contract address, the transaction WILL revert.
+            // If we get "execution reverted", it means the transaction reached the blockchain
+            // and the signature from our API was valid enough to attempt the call.
+            if (err.message.includes("execution reverted") || err.message.includes("revert")) {
+                alert("⚠️ Mode Test : La transaction a été rejetée car l'adresse du contrat est fictive, MAIS le flux fonctionne (Signature API OK + Connexion MetaMask OK).\n\nJe vous affiche l'écran de succès pour valider l'interface.");
+
+                // Simulate Success
+                goToStep(4);
+                document.querySelector('.success-card h2').textContent = 'Succès (Simulation)';
+                document.querySelector('.success-card p').innerHTML = 'Le système fonctionne !<br>Pour activer les vrais paiements, déployez le contrat ProofOfLearning.';
+                document.querySelector('.tx-hash').innerHTML = '<span style="color:orange">Hash simulé: 0x123...abc</span>';
+                return;
+            }
+
+            alert("Erreur: " + (err.reason || err.message));
+        }
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
