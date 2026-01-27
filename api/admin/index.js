@@ -56,7 +56,8 @@ export default async function handler(req, res) {
                 customers: customerCount || 0,
                 claims: claimCount || 0,
                 revenue: (customerCount || 0) * 99,
-                contractBalance: contractBalance
+                contractBalance: contractBalance,
+                contractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "Non configuré"
             });
         }
 

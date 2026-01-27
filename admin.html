@@ -748,6 +748,9 @@
                     <div class="stat-card claims" style="border-top-color: #00d4ff;">
                         <h3>⛽ Solde Contrat (Gasless)</h3>
                         <div class="value" id="contract-balance">...</div>
+                        <div id="contract-address"
+                            style="font-size: 0.65rem; color: #888; margin-top: 4px; font-family: monospace; word-break: break-all;">
+                        </div>
                         <div class="change">USDC disponibles</div>
                     </div>
                 </div>
@@ -823,6 +826,9 @@
 
                     // Contract Balance
                     document.getElementById('contract-balance').innerText = data.contractBalance + ' USDC';
+                    if(data.contractAddress) {
+                         document.getElementById('contract-address').innerText = data.contractAddress;
+                    }
                     if (data.contractBalance == "Error") {
                         document.getElementById('contract-balance').style.color = "red";
                     } else if (parseFloat(data.contractBalance) < 20) {
