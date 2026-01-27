@@ -9,12 +9,16 @@ const supabase = createClient(
 export default async function handler(req, res) {
     const { action } = req.query;
 
+    // --- CONFIG ---
+    // Support both old and new variable names
+    const ADMIN_PASSWORD = process.env.ADMIN_KEY || process.env.ADMIN_API_KEY;
+
     // --- LOGIN ---
     if (req.method === 'POST' && action === 'login') {
         const { key } = req.body;
-        if (!process.env.ADMIN_KEY) return res.status(500).json({ error: 'Server misconfiguration' });
+        if (!ADMIN_PASSWORD) return res.status(500).json({ error: 'Server misconfiguration: No Admin Key' });
 
-        if (key === process.env.ADMIN_KEY) {
+        if (key === ADMIN_PASSWORD) {
             return res.status(200).json({ success: true });
         } else {
             return res.status(401).json({ error: 'Unauthorized' });
@@ -23,7 +27,7 @@ export default async function handler(req, res) {
 
     // --- AUTH MIDDLEWARE for other actions ---
     const apiKey = req.headers['x-admin-key'] || req.query.key;
-    if (apiKey !== process.env.ADMIN_KEY) {
+    if (apiKey !== ADMIN_PASSWORD) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
