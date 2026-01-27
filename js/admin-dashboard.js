@@ -161,6 +161,7 @@ async function fetchCustomers() {
 <tr>
     <td>${maskEmail(c.email)}</td>
     <td><span class="badge badge-${c.pack}">${c.pack.toUpperCase()}</span></td>
+    <td><span class="badge" style="background: rgba(86,85,242,0.2); color: #5865F2;">${c.discord_id ? 'Relier ✅' : 'Non relié ❌'}</span></td>
     <td>${c.amount}€</td>
     <td>${new Date(c.created_at).toLocaleDateString('fr-FR')}</td>
     <td>${c.claimed
