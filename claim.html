@@ -870,6 +870,7 @@
         // --- AUTHENTICATION LOGIC (SIWE Mimic) ---
 
         // Locking mechanism to prevent infinite loops
+        // Locking mechanism to prevent infinite loops
         let isSigning = false;
 
         // --- AUTHENTICATION LOGIC (SIWE Mimic) ---
@@ -1355,56 +1356,6 @@ Issued At: ${isoDate}`;
             }
         });
 
-        if (!apiResponse.ok) {
-            const errText = await apiResponse.text();
-            throw new Error(`API Error ${apiResponse.status}: ${errText}`);
-        }
-
-        const apiData = await apiResponse.json();
-        if (!apiData.signature) throw new Error(apiData.error || "Erreur API");
-
-        // 2. Submit transaction to Blockchain
-        loadingDiv.querySelector('span').textContent = "Validation Blockchain (MetaMask)...";
-
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-        // GASLESS NOTE: Normally you send this to a Relayer. 
-        // But the user asked to submit via MetaMask with the signature to test the contract logic first.
-        // Or if using Biconomy/OZ, the flow is different.
-        // The user prompt said: "On envoie la signature au Smart Contract via MetaMask" 
-        // This implies the USER pays gas for now, but uses the AUTHORIZED signature.
-        // This is a valid first step to test the "Proof of Learning" security.
-
-        const tx = await contract.claimReward(emailHash, apiData.signature);
-        await tx.wait();
-
-        loadingDiv.classList.remove('show');
-        goToStep(4);
-        document.getElementById('tx-link').href = `https://basescan.org/tx/${tx.hash}`;
-        document.getElementById('tx-link').innerText = tx.hash.slice(0, 20) + '...';
-
-            } catch (err) {
-            console.error(err);
-            loadingDiv.classList.remove('show');
-
-            // SIMULATION MODE FOR DEVELOPMENT
-            // Since we are using a dummy contract address, the transaction WILL revert.
-            // If we get "execution reverted", it means the transaction reached the blockchain
-            // and the signature from our API was valid enough to attempt the call.
-            if (err.message.includes("execution reverted") || err.message.includes("revert")) {
-                alert("⚠️ Mode Test : La transaction a été rejetée car l'adresse du contrat est fictive, MAIS le flux fonctionne (Signature API OK + Connexion MetaMask OK).\n\nJe vous affiche l'écran de succès pour valider l'interface.");
-
-                // Simulate Success
-                goToStep(4);
-                document.querySelector('.success-card h2').textContent = 'Succès (Simulation)';
-                document.querySelector('.success-card p').innerHTML = 'Le système fonctionne !<br>Pour activer les vrais paiements, déployez le contrat ProofOfLearning.';
-                document.querySelector('.tx-hash').innerHTML = '<span style="color:orange">Hash simulé: 0x123...abc</span>';
-                return;
-            }
-
-            alert("Erreur: " + (err.reason || err.message));
-        }
-        });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="js/threejs-effects.js"></script>
