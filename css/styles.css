@@ -794,6 +794,11 @@ h3 {
     margin-top: var(--space-sm);
 }
 
+.highlight-link-orange {
+    color: var(--accent-gold) !important;
+    font-weight: 700;
+}
+
 /* ========================================
    STORY SECTION
 ======================================== */
