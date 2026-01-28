@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gérer mon abonnement - L'Horizon Crypto</title>
+
+    <!-- Meta SEO -->
+    <meta name="description" content="Gérez ou résiliez votre abonnement à L'Horizon Crypto en toute simplicité.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .cancel-container {
+            max-width: 500px;
+            margin: 120px auto 60px;
+            padding: 40px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .cancel-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .cancel-title {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .cancel-text {
+            color: #a0a0b0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #f7931a;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #f7931a, #ff6b6b);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(247, 147, 26, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .status-success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+        }
+
+        .status-error {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-card {
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        @media (max-width: 768px) {
+            .cancel-container {
+                margin: 100px 20px 40px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar (Simplified) -->
+    <nav class="navbar" style="background: rgba(10, 10, 15, 0.95);">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌅</span>
+                <span class="logo-text">L'Horizon <span class="highlight">Crypto</span></span>
+            </a>
+            <a href="index.html" class="nav-link">← Retour au site</a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="cancel-container">
+        <div class="cancel-icon">⚙️</div>
+        <h1 class="cancel-title">Gérer mon abonnement</h1>
+        <p class="cancel-text">
+            Entrez l'adresse email utilisée lors de votre commande.<br>
+            Vous recevrez un lien sécurisé pour gérer ou résilier votre abonnement.
+        </p>
+
+        <form id="cancel-form">
+            <div class="form-group">
+                <label for="email" class="form-label">Votre Email</label>
+                <input type="email" id="email" class="form-input" placeholder="exemple@email.com" required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Recevoir mon lien d'accès
+            </button>
+
+            <div id="status-message" class="status-message"></div>
+        </form>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-card">
+            <div style="font-size: 3rem; margin-bottom: 20px;">📧</div>
+            <h3 style="color: #fff; margin-bottom: 15px;">Email Envoyé !</h3>
+            <p style="color: #a0a0b0; margin-bottom: 25px;">
+                Vérifiez votre boîte mail (et vos spams).<br>
+                Vous y trouverez un lien direct vers votre portail client pour gérer votre abonnement.
+            </p>
+            <button class="submit-btn" onclick="window.location.href='index.html'">Retour à l'accueil</button>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('cancel-form');
+        const btn = form.querySelector('button');
+        const statusDiv = document.getElementById('status-message');
+        const modal = document.getElementById('success-modal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            if (!email || !email.includes('@')) {
+                showStatus('Veuillez entrer un email valide.', 'error');
+                return;
+            }
+
+            // UI Loading
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Envoi en cours...';
+            statusDiv.style.display = 'none';
+
+            try {
+                // Determine API URL
+                const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                    ? 'http://127.0.0.1:3001'
+                    : '';
+
+                const response = await fetch(`${apiBase}/api/manage-subscription`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    modal.classList.add('active');
+                } else {
+                    showStatus(data.error || 'Erreur lors de la demande. Vérifiez l\'email.', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showStatus('Erreur de connexion. Veuillez réessayer.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        function showStatus(msg, type) {
+            statusDiv.textContent = msg;
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
