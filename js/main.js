@@ -215,7 +215,9 @@ function setupExtractForm(formId, emailId, successId, errorId) {
                     fbq('track', 'Lead');
                 }
             } else {
-                throw new Error(`Erreur serveur ${response.status}`);
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Lead Magnet API Error:', response.status, errorData);
+                throw new Error(errorData.error || `Erreur serveur (${response.status})`);
             }
         } catch (error) {
             console.error('Lead magnet error:', error);
