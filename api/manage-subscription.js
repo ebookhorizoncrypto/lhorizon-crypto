@@ -63,6 +63,6 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('Error managing subscription:', error);
-        return res.status(500).json({ error: 'Erreur serveur. Veuillez réessayer.' });
+        return res.status(500).json({ error: `Erreur serveur: ${error.message}` });
     }
 }
