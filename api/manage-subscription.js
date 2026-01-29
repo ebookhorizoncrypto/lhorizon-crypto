@@ -98,7 +98,7 @@ export default async function handler(req, res) {
                     <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: center;">
                          <p style="margin-bottom: 10px; font-size: 14px;">Rejoignez la communauté :</p>
                          <a href="https://discord.gg/KMzs4fHZS9" style="text-decoration: none; margin: 0 10px;">
-                            <img src="https://assets-global.website-files.com/6257adef93867e56f84d3092/636e0a6918e57475a843f59f_icon_clyde_blurple_RGB.png" width="24" height="24" alt="Discord" style="vertical-align: middle;">
+                            <img src="https://ebook-horizoncrypto.com/assets/logo-discord.png" width="24" height="24" alt="Discord" style="vertical-align: middle;">
                         </a>
                         <a href="https://www.facebook.com/profile.php?id=61586548211161" style="text-decoration: none; margin: 0 10px;">
                             <img src="https://ebook-horizoncrypto.com/assets/logo-facebook.png" width="24" height="24" alt="Facebook" style="vertical-align: middle;">
