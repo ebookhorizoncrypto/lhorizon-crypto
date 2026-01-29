@@ -184,9 +184,9 @@ async function fetchCustomers() {
         tbody.innerHTML = customers.map(c => `
 <tr>
     <td>${maskEmail(c.email)}</td>
-    <td><span class="badge badge-${c.pack}">${c.pack.toUpperCase()}</span></td>
+    <td><span class="badge badge-${(c.access_level || 'solo').toLowerCase()}">${(c.access_level || 'SOLO').toUpperCase()}</span></td>
     <td><span class="badge" style="background: rgba(86,85,242,0.2); color: #5865F2;">${c.discord_id ? 'Relier ✅' : 'Non relié ❌'}</span></td>
-    <td>${c.amount}€</td>
+    <td>${c.amount_paid || 0}€</td>
     <td>${new Date(c.created_at).toLocaleDateString('fr-FR')}</td>
     <td>${c.claimed
                 ? '<span class="badge badge-claimed">✓ Réclamé</span>'
@@ -209,7 +209,7 @@ async function fetchCustomers() {
                     <tr>
                         <td>${maskEmail(c.email)}</td>
                         <td>${shortenAddress(c.wallet_address || '0x...')}</td>
-                        <td>${new Date(c.claimed_at).toLocaleDateString('fr-FR')}</td>
+                        <td>${new Date(c.claimed_at || Date.now()).toLocaleDateString('fr-FR')}</td>
                         <td><a href="https://basescan.org/tx/${c.claim_tx_hash}" target="_blank" style="color: var(--accent-gold);">Voir TX</a></td>
                     </tr>
                 `).join('');
@@ -276,8 +276,8 @@ function renderRevenueTable(customers) {
         <tr>
             <td>${new Date(c.created_at).toLocaleDateString('fr-FR')}</td>
             <td>${maskEmail(c.email)}</td>
-            <td><span class="badge badge-${c.pack}">${c.pack ? c.pack.toUpperCase() : 'N/A'}</span></td>
-            <td style="color: #00ff88; font-weight: bold;">+${c.amount}€</td>
+            <td><span class="badge badge-${(c.access_level || 'solo').toLowerCase()}">${(c.access_level || 'SOLO').toUpperCase()}</span></td>
+            <td style="color: #00ff88; font-weight: bold;">+${c.amount_paid || 0}€</td>
             <td><span class="badge badge-claimed" style="background: rgba(0, 255, 136, 0.1); color: #00ff88;">Payé</span></td>
         </tr>
         `).join('');
