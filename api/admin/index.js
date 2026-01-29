@@ -82,6 +82,23 @@ export default async function handler(req, res) {
             return res.status(200).json(customers);
         }
 
+        // --- APPOINTMENTS (CALENDLY) ---
+        if (action === 'appointments') {
+            const { data: appointments, error } = await supabase
+                .from('appointments')
+                .select('*')
+                .order('start_time', { ascending: false })
+                .limit(50);
+
+            if (error) {
+                // If table doesn't exist, return empty array instead of 500
+                if (error.code === '42P01') return res.status(200).json([]);
+                throw error;
+            }
+
+            return res.status(200).json(appointments || []);
+        }
+
         return res.status(400).json({ error: 'Unknown action' });
 
     } catch (error) {

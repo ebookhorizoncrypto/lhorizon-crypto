@@ -73,24 +73,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Navigation Function
 function switchSection(sectionId, element) {
-    // Hide all sections
-    document.querySelectorAll('.admin-section').forEach(el => el.style.display = 'none');
-    // Show target section
-    const target = document.getElementById('section-' + sectionId);
-    if (target) target.style.display = 'block';
+    console.log(`Switching to section: ${sectionId}`);
 
-    // Update active state in sidebar
+    // 1. Hide all sections
+    document.querySelectorAll('.admin-section').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('active');
+    });
+
+    // 2. Show target section
+    const target = document.getElementById('section-' + sectionId);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.add('active');
+    } else {
+        console.error(`Section #section-${sectionId} not found!`);
+    }
+
+    // 3. Update active state in sidebar
     if (element) {
         document.querySelectorAll('.sidebar-nav a').forEach(el => el.classList.remove('active'));
         element.classList.add('active');
     }
 
-    // Refresh data if needed
-    if (sectionId === 'clients' || sectionId === 'claims' || sectionId === 'revenus') {
-        fetchCustomers();
+    // 4. Refresh data specific to the section
+    if (['clients', 'claims', 'revenus'].includes(sectionId)) {
+        if (typeof fetchCustomers === 'function') fetchCustomers();
+    }
+    if (sectionId === 'appointments') {
+        if (typeof fetchAppointments === 'function') fetchAppointments();
+    }
+
+    // 5. Resize charts if dashboard (fix Chart.js rendering issues on hidden tabs)
+    if (sectionId === 'dashboard' && typeof salesChart !== 'undefined') {
+        salesChart.resize();
+        if (typeof visitorsChart !== 'undefined') visitorsChart.resize();
     }
 }
+
+// Make globally available
+window.switchSection = switchSection;
 
 async function updateData() {
     try {
@@ -197,6 +221,46 @@ async function fetchCustomers() {
     }
 }
 
+async function fetchAppointments() {
+    try {
+        const key = localStorage.getItem('admin_key');
+        if (!key) return;
+
+        const response = await fetch(`${API_BASE}/api/admin?action=appointments`, {
+            headers: { 'x-admin-key': key }
+        });
+
+        const appointments = await response.json();
+        const tbody = document.getElementById('appointments-table');
+        if (!tbody) return;
+
+        if (!appointments || appointments.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-secondary);">Aucun rendez-vous trouvé (Configurez le webhook Calendly)</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = appointments.map(apt => {
+            const date = new Date(apt.start_time);
+            return `
+            <tr>
+                <td>${apt.name || 'Inconnu'}</td>
+                <td><a href="mailto:${apt.email}" style="color: var(--accent-gold);">${apt.email}</a></td>
+                <td>${date.toLocaleDateString('fr-FR')}</td>
+                <td>${date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</td>
+                <td><span class="badge ${apt.status === 'canceled' ? 'badge-cancelled' : 'badge-vip'}" style="${apt.status === 'canceled' ? 'background: #ff475722; color: #ff4757;' : ''}">${apt.status || 'active'}</span></td>
+                <td>
+                    <a href="${apt.event_uri}" target="_blank" style="color: var(--text-secondary); text-decoration: underline;">Voir Calendly</a>
+                </td>
+            </tr>`;
+        }).join('');
+
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        const tbody = document.getElementById('appointments-table');
+        if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--accent-red);">Erreur lors du chargement</td></tr>';
+    }
+}
+
 function renderRevenueTable(customers) {
     const tbody = document.getElementById('revenue-table');
     if (!tbody) return;
@@ -236,9 +300,18 @@ function shortenAddress(address) {
 function toggleAdminSidebar() {
     const sb = document.querySelector('.sidebar');
     const ov = document.getElementById('sidebar-overlay');
+
     if (sb) sb.classList.toggle('open');
-    if (ov) ov.classList.toggle('open');
+    if (ov) {
+        ov.classList.toggle('open');
+        // Close sidebar when clicking overlay
+        ov.onclick = () => {
+            sb.classList.remove('open');
+            ov.classList.remove('open');
+        };
+    }
 }
+window.toggleAdminSidebar = toggleAdminSidebar;
 
 // ========================================
 // CHARTS - Sales & Visitors

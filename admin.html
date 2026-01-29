@@ -174,8 +174,12 @@
         /* Main Content */
         .main-content {
             margin-left: 240px;
+            width: calc(100% - 240px);
+            /* Adjust width to avoid overflow */
             padding: 32px;
             transition: all 0.3s ease;
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
         }
 
         .header {
@@ -671,7 +675,11 @@
 
         .chart-container {
             height: 250px;
+            width: 100%;
+            /* Ensure it fits parent */
             position: relative;
+            overflow: hidden;
+            /* Clip any potential overflow */
         }
     </style>
     <!-- Chart.js -->
@@ -704,6 +712,7 @@
             <nav class="sidebar-nav">
                 <a href="#" class="active" data-section="dashboard" onclick="switchSection('dashboard', this)">📊
                     Dashboard</a>
+                <a href="#" data-section="appointments" onclick="switchSection('appointments', this)">📅 Rendez-vous</a>
                 <a href="#" data-section="clients" onclick="switchSection('clients', this)">👥 Clients</a>
                 <a href="#" data-section="claims" onclick="switchSection('claims', this)">🎁 Claims</a>
                 <a href="#" data-section="revenus" onclick="switchSection('revenus', this)">💰 Revenus</a>
@@ -785,6 +794,41 @@
                     <!-- ... charts ... -->
                 </div>
             </div>
+            <!-- SECTION: APPOINTMENTS -->
+            <div id="section-appointments" class="admin-section" style="display: none;">
+                <div class="header">
+                    <h1>📅 Rendez-vous Coaching</h1>
+                    <div
+                        style="background: rgba(155, 89, 182, 0.1); border: 1px solid #9b59b6; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; color: #9b59b6;">
+                        Synchronisé avec Calendly
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Prochains Rendez-vous VIP</h2>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointments-table">
+                                <!-- JS Injected -->
+                                <tr>
+                                    <td colspan="6" class="loading">Chargement...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
