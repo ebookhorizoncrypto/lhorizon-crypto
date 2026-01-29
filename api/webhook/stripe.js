@@ -146,7 +146,7 @@ async function sendPurchaseEmail(email, pack, amount) {
     };
 
     const downloadLink = `${domain}/assets/Horizon-Crypto-Ebook.pdf`; // Direct link assuming assets
-    const discordLink = `${domain}/activer.html`; // New Activation Flow
+    const discordLink = `https://discord.gg/KMzs4fHZS9`; // Updated Discord Invite
     const calendlyLink = "https://calendly.com/lhorizon-crypto/coaching-vip"; // Example
     const claimLink = `${domain}/claim.html`;
 
@@ -222,11 +222,11 @@ async function sendPurchaseEmail(email, pack, amount) {
     }
 
     try {
-    const { data, error: resendError } = await resend.emails.send({
-        from: fromEmail,
-        to: email,
-        subject: emailTitle,
-        html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        const { data, error: resendError } = await resend.emails.send({
+            from: fromEmail,
+            to: email,
+            subject: emailTitle,
+            html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -292,6 +292,17 @@ async function sendPurchaseEmail(email, pack, amount) {
                     <tr>
                         <td align="center" style="padding: 20px; background-color: #f4f4f4; color: #888888; font-size: 12px; border-top: 1px solid #dddddd;">
                             <p style="margin: 0;">L'Horizon Crypto © 2026. Tous droits réservés.</p>
+                            <p style="margin: 15px 0;">
+                                <a href="https://discord.gg/KMzs4fHZS9" style="text-decoration: none; margin: 0 10px;">
+                                    <img src="https://assets-global.website-files.com/6257adef93867e56f84d3092/636e0a6918e57475a843f59f_icon_clyde_blurple_RGB.png" width="24" height="24" alt="Discord" style="vertical-align: middle;">
+                                </a>
+                                <a href="https://www.facebook.com/profile.php?id=61586548211161" style="text-decoration: none; margin: 0 10px;">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24" height="24" alt="Facebook" style="vertical-align: middle;">
+                                </a>
+                                <a href="https://www.instagram.com/ebook.cryptohorizon/" style="text-decoration: none; margin: 0 10px;">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24" height="24" alt="Instagram" style="vertical-align: middle;">
+                                </a>
+                            </p>
                             <p style="margin: 5px 0 0;">
                                 <a href="${domain}/cgv.html" style="color: #888; text-decoration: underline;">CGV</a> | 
                                 <a href="${domain}/confidentialite.html" style="color: #888; text-decoration: underline;">Confidentialité</a>
@@ -304,13 +315,13 @@ async function sendPurchaseEmail(email, pack, amount) {
     </table>
 </body>
 </html>`
-    });
+        });
 
-    if (resendError) {
-        console.error('❌ Resend email error:', resendError);
-    } else {
-        console.log(`📧 Purchase email sent to ${email} (Pack: ${pack}, ID: ${data?.id})`);
-    }
+        if (resendError) {
+            console.error('❌ Resend email error:', resendError);
+        } else {
+            console.log(`📧 Purchase email sent to ${email} (Pack: ${pack}, ID: ${data?.id})`);
+        }
     } catch (emailErr) {
         console.error('❌ Failed to send purchase email:', emailErr);
     }

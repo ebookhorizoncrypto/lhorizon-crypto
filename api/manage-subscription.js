@@ -56,6 +56,19 @@ export default async function handler(req, res) {
                     </div>
                     
                     <p style="font-size: 12px; color: #666;">Ce lien est temporaire et sécurisé.</p>
+
+                    <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: center;">
+                         <p style="margin-bottom: 10px; font-size: 14px;">Rejoignez la communauté :</p>
+                         <a href="https://discord.gg/KMzs4fHZS9" style="text-decoration: none; margin: 0 10px;">
+                            <img src="https://assets-global.website-files.com/6257adef93867e56f84d3092/636e0a6918e57475a843f59f_icon_clyde_blurple_RGB.png" width="24" height="24" alt="Discord" style="vertical-align: middle;">
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61586548211161" style="text-decoration: none; margin: 0 10px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24" height="24" alt="Facebook" style="vertical-align: middle;">
+                        </a>
+                        <a href="https://www.instagram.com/ebook.cryptohorizon/" style="text-decoration: none; margin: 0 10px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24" height="24" alt="Instagram" style="vertical-align: middle;">
+                        </a>
+                    </div>
                 </div>
             `
         });
