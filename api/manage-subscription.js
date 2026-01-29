@@ -2,8 +2,15 @@ import Stripe from 'stripe';
 import { Resend } from 'resend';
 import 'dotenv/config';
 
+import { createClient } from '@supabase/supabase-js';
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const supabase = createClient(
+    process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || 'placeholder'
+);
 
 const fromEmail = process.env.FROM_EMAIL || "L'Horizon Crypto <contact@ebook-horizoncrypto.com>";
 
@@ -19,7 +26,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        // 1. Find Customer
+        // 1. Find Customer in Stripe
         const customers = await stripe.customers.list({
             email: email,
             limit: 1
@@ -32,13 +39,42 @@ export default async function handler(req, res) {
 
         const customer = customers.data[0];
 
-        // 2. Create Portal Session
+        // 2. Check VIP Status in Supabase
+        let isVip = false;
+        try {
+            const { data: supaUser } = await supabase
+                .from('customers')
+                .select('access_level')
+                .eq('email', email)
+                .single();
+
+            if (supaUser && supaUser.access_level === 'VIP') {
+                isVip = true;
+            }
+        } catch (err) {
+            console.warn('Supabase check failed, proceeding without VIP check:', err);
+        }
+
+        // 3. Create Portal Session
         const session = await stripe.billingPortal.sessions.create({
             customer: customer.id,
             return_url: `${process.env.DOMAIN || 'https://ebook-horizoncrypto.com'}/resilier.html`,
         });
 
-        // 3. Send Email with Link
+        // 4. Build Email Content
+        let vipSection = '';
+        if (isVip) {
+            vipSection = `
+            <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #f7931a; margin: 25px 0; text-align: left;">
+                <h3 style="margin-top: 0; color: #f7931a; font-size: 16px;">👑 Espace Coaching VIP</h3>
+                <p style="font-size: 13px; margin-bottom: 15px;">En tant que membre VIP, vous avez droit à 1h de coaching par mois. Réservez votre créneau ici :</p>
+                <div style="text-align: center;">
+                    <a href="https://calendly.com/lhorizon-crypto/coaching-vip" style="background-color: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; display: inline-block;">📅 Réserver mon Coaching</a>
+                </div>
+            </div>`;
+        }
+
+        // 5. Send Email with Link
         await resend.emails.send({
             from: fromEmail,
             to: email,
@@ -55,9 +91,11 @@ export default async function handler(req, res) {
                         </a>
                     </div>
                     
+                    ${vipSection}
+                    
                     <p style="font-size: 12px; color: #666;">Ce lien est temporaire et sécurisé.</p>
 
-                     <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: center;">
+                    <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: center;">
                          <p style="margin-bottom: 10px; font-size: 14px;">Rejoignez la communauté :</p>
                          <a href="https://discord.gg/KMzs4fHZS9" style="text-decoration: none; margin: 0 10px;">
                             <img src="https://assets-global.website-files.com/6257adef93867e56f84d3092/636e0a6918e57475a843f59f_icon_clyde_blurple_RGB.png" width="24" height="24" alt="Discord" style="vertical-align: middle;">
