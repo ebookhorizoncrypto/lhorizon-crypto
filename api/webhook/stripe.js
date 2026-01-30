@@ -149,7 +149,7 @@ async function sendPurchaseEmail(email, pack, amount) {
 
     const downloadLink = `${domain}/assets/Horizon-Crypto-Ebook.pdf`; // Direct link assuming assets
     const discordLink = `https://lhorizon-crypto-activation.onrender.com/activate?email=${encodeURIComponent(email)}`; // Activation Link
-    const calendlyLink = "https://calendly.com/lhorizon-crypto/coaching-vip"; // Example
+    const calendlyLink = "https://calendly.com/ebook-horizoncrypto/coaching-vip"; // Official VIP Coaching Link
     const claimLink = `${domain}/claim.html`;
 
     // Content Customization
