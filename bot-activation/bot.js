@@ -34,9 +34,9 @@ const STATE_SECRET = process.env.STATE_SECRET || crypto.randomBytes(32).toString
 
 // Mapping Produits Stripe → Access Level
 const PRODUCT_TO_ACCESS = {
-    'prod_TpcMzVxIVuGaMa': 'SOLO',  // 1 mois
-    'prod_ToXr1gq3YcBORK': 'PRO',   // 3 mois
-    'prod_ToXwVbu17edNfs': 'VIP',   // 6 mois
+    'prod_TpcMzVxIVuGaMa': 'SOLO',   // Pack Solo
+    'prod_ToXf1kpTDB7uNv': 'PRO',    // Pack Pro
+    'prod_ToXtEbkLoqh9iA': 'VIP',    // Pack VIP
 };
 
 // Mapping Access Level → Durée (en jours)
