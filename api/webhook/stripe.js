@@ -139,7 +139,7 @@ async function sendPurchaseEmail(email, pack, amount) {
     if (Math.round(amount) >= 540) pack = 'vip';
 
     const packNames = {
-        solo: 'Pack Solo 🥉',
+        solo: 'Ebook Solo 🥉',
         pro: 'Pack Pro 🥈',
         vip: 'Pack VIP 🥇',
         discord: 'Abonnement Discord 👾'
@@ -204,20 +204,17 @@ async function sendPurchaseEmail(email, pack, amount) {
             </div>
         `;
     } else {
-        // Fallback default
-        emailTitle = "🥉 Confirmation Pack Solo - L'Horizon Crypto";
+        // Fallback default (Ebook Solo - PDF Only)
+        emailTitle = "🥉 Confirmation Ebook Solo - L'Horizon Crypto";
         specificContent = `
             <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #f7931a; margin-bottom: 25px;">
                 <h3 style="margin-top: 0; color: #f7931a;">Votre Commande est Validée !</h3>
                 <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
                     <li><strong>Guide PDF Complet :</strong> Téléchargement immédiat ci-dessus.</li>
-                    <li><strong>Accès Discord (30 jours) :</strong> Rejoignez la communauté pour 1 mois.</li>
+                    <li><strong>Facture :</strong> Disponible sur simple demande.</li>
                 </ul>
             </div>
-            <p><strong>Indispensable :</strong> Reliez votre compte Discord maintenant pour démarrer vos 30 jours.</p>
-            <div style="text-align: center; margin-bottom: 20px;">
-                 <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord (30j)</a>
-            </div>
+            <p><strong>Note :</strong> Ce pack comprend uniquement le guide PDF. Pour rejoindre la communauté et les salons d'entraide, vous pouvez upgrader votre accès via notre site.</p>
         `;
     }
 
