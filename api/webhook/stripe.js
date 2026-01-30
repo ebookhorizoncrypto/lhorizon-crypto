@@ -135,11 +135,13 @@ async function sendPurchaseEmail(email, pack, amount) {
     // Robust pack detection based on amount if metadata is missing
     // Default is 'solo' from handler
     if (Math.round(amount) >= 25 && Math.round(amount) <= 35) pack = 'discord';
+    if (Math.round(amount) > 110 && Math.round(amount) < 250) pack = 'pack_solo'; // Ebook + Discord Upsell
     if (Math.round(amount) >= 290 && Math.round(amount) < 500) pack = 'pro';
     if (Math.round(amount) >= 540) pack = 'vip';
 
     const packNames = {
         solo: 'Ebook Solo 🥉',
+        pack_solo: 'Pack Solo (Ebook + Discord) 🥉',
         pro: 'Pack Pro 🥈',
         vip: 'Pack VIP 🥇',
         discord: 'Abonnement Discord 👾'
@@ -187,6 +189,22 @@ async function sendPurchaseEmail(email, pack, amount) {
                     <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord Pro</a>
                 </div>
             </div>
+        `;
+    } else if (pack === 'pack_solo') {
+        // NEW TEMPLATE: Ebook + Discord
+        emailTitle = "🥉 Confirmation Pack Solo - L'Horizon Crypto";
+        specificContent = `
+            <div style="background-color: #f9f9f9; padding: 20px; border-left: 4px solid #5865F2; margin-bottom: 25px;">
+                <h3 style="margin-top: 0; color: #5865F2;">Votre Pack Solo est activé !</h3>
+                <ul style="padding-left: 20px; color: #333; line-height: 1.6;">
+                    <li><strong>Ebook Complet :</strong> Téléchargement immédiat ci-dessus.</li>
+                    <li><strong>Accès Discord (1 mois) :</strong> Rejoignez la communauté dès maintenant.</li>
+                </ul>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="${discordLink}" style="background-color: #5865F2; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">👾 Activer mon accès Discord</a>
+                </div>
+            </div>
+            <p><strong>Note :</strong> Votre abonnement Discord est valide pour 1 mois. Vous pouvez gérer votre abonnement depuis votre espace membre.</p>
         `;
     } else if (pack === 'discord') {
         emailTitle = "👾 Abonnement Discord Activé - L'Horizon Crypto";
