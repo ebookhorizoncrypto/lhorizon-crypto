@@ -242,7 +242,7 @@ async function sendPurchaseEmail(email, pack, amount) {
                     <!-- Header -->
                     <tr>
                         <td align="center" style="background-color: #1a1a2e; padding: 30px;">
-                            <div style="font-size: 32px; margin-bottom: 5px;">🌅</div>
+                            <img src="${domain}/assets/logo-email.jpg" width="100" height="100" alt="L'Horizon Crypto" style="margin-bottom: 10px; border-radius: 50%;">
                             <h1 style="margin: 0; color: #f7931a; font-size: 24px; font-weight: bold; font-family: Arial, sans-serif;">L'Horizon Crypto</h1>
                             <p style="color: #ccc; margin: 5px 0 0; font-size: 14px;">Merci pour votre commande !</p>
                         </td>
@@ -273,7 +273,7 @@ async function sendPurchaseEmail(email, pack, amount) {
                             <!-- REWARD SECTION (Common to all) -->
                             <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px;">
                                 <div style="background-color: #e6fffa; border: 1px solid #b2f5ea; border-radius: 12px; padding: 20px; text-align: center;">
-                                    <h3 style="color: #009970; margin-top: 0;">💰 N'oubliez pas vos 100$ !</h3>
+                                    <h3 style="color: #009970; margin-top: 0;">💰 N'oubliez pas votre récompense en USDC !</h3>
                                     <p style="font-size: 14px; margin-bottom: 15px; color: #333;">
                                         12 mots-clés sont cachés dans le guide. Trouvez-les tous pour débloquer votre récompense sur la blockchain.
                                     </p>

@@ -82,7 +82,7 @@ lhorizon-crypto/
 │   └── admin/
 │       └── stats.js        # GET /api/admin/stats
 ├── assets/
-│   ├── logo-horizon-crypto.png
+│   ├── logo-email.jpg
 │   ├── ebook-cover.jpg
 │   └── og-image.png
 ├── css/

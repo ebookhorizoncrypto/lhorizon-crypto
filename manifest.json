@@ -9,12 +9,12 @@
     "lang": "fr",
     "icons": [
         {
-            "src": "assets/logo-horizon-crypto.png",
+            "src": "assets/logo-email.jpg",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "assets/logo-horizon-crypto.png",
+            "src": "assets/logo-email.jpg",
             "sizes": "512x512",
             "type": "image/png"
         }

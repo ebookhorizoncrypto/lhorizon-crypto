@@ -13,7 +13,7 @@ const metadata = {
     name: 'L\'Horizon Crypto',
     description: 'Apprenez et gagnez des crypto',
     url: 'https://ebook-horizoncrypto.com', // origin must match your domain & subdomain
-    icons: ['https://ebook-horizoncrypto.com/assets/logo-horizon-crypto.png']
+    icons: ['https://ebook-horizoncrypto.com/assets/logo-email.jpg']
 }
 
 // 4. Create the AppKit instance

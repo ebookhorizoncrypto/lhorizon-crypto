@@ -17,6 +17,7 @@ require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { ethers } = require('ethers');
 const express = require('express');
+const { createClient } = require('@supabase/supabase-js');
 
 // Configuration
 const config = {
@@ -25,12 +26,24 @@ const config = {
     stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     baseRpcUrl: process.env.BASE_RPC_URL || 'https://mainnet.base.org',
     contractAddress: process.env.POL_CONTRACT_ADDRESS,
-    port: process.env.BOT_PORT || 3001
+    port: process.env.BOT_PORT || 3001,
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    soloRoleId: process.env.ROLE_ID_SOLO || '0',
+    proRoleId: process.env.ROLE_ID_PRO || '0',
+    vipRoleId: process.env.ROLE_ID_VIP || '0'
 };
+
+// Supabase Init
+const supabase = createClient(config.supabaseUrl || 'https://placeholder.supabase.co', config.supabaseKey || 'placeholder');
 
 // Discord Client
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds]
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
 });
 
 let discordChannel = null;
@@ -41,6 +54,81 @@ client.once('ready', () => {
     discordChannel = client.channels.cache.get(config.channelId);
     if (!discordChannel) {
         console.error('❌ Channel not found! Check DISCORD_CHANNEL_ID');
+    }
+});
+
+// Listener for Commands
+client.on('messageCreate', async (message) => {
+    // Ignore updates from bot
+    if (message.author.bot) return;
+
+    // Command !verify <email>
+    if (message.content.startsWith('!verify')) {
+        const args = message.content.split(' ');
+        if (args.length < 2) {
+            return message.reply('❌ Usage: `!verify <votre_email>` (ex: `!verify monemail@gmail.com`)');
+        }
+
+        const email = args[1].trim().toLowerCase();
+
+        try {
+            await message.react('🔄');
+
+            // 1. Check Supabase
+            const { data: user, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('email', email)
+                .single();
+
+            if (error || !user) {
+                await message.react('❌');
+                return message.reply(`❌ Aucun achat trouvé pour l'email **${email}**.\nAssurez-vous d'utiliser l'email de votre commande.`);
+            }
+
+            // 2. Determine Role
+            let roleId = null;
+            let roleName = "";
+            let accessLevel = user.access_level || 1; // Default to Solo if not set
+
+            if (accessLevel >= 3) {
+                roleId = config.vipRoleId;
+                roleName = "VIP";
+            } else if (accessLevel === 2) {
+                roleId = config.proRoleId;
+                roleName = "PRO";
+            } else {
+                roleId = config.soloRoleId;
+                roleName = "SOLO";
+            }
+
+            // 3. Update Supabase with Discord ID
+            await supabase
+                .from('users')
+                .update({ discord_id: message.author.id })
+                .eq('email', email);
+
+            // 4. Assign Role
+            if (roleId && roleId !== '0') {
+                const guild = message.guild;
+                const role = guild.roles.cache.get(roleId);
+                const member = await guild.members.fetch(message.author.id);
+
+                if (role && member) {
+                    await member.roles.add(role);
+                    await message.react('✅');
+                    return message.reply(`✅ Félicitations ! Votre email est vérifié. Vous avez reçu le rôle **${roleName}**.`);
+                } else {
+                    return message.reply(`⚠️ Email vérifié, mais impossible d'attribuer le rôle (ID ${roleId} introuvable ou permissions insuffisantes). Contactez un admin.`);
+                }
+            } else {
+                return message.reply('⚠️ Verification réussie, mais aucun Role ID n\'est configuré pour ce niveau.');
+            }
+
+        } catch (err) {
+            console.error(err);
+            return message.reply('❌ Une erreur interne est survenue lors de la vérification.');
+        }
     }
 });
 

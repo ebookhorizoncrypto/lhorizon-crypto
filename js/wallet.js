@@ -16,7 +16,7 @@ const DEFAULT_CONFIG = {
         name: "L'Horizon Crypto",
         description: 'Guide Crypto Proof of Learning - Gagnez des USDC',
         url: 'https://ebook-horizoncrypto.com',
-        icons: ['https://ebook-horizoncrypto.com/assets/logo-horizon-crypto.png']
+        icons: ['https://ebook-horizoncrypto.com/assets/logo-email.jpg']
     },
     networks: ['base', 'mainnet'],
     themeMode: 'dark',
