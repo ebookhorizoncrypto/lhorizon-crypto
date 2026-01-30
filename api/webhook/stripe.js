@@ -80,8 +80,8 @@ async function handleSuccessfulPayment(session) {
     const amount = (session.amount_total || 0) / 100;
 
     // Robust pack detection
-    if (Math.round(amount) >= 290 && Math.round(amount) < 500) pack = 'pro';
-    if (Math.round(amount) >= 540) pack = 'vip';
+    if (Math.round(amount) >= 200 && Math.round(amount) < 450) pack = 'pro';
+    if (Math.round(amount) >= 450) pack = 'vip';
 
     console.log(`✅ New purchase: ${email} - ${pack} - ${amount}€`);
 
@@ -135,9 +135,9 @@ async function sendPurchaseEmail(email, pack, amount) {
     // Robust pack detection based on amount if metadata is missing
     // Default is 'solo' from handler
     if (Math.round(amount) >= 25 && Math.round(amount) <= 35) pack = 'discord';
-    if (Math.round(amount) > 110 && Math.round(amount) < 250) pack = 'pack_solo'; // Ebook + Discord Upsell
-    if (Math.round(amount) >= 290 && Math.round(amount) < 500) pack = 'pro';
-    if (Math.round(amount) >= 540) pack = 'vip';
+    if (Math.round(amount) > 110 && Math.round(amount) < 200) pack = 'pack_solo'; // Ebook + Discord Upsell (~128€)
+    if (Math.round(amount) >= 200 && Math.round(amount) < 450) pack = 'pro';      // Pack Pro (~249€)
+    if (Math.round(amount) >= 450) pack = 'vip';                                  // Pack VIP (~497€)
 
     const packNames = {
         solo: 'Ebook Solo 🥉',
