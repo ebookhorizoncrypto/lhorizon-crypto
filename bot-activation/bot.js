@@ -521,49 +521,55 @@ async function handleCheckoutCompleted(session) {
 
     console.log(`💰 Checkout complété: ${email}`);
 
-    // Récupère les détails de la commande
-    const lineItems = await stripe.checkout.Session.listLineItems(session.id);
-    
-    for (const item of lineItems.data) {
-        const productId = item.price?.product;
-        const accessLevel = PRODUCT_TO_ACCESS[productId];
-        const amountPaid = item.amount_total ? item.amount_total / 100 : null; // Stripe donne en centimes
+    try {
+        // ✅ CORRECTION: "sessions" en minuscule
+        const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
         
-        if (accessLevel) {
-            const expiresAt = calculateExpiration(accessLevel);
+        for (const item of lineItems.data) {
+            const productId = item.price?.product;
+            const accessLevel = PRODUCT_TO_ACCESS[productId];
+            const amountPaid = item.amount_total ? item.amount_total / 100 : null; // Stripe donne en centimes
+            
+            if (accessLevel) {
+                const expiresAt = calculateExpiration(accessLevel);
 
-            // Upsert dans Supabase (adapté à ta structure)
-            const { error } = await supabase
-                .from('customers')
-                .upsert({
-                    email: email.toLowerCase(),
-                    stripe_customer_id: session.customer,
-                    access_level: accessLevel,
-                    amount_paid: amountPaid,
-                    expires_at: expiresAt,
-                    reminder_sent: false,
-                    claimed: false
-                }, {
-                    onConflict: 'email'
-                });
+                // Upsert dans Supabase (adapté à ta structure)
+                const { error } = await supabase
+                    .from('customers')
+                    .upsert({
+                        email: email.toLowerCase(),
+                        stripe_customer_id: session.customer,
+                        access_level: accessLevel,
+                        amount_paid: amountPaid,
+                        expires_at: expiresAt,
+                        reminder_sent: false,
+                        claimed: false
+                    }, {
+                        onConflict: 'email'
+                    });
 
-            if (error) {
-                console.error('❌ Erreur Supabase:', error);
+                if (error) {
+                    console.error('❌ Erreur Supabase:', error);
+                } else {
+                    console.log(`✅ Customer créé/mis à jour: ${email} → ${accessLevel} (${amountPaid}€)`);
+                }
+
+                // Si le discord_id existe déjà, attribue le rôle
+                const { data: customer } = await supabase
+                    .from('customers')
+                    .select('discord_id')
+                    .eq('email', email.toLowerCase())
+                    .single();
+
+                if (customer?.discord_id) {
+                    await assignRole(customer.discord_id, accessLevel);
+                }
             } else {
-                console.log(`✅ Customer créé/mis à jour: ${email} → ${accessLevel} (${amountPaid}€)`);
-            }
-
-            // Si le discord_id existe déjà, attribue le rôle
-            const { data: customer } = await supabase
-                .from('customers')
-                .select('discord_id')
-                .eq('email', email.toLowerCase())
-                .single();
-
-            if (customer?.discord_id) {
-                await assignRole(customer.discord_id, accessLevel);
+                console.log(`⚠️ Product ID non mappé: ${productId}`);
             }
         }
+    } catch (err) {
+        console.error('❌ Erreur traitement checkout:', err.message);
     }
 }
 
@@ -583,19 +589,32 @@ async function handleSubscriptionUpdate(subscription) {
         const accessLevel = PRODUCT_TO_ACCESS[productId];
 
         if (accessLevel) {
-            // Calcule la nouvelle date d'expiration
-            const expiresAt = new Date(subscription.current_period_end * 1000).toISOString();
+            // ✅ CORRECTION: Vérifie que current_period_end existe
+            let expiresAt;
+            if (subscription.current_period_end) {
+                expiresAt = new Date(subscription.current_period_end * 1000).toISOString();
+            } else {
+                expiresAt = calculateExpiration(accessLevel);
+            }
 
-            await supabase
+            // Upsert pour créer si n'existe pas
+            const { error } = await supabase
                 .from('customers')
-                .update({
+                .upsert({
+                    email: email.toLowerCase(),
+                    stripe_customer_id: customerId,
                     access_level: accessLevel,
                     expires_at: expiresAt,
-                    reminder_sent: false // Reset pour le prochain rappel
-                })
-                .eq('email', email.toLowerCase());
+                    reminder_sent: false
+                }, {
+                    onConflict: 'email'
+                });
 
-            console.log(`🔄 Abonnement mis à jour: ${email} → ${accessLevel} (expire: ${expiresAt})`);
+            if (error) {
+                console.error('❌ Erreur Supabase:', error);
+            } else {
+                console.log(`🔄 Abonnement mis à jour: ${email} → ${accessLevel} (expire: ${expiresAt})`);
+            }
 
             // Attribue le rôle si discord_id existe
             const { data: dbCustomer } = await supabase
@@ -607,6 +626,8 @@ async function handleSubscriptionUpdate(subscription) {
             if (dbCustomer?.discord_id) {
                 await assignRole(dbCustomer.discord_id, accessLevel);
             }
+        } else {
+            console.log(`⚠️ Product ID non mappé: ${productId}`);
         }
     } catch (err) {
         console.error('❌ Erreur handleSubscriptionUpdate:', err.message);
