@@ -1778,7 +1778,230 @@ async def cmd_postnoimg(ctx):
     except Exception as e:
         print(f"[POST] Erreur: {e}")
         await msg.edit(content=f"❌ **Erreur:** {str(e)[:100]}")
+# ============================================================
+#     🤖 COMMANDE !ASK - QUESTION À GROK (VIP ONLY)
+#     Limite: 5 questions par jour par utilisateur
+# ============================================================
 
+# Cache pour les limites quotidiennes (reset à minuit)
+ask_daily_limits = {}  # {user_id: {"count": X, "date": "YYYY-MM-DD"}}
+ASK_DAILY_LIMIT = 5  # Nombre max de questions par jour
+
+def get_gold_price():
+    """Récupère le prix de l'or via API gratuite"""
+    try:
+        # API gratuite pour les métaux précieux
+        r = requests.get(
+            "https://api.metalpriceapi.com/v1/latest?api_key=demo&base=USD&currencies=XAU",
+            timeout=10
+        )
+        if r.status_code == 200:
+            data = r.json()
+            # XAU = once d'or, le prix est inversé (USD par once)
+            if data.get("success") and "rates" in data:
+                xau_rate = data["rates"].get("XAU", 0)
+                if xau_rate > 0:
+                    gold_price = 1 / xau_rate  # Convertir en USD/once
+                    return {"price": gold_price, "unit": "USD/oz"}
+        
+        # Alternative: API Gold API (backup)
+        r2 = requests.get("https://www.goldapi.io/api/XAU/USD", 
+                          headers={"x-access-token": "goldapi-demo"}, 
+                          timeout=10)
+        if r2.status_code == 200:
+            data2 = r2.json()
+            return {"price": data2.get("price", 0), "unit": "USD/oz"}
+            
+    except Exception as e:
+        print(f"[GOLD] Erreur API: {e}")
+    
+    return None
+
+def check_ask_limit(user_id):
+    """Vérifie si l'utilisateur peut encore poser une question aujourd'hui"""
+    today = datetime.now(TIMEZONE).strftime("%Y-%m-%d")
+    
+    if user_id not in ask_daily_limits:
+        ask_daily_limits[user_id] = {"count": 0, "date": today}
+    
+    user_data = ask_daily_limits[user_id]
+    
+    # Reset si nouveau jour
+    if user_data["date"] != today:
+        ask_daily_limits[user_id] = {"count": 0, "date": today}
+        user_data = ask_daily_limits[user_id]
+    
+    remaining = ASK_DAILY_LIMIT - user_data["count"]
+    return remaining > 0, remaining
+
+def increment_ask_count(user_id):
+    """Incrémente le compteur de questions pour un utilisateur"""
+    today = datetime.now(TIMEZONE).strftime("%Y-%m-%d")
+    
+    if user_id not in ask_daily_limits:
+        ask_daily_limits[user_id] = {"count": 0, "date": today}
+    
+    if ask_daily_limits[user_id]["date"] != today:
+        ask_daily_limits[user_id] = {"count": 0, "date": today}
+    
+    ask_daily_limits[user_id]["count"] += 1
+    return ASK_DAILY_LIMIT - ask_daily_limits[user_id]["count"]
+
+@bot.command(name="ask")
+async def cmd_ask(ctx, *, question: str = None):
+    """Pose une question à Grok - VIP uniquement dans #vip-lounge (5 questions/jour)"""
+    
+    # Vérifier si c'est dans le bon canal (VIP Lounge)
+    vip_lounge_id = CHANNELS.get("vip_lounge", 0)
+    if vip_lounge_id and ctx.channel.id != vip_lounge_id:
+        await ctx.send("❌ Cette commande est réservée au salon **#vip-lounge** !", delete_after=5)
+        return
+    
+    # Vérifier les rôles (VIP ou Admin)
+    user_roles = [role.name.lower() for role in ctx.author.roles]
+    is_admin = ctx.author.guild_permissions.administrator
+    is_vip = any(role in user_roles for role in ["vip", "👑 vip", "chasseur de clés", "chasseurs de clés", "elite", "premium"])
+    
+    if not is_admin and not is_vip:
+        await ctx.send("❌ Cette commande est réservée aux membres **VIP** ! 👑", delete_after=5)
+        return
+    
+    # Vérifier la limite quotidienne (admins exemptés)
+    if not is_admin:
+        can_ask, remaining = check_ask_limit(ctx.author.id)
+        if not can_ask:
+            embed = discord.Embed(
+                title="⏰ Limite atteinte",
+                description=f"Tu as utilisé tes **{ASK_DAILY_LIMIT} questions** aujourd'hui.\n\nReviendras demain ! 🌅",
+                color=0xff6600
+            )
+            embed.set_footer(text="💡 La limite se réinitialise à minuit (heure de Paris)")
+            await ctx.send(embed=embed, delete_after=15)
+            return
+    
+    # Vérifier qu'une question a été posée
+    if not question:
+        # Afficher les crédits restants
+        if not is_admin:
+            _, remaining = check_ask_limit(ctx.author.id)
+            credits_text = f"\n\n📊 **Crédits restants aujourd'hui:** {remaining}/{ASK_DAILY_LIMIT}"
+        else:
+            credits_text = "\n\n👑 **Admin:** Questions illimitées"
+        
+        embed = discord.Embed(
+            title="🤖 Comment utiliser !ask",
+            description=f"Pose ta question à notre IA expert crypto !{credits_text}",
+            color=0x9b59b6
+        )
+        embed.add_field(
+            name="📝 Usage",
+            value="`!ask <ta question>`",
+            inline=False
+        )
+        embed.add_field(
+            name="💡 Exemples",
+            value="• `!ask que penses-tu du BTC actuellement ?`\n• `!ask quel est le prix de l'or ?`\n• `!ask explique-moi le halving`\n• `!ask analyse technique ETH`",
+            inline=False
+        )
+        embed.set_footer(text=f"👑 Réservé aux VIP • {ASK_DAILY_LIMIT} questions/jour • Powered by Grok")
+        await ctx.send(embed=embed)
+        return
+    
+    # Message de chargement
+    msg = await ctx.send("🤔 **Analyse en cours...**\n_Grok réfléchit à ta question..._")
+    
+    # Récupérer le contexte marché pour enrichir la réponse
+    prices = get_btc_price()
+    fg = get_fear_greed()
+    global_data = get_global_data()
+    
+    # Récupérer le prix de l'or si la question concerne l'or
+    gold_data = None
+    question_lower = question.lower()
+    if any(word in question_lower for word in ["or", "gold", "xau", "métal", "metal", "once"]):
+        gold_data = get_gold_price()
+    
+    # Construire le contexte
+    market_context = ""
+    if prices and fg and global_data:
+        market_context = f"""
+CONTEXTE MARCHÉ CRYPTO ACTUEL (données temps réel):
+- BTC: ${prices['btc_price']:,.0f} ({prices['btc_change']:+.1f}% 24h)
+- ETH: ${prices['eth_price']:,.0f} ({prices['eth_change']:+.1f}% 24h)
+- Fear & Greed: {fg['value']}/100 ({fg['sentiment']})
+- BTC Dominance: {global_data['btc_dominance']:.1f}%
+- Market Cap Total: ${global_data['total_market_cap']/1e12:.2f}T
+"""
+    
+    # Ajouter le prix de l'or si disponible
+    if gold_data:
+        market_context += f"""
+PRIX DE L'OR ACTUEL:
+- Or (XAU): ${gold_data['price']:,.2f} par once troy
+"""
+    elif any(word in question_lower for word in ["or", "gold", "xau", "métal", "metal", "once"]):
+        market_context += """
+NOTE: Je n'ai pas pu récupérer le prix actuel de l'or. Conseille à l'utilisateur de vérifier sur des sites comme Kitco, Bloomberg ou TradingView pour les prix en temps réel.
+"""
+    
+    # Construire le prompt
+    prompt = f"""{market_context}
+
+QUESTION DU MEMBRE VIP: {question}
+
+Réponds en tant qu'expert Horizon Elite:
+- Sois précis et utile
+- Utilise les données marché fournies si pertinent
+- Si la question concerne l'or et que tu n'as pas le prix exact, mentionne-le clairement
+- Donne ton analyse honnête
+- Reste accessible mais professionnel
+- Utilise des emojis avec parcimonie
+- Si c'est une question de trading, rappelle NFA-DYOR
+- Réponds en français
+- Réponse concise (max 300 mots)"""
+    
+    # Appeler Grok
+    try:
+        response = ask_grok(prompt, max_tokens=600)
+        
+        if not response:
+            await msg.edit(content="❌ **Erreur:** Impossible de contacter l'IA. Réessaie dans quelques instants.")
+            return
+        
+        # Incrémenter le compteur (sauf admin)
+        if not is_admin:
+            remaining = increment_ask_count(ctx.author.id)
+            credits_footer = f" • 📊 {remaining}/{ASK_DAILY_LIMIT} crédits restants"
+        else:
+            credits_footer = " • 👑 Admin"
+        
+        # Créer l'embed de réponse
+        embed = discord.Embed(
+            title="🤖 Réponse Grok",
+            description=response[:4000],
+            color=0x9b59b6,
+            timestamp=datetime.now(TIMEZONE)
+        )
+        
+        # Ajouter le contexte marché
+        market_footer = ""
+        if prices:
+            market_footer = f"BTC `${prices['btc_price']:,.0f}` | ETH `${prices['eth_price']:,.0f}` | F&G `{fg['value'] if fg else 'N/A'}`"
+        if gold_data:
+            market_footer += f" | Or `${gold_data['price']:,.0f}/oz`"
+        
+        if market_footer:
+            embed.add_field(name="📊 Marché actuel", value=market_footer, inline=False)
+        
+        embed.set_footer(text=f"Question de {ctx.author.display_name}{credits_footer} • NFA-DYOR")
+        
+        await msg.edit(content=None, embed=embed)
+        print(f"[ASK] ✅ {ctx.author.display_name}: {question[:50]}... (crédits: {remaining if not is_admin else '∞'})")
+        
+    except Exception as e:
+        print(f"[ASK] Erreur: {e}")
+        await msg.edit(content=f"❌ **Erreur:** {str(e)[:100]}")
+        
 # ============================================================
 #     🚀 ÉVÉNEMENTS
 # ============================================================

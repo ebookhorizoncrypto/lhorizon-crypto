@@ -21,7 +21,7 @@ function showDashboard() {
     setTimeout(() => {
         const cv = document.getElementById('visitors-count');
         if (cv && typeof updateVisitorsDisplay === 'function') updateVisitorsDisplay();
-        if (typeof simulateVisitors === 'function') simulateVisitors();
+        // if (typeof simulateVisitors === 'function') simulateVisitors(); // Removed simulation
         if (typeof initCharts === 'function') initCharts();
     }, 500);
 
@@ -482,7 +482,16 @@ function initCharts() {
 // ========================================
 // LIVE VISITORS SIMULATION
 // ========================================
-let currentVisitors = Math.floor(Math.random() * 10) + 5;
+// ========================================
+// REAL VISITORS TRACKING
+// ========================================
+let currentVisitors = 0; // Default to 0 until sync
+
+// Listen for updates from tracking.js
+window.addEventListener('visitor-update', (e) => {
+    currentVisitors = e.detail.count;
+    updateVisitorsDisplay();
+});
 
 function updateVisitorsDisplay() {
     const elCount = document.getElementById('visitors-count');
@@ -492,16 +501,6 @@ function updateVisitorsDisplay() {
 }
 
 function simulateVisitors() {
-    const change = Math.floor(Math.random() * 6) - 2;
-    currentVisitors = Math.max(3, Math.min(25, currentVisitors + change));
-    updateVisitorsDisplay();
-
-    if (visitorsChart && document.querySelector('.chart-tabs[data-chart="visitors"] .active').dataset.period === '1h') {
-        const lastIdx = visitorsChart.data.datasets[0].data.length - 1;
-        visitorsChart.data.datasets[0].data[lastIdx] = currentVisitors;
-        visitorsChart.update('none');
-    }
-
-    const nextUpdate = Math.floor(Math.random() * 5000) + 3000;
-    setTimeout(simulateVisitors, nextUpdate);
+    // Disabled: Using Real-time Tracking via Supabase
+    // See tracking.js
 }
