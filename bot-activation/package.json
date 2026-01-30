@@ -1,0 +1,17 @@
+{
+    "name": "horizon-activation-bot",
+    "version": "1.0.0",
+    "description": "Bot d'activation et de gestion d'expiration pour L'Horizon Crypto",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "discord.js": "^14.14.0",
+        "express": "^4.18.2",
+        "dotenv": "^16.3.1",
+        "@supabase/supabase-js": "^2.39.0",
+        "node-cron": "^3.0.3",
+        "axios": "^1.6.2"
+    }
+}
