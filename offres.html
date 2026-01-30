@@ -751,75 +751,7 @@
     <script src="js/rgpd-consent.js"></script>
     <script src="js/crypto-ticker.js"></script>
 
-    <!-- Script cleaned up -->
-    <!-- Extract Form Handler -->
-    <script>
-        const extractForm = document.getElementById('extract-form');
-        const extractSuccess = document.getElementById('extract-success');
 
-        if (extractForm) {
-            extractForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const emailInput = document.getElementById('extract-email');
-                const email = emailInput.value.trim();
-                const btnText = extractForm.querySelector('.btn-text');
-                const btnLoading = extractForm.querySelector('.btn-loading');
-                const btn = extractForm.querySelector('button');
-
-                if (!email || !email.includes('@')) {
-                    alert('Veuillez entrer un email valide.');
-                    return;
-                }
-
-                // Show loading
-                btn.disabled = true;
-                btnText.style.display = 'none';
-                btnLoading.style.display = 'inline';
-
-                try {
-                    // Determine API URL (Local vs Prod)
-                    const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-                        ? 'http://127.0.0.1:3001'
-                        : '';
-
-                    const response = await fetch(`${apiBase}/api/lead-magnet`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email })
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        // Success - hide form, show success message
-                        extractForm.style.display = 'none';
-                        extractSuccess.style.display = 'block';
-
-                        // Store email
-                        localStorage.setItem('lhorizon_extract_email', email);
-                    } else {
-                        throw new Error(data.error || 'Erreur');
-                    }
-                } catch (error) {
-                    console.error('Extract error:', error);
-                    // Demo mode fallback when API not available
-                    if (error.name === 'TypeError' || error.message.includes('fetch')) {
-                        console.log('Demo mode: Simulating success');
-                        extractForm.style.display = 'none';
-                        extractSuccess.style.display = 'block';
-                        localStorage.setItem('lhorizon_extract_email', email);
-                    } else {
-                        alert('Erreur lors de l\'envoi. Réessayez.');
-                    }
-                } finally {
-                    btn.disabled = false;
-                    btnText.style.display = 'inline';
-                    btnLoading.style.display = 'none';
-                }
-            });
-        }
-    </script>
     <script>
         function toggleMenuDirect(btn) {
             const nav = document.querySelector('.nav-links');
