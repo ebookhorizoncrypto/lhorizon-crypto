@@ -16,12 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const client = supabaseClient.createClient(SUPA_URL, SUPA_KEY);
 
-            // Join the 'online-users' room
-            const channel = client.channel('online-users', {
+            // Join a public channel
+            const channel = client.channel('public-tracking', {
                 config: {
                     presence: {
                         key: 'user-' + Math.random().toString(36).substr(2, 9)
-                    }
+                    },
+                    broadcast: { self: true } // Explicitly enable broadcast
                 }
             });
 
@@ -30,21 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const state = channel.presenceState();
                     const count = Object.keys(state).length;
                     console.log('✅ Presence Sync:', count);
-
-                    // Dispatch event
                     window.dispatchEvent(new CustomEvent('visitor-update', { detail: { count } }));
                 })
-                .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-                    console.log('👤 User Joined:', key, newPresences);
-                })
-                .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-                    console.log('👋 User Left:', key, leftPresences);
-                })
-                .subscribe(async (status) => {
+                .on('presence', { event: 'join' }, ({ key }) => console.log('👤 Joined:', key))
+                .on('presence', { event: 'leave' }, ({ key }) => console.log('👋 Left:', key))
+                .subscribe(async (status, err) => {
                     console.log('📡 Channel Status:', status);
+                    if (err) console.error('❌ Channel Error Details:', err);
+
                     if (status === 'SUBSCRIBED') {
-                        const trackStatus = await channel.track({ online_at: new Date().toISOString() });
-                        console.log('📍 Tracking Status:', trackStatus);
+                        await channel.track({ online_at: new Date().toISOString() });
                     }
                 });
 
