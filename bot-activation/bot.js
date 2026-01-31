@@ -34,9 +34,14 @@ const STATE_SECRET = process.env.STATE_SECRET || crypto.randomBytes(32).toString
 
 // Mapping Produits Stripe → Access Level
 const PRODUCT_TO_ACCESS = {
-    'prod_TpcMzVxIVuGaMa': 'SOLO',   // Pack Solo
-    'prod_ToXf1kpTDB7uNv': 'PRO',    // Pack Pro
-    'prod_ToXtEbkLoqh9iA': 'VIP',    // Pack VIP
+    // Ebooks
+    'prod_ToX88YPUxtoqez': 'SOLO',   // Ebook Pack Solo
+    'prod_ToXf1kpTDB7uNv': 'PRO',    // Ebook Pack Pro
+    'prod_ToXtEbkLoqh9iA': 'VIP',    // Ebook Pack VIP
+    // Abonnements
+    'prod_TpcMzVxIVuGaMa': 'SOLO',   // Abonnement 1 mois
+    'prod_ToXr1gq3YcBORK': 'PRO',    // Abonnement 3 mois
+    'prod_ToXwVbu17edNfs': 'VIP',    // Abonnement 6 mois
 };
 
 // Mapping Access Level → Durée (en jours)
